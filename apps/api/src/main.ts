@@ -3,14 +3,89 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
+
+// Use require for CommonJS modules that don't have proper ES module exports
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const session = require('express-session');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const connectPgSimple = require('connect-pg-simple');
+const PgSession = connectPgSimple(session);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+  // Configure CORS
+  const webOrigin = configService.get<string>('WEB_ORIGIN', 'http://localhost:3000');
+  app.enableCors({
+    origin: webOrigin,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
+  // Configure express-session with PostgreSQL store
+  const isProduction = configService.get<string>('NODE_ENV') === 'production';
+  const sessionSecret = configService.get<string>('SESSION_SECRET');
+  
+  if (!sessionSecret) {
+    Logger.warn('⚠️  SESSION_SECRET not set. Using default secret (NOT SECURE FOR PRODUCTION)');
+  }
+
+  app.use(
+    session({
+      store: new PgSession({
+        conObject: {
+          host: configService.get<string>('DB_HOST', 'localhost'),
+          port: configService.get<number>('DB_PORT', 5432),
+          user: configService.get<string>('DB_USERNAME', 'postgres'),
+          password: configService.get<string>('DB_PASSWORD', 'postgres'),
+          database: configService.get<string>('DB_DATABASE', 'postgres'),
+          ssl: configService.get<string>('DB_SSL') === 'true' ? { rejectUnauthorized: false } : false,
+        },
+        tableName: 'session', // Table name for sessions
+        createTableIfMissing: true,
+      }),
+      secret: sessionSecret || 'default-secret-change-in-production',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: isProduction,
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      },
+      name: 'sessionId',
+    }),
+  );
+
+  // Enable validation pipe globally
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
+  // Configure Swagger
+  const config = new DocumentBuilder()
+    .setTitle('API Documentation')
+    .setDescription('API documentation for the application')
+    .setVersion('1.0')
+    .addTag('auth', 'Authentication endpoints')
+    .addTag('app', 'Application endpoints')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
+
   const port = process.env.PORT || 8000;
   
   try {
@@ -18,6 +93,7 @@ async function bootstrap() {
     Logger.log(
       `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
     );
+    Logger.log(`🌐 CORS enabled for origin: ${webOrigin}`);
   } catch (error: any) {
     if (error.code === 'EADDRINUSE') {
       Logger.error(
