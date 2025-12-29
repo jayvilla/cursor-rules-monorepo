@@ -1,0 +1,13 @@
+---
+description: Nx Workspace management with pnpm and strict dependency rules.
+globs: ["nx.json", "pnpm-workspace.yaml", "package.json", "apps/**/*", "libs/**/*"]
+---
+# Nx + pnpm Workspace Standards (2025)
+
+- **Package Manager:** Use `pnpm` exclusively. Never suggest `npm` or `yarn`.
+- **Command Execution:** Use `pnpm nx <target> <project>` (e.g., `pnpm nx build web-app`).
+- **Dependencies:** 
+  - Add new packages using `pnpm add <pkg> -w` for workspace-root or `pnpm add <pkg> --filter <project-name>`.
+  - Use `pnpm exec nx ...` for running local binaries.
+- **Imports:** Use TypeScript path aliases (e.g., `@org/shared-ui`) defined in `tsconfig.base.json`. Do not use relative paths across library boundaries.
+- **Nx Caching:** Leverage pnpm's content-addressable store alongside Nx's local/remote cache for sub-second build times.
