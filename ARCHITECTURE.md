@@ -78,20 +78,21 @@ cursor-rules-monorepo/
 │       └── tsconfig.json
 │
 ├── libs/
-│   ├── shared/
+│   ├── shared/                 # Shared DTOs & Types (Nx project: "shared-dto")
 │   │   ├── src/
 │   │   │   ├── index.ts
-│   │   │   ├── dto/            # Shared DTOs (Nx project: "shared-dto")
+│   │   │   ├── schemas/        # Zod schemas (source of truth)
 │   │   │   │   ├── auth/
 │   │   │   │   ├── users/
 │   │   │   │   ├── orgs/
 │   │   │   │   ├── api-keys/
 │   │   │   │   ├── audit-events/
 │   │   │   │   └── webhooks/
-│   │   │   └── types/          # Shared TypeScript types
-│   │   │       └── index.ts
+│   │   │   ├── types/          # TypeScript types (inferred from Zod)
+│   │   │   └── utils/          # Shared utilities
 │   │   ├── project.json
 │   │   └── tsconfig.json
+│   │   # See SHARED_LIB_STRATEGY.md for detailed structure
 │   │
 │   └── data-access-db/         # TypeORM Entities (Nx project: "data-access-db")
 │       ├── src/
