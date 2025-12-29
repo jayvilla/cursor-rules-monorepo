@@ -7,31 +7,66 @@ import {
   HttpCode,
   HttpStatus,
   Req,
+  Res,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiOkResponse } from '@nestjs/swagger';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from './auth.guard';
+import { CsrfGuard } from './csrf.guard';
+import { CsrfService } from './csrf.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../entities/user.entity';
+import { ConfigService } from '@nestjs/config';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
+    private readonly csrfService: CsrfService,
+    private readonly configService: ConfigService,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
+  @Get('csrf')
+  @ApiOperation({ summary: 'Get CSRF token' })
+  @ApiOkResponse({ description: 'CSRF token returned and cookie set' })
+  getCsrfToken(@Req() req: Request, @Res() res: Response) {
+    // Generate or reuse CSRF secret (store in session for persistence)
+    let csrfSecret = req.session.csrfSecret;
+    if (!csrfSecret) {
+      csrfSecret = this.csrfService.createSecret();
+      req.session.csrfSecret = csrfSecret;
+    }
+
+    // Generate CSRF token
+    const token = this.csrfService.generateToken(csrfSecret);
+
+    // Set non-httpOnly cookie with CSRF secret
+    const isProduction = this.configService.get<string>('NODE_ENV') === 'production';
+    res.cookie('csrf-secret', csrfSecret, {
+      httpOnly: false, // Must be accessible to JavaScript
+      sameSite: 'lax',
+      secure: isProduction,
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      path: '/',
+    });
+
+    return res.json({ token });
+  }
+
   @Post('login')
+  @UseGuards(CsrfGuard)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login user' })
   @ApiOkResponse({ description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  @ApiResponse({ status: 403, description: 'Invalid CSRF token' })
   async login(@Body() loginDto: LoginDto, @Req() req: Request) {
     const user = await this.authService.validateUser(
       loginDto.email,
@@ -62,8 +97,8 @@ export class AuthController {
   }
 
   @Post('logout')
+  @UseGuards(AuthGuard, CsrfGuard)
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Logout user' })
   @ApiOkResponse({ description: 'Logout successful' })
   async logout(@Req() req: Request) {

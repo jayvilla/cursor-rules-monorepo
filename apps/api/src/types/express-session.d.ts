@@ -6,6 +6,7 @@ declare global {
         userId?: string;
         orgId?: string;
         role?: string;
+        csrfSecret?: string;
         destroy(callback?: (err?: Error) => void): void;
         regenerate(callback: (err?: Error) => void): void;
         save(callback?: (err?: Error) => void): void;

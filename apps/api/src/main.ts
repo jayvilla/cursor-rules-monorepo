@@ -14,6 +14,8 @@ import { AppModule } from './app/app.module';
 const session = require('express-session');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const connectPgSimple = require('connect-pg-simple');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const cookieParser = require('cookie-parser');
 const PgSession = connectPgSimple(session);
 
 async function bootstrap() {
@@ -22,13 +24,16 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
+  // Configure cookie parser (must be before session)
+  app.use(cookieParser());
+
   // Configure CORS
   const webOrigin = configService.get<string>('WEB_ORIGIN', 'http://localhost:3000');
   app.enableCors({
     origin: webOrigin,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
   });
 
   // Configure express-session with PostgreSQL store
