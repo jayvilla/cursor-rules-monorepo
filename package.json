@@ -3,12 +3,16 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve:api": "pnpm nx serve api",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f postgres",
+    "docker:reset": "docker-compose down -v && docker-compose up -d",
+    "serve:api": "node scripts/set-nx-cache.js nx serve api",
     "dev:web": "pnpm nx dev web",
-    "dev": "concurrently -n \"API,WEB\" -c \"blue,green\" \"pnpm nx serve api\" \"pnpm nx dev web\"",
-    "build:api": "pnpm nx build api",
+    "dev": "concurrently -n \"API,WEB\" -c \"blue,green\" \"pnpm serve:api\" \"pnpm nx dev web\"",
+    "build:api": "node scripts/set-nx-cache.js nx build api",
     "build:web": "pnpm nx build web",
-    "start:api": "pnpm nx serve api",
+    "start:api": "node scripts/set-nx-cache.js nx serve api",
     "start:web": "pnpm nx start web"
   },
   "private": true,
@@ -39,6 +43,8 @@
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "10.4.13",
     "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "jest": "^30.0.2",
@@ -58,13 +64,17 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/typeorm": "^11.0.0",
     "axios": "^1.6.0",
     "next": "~16.0.1",
+    "pg": "^8.16.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.0",
+    "typeorm": "^0.3.28"
   }
 }

@@ -59,6 +59,35 @@
           "buildTarget": "api:build:production"
         }
       }
+    },
+    "migration:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec ts-node apps/api/src/migration-cli.ts generate",
+        "cwd": "{workspaceRoot}",
+        "forwardAllArgs": true
+      }
+    },
+    "migration:run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec ts-node apps/api/src/migration-cli.ts run",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "migration:revert": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec ts-node apps/api/src/migration-cli.ts revert",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec ts-node -r dotenv/config apps/api/src/seed.ts",
+        "cwd": "{workspaceRoot}"
+      }
     }
   },
   "tags": ["type:app", "scope:api"],
