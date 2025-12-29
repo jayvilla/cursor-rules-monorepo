@@ -1,5 +1,13 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
+import {
+  OrganizationEntity,
+  UserEntity,
+  ApiKeyEntity,
+  AuditEventEntity,
+  WebhookEntity,
+  WebhookDeliveryEntity,
+} from './entities';
 
 // Load environment variables
 dotenv.config();
@@ -11,11 +19,22 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_DATABASE || 'postgres',
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  entities: [
+    OrganizationEntity,
+    UserEntity,
+    ApiKeyEntity,
+    AuditEventEntity,
+    WebhookEntity,
+    WebhookDeliveryEntity,
+  ],
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
   synchronize: false, // Never use synchronize in production
   logging: process.env.NODE_ENV === 'development',
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
+  extra: {
+    // Prevent issues with enum types in migrations
+    applicationName: 'cursor-rules-api',
+  },
 };
 
 const dataSource = new DataSource(dataSourceOptions);

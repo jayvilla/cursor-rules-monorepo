@@ -63,29 +63,34 @@
     "migration:generate": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm exec ts-node apps/api/src/migration-cli.ts generate",
+        "command": "pnpm exec tsx node_modules/typeorm/cli.js migration:generate apps/api/src/migrations/",
+        "args": [
+          "{args.name}",
+          "-d",
+          "apps/api/src/data-source.ts"
+        ],
         "cwd": "{workspaceRoot}",
-        "forwardAllArgs": true
+        "forwardAllArgs": false
       }
     },
     "migration:run": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm exec ts-node apps/api/src/migration-cli.ts run",
+        "command": "pnpm exec tsx apps/api/src/run-migration-simple.ts",
         "cwd": "{workspaceRoot}"
       }
     },
     "migration:revert": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm exec ts-node apps/api/src/migration-cli.ts revert",
+        "command": "pnpm exec tsx node_modules/typeorm/cli.js migration:revert -d apps/api/src/data-source.ts",
         "cwd": "{workspaceRoot}"
       }
     },
     "seed": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm exec ts-node -r dotenv/config apps/api/src/seed.ts",
+        "command": "pnpm exec tsx apps/api/src/seed-simple.ts",
         "cwd": "{workspaceRoot}"
       }
     }

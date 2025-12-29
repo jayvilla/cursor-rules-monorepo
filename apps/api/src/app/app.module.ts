@@ -3,6 +3,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import {
+  OrganizationEntity,
+  UserEntity,
+  ApiKeyEntity,
+  AuditEventEntity,
+  WebhookEntity,
+  WebhookDeliveryEntity,
+} from '../entities';
 
 @Module({
   imports: [
@@ -29,6 +37,14 @@ import { AppService } from './app.service';
       }),
       inject: [ConfigService],
     }),
+    TypeOrmModule.forFeature([
+      OrganizationEntity,
+      UserEntity,
+      ApiKeyEntity,
+      AuditEventEntity,
+      WebhookEntity,
+      WebhookDeliveryEntity,
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],

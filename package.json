@@ -8,12 +8,12 @@
     "docker:logs": "docker-compose logs -f postgres",
     "docker:reset": "docker-compose down -v && docker-compose up -d",
     "serve:api": "node scripts/set-nx-cache.js nx serve api",
-    "dev:web": "pnpm nx dev web",
-    "dev": "concurrently -n \"API,WEB\" -c \"blue,green\" \"pnpm serve:api\" \"pnpm nx dev web\"",
+    "dev:web": "cross-env PORT=3000 pnpm nx dev web",
+    "dev": "concurrently -n \"API,WEB\" -c \"blue,green\" \"pnpm serve:api\" \"pnpm dev:web\"",
     "build:api": "node scripts/set-nx-cache.js nx build api",
     "build:web": "pnpm nx build web",
     "start:api": "node scripts/set-nx-cache.js nx serve api",
-    "start:web": "pnpm nx start web"
+    "start:web": "cross-env PORT=3000 pnpm nx start web"
   },
   "private": true,
   "devDependencies": {
@@ -57,7 +57,9 @@
     "tailwindcss": "3.4.3",
     "ts-jest": "^29.4.0",
     "ts-node": "10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "tslib": "^2.3.0",
+    "tsx": "^4.21.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0",
     "webpack-cli": "^5.1.4"

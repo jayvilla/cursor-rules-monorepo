@@ -45,9 +45,10 @@ switch (command) {
 }
 
 const typeormCli = path.resolve(process.cwd(), 'node_modules/typeorm/cli.js');
-const proc = spawn('ts-node', [typeormCli, ...typeormArgs], {
+const proc = spawn('node', ['--loader', 'ts-node/esm', typeormCli, ...typeormArgs], {
   stdio: 'inherit',
   shell: true,
+  env: process.env,
 });
 
 proc.on('exit', (code) => {

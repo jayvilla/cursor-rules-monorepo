@@ -12,10 +12,24 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 8000;
-  await app.listen(port);
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
-  );
+  
+  try {
+    await app.listen(port);
+    Logger.log(
+      `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
+    );
+  } catch (error: any) {
+    if (error.code === 'EADDRINUSE') {
+      Logger.error(
+        `❌ Port ${port} is already in use. Please stop the process using that port or set a different PORT in your .env file.`,
+      );
+      Logger.error(
+        `   On Windows, run: Get-Process -Id (Get-NetTCPConnection -LocalPort ${port}).OwningProcess | Stop-Process -Force`,
+      );
+      process.exit(1);
+    }
+    throw error;
+  }
 }
 
 bootstrap();
