@@ -5,6 +5,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { ApiKeyModule } from './api-key/api-key.module';
+import { AuditEventsModule } from './audit-events/audit-events.module';
 import { CsrfGuard } from './auth/csrf.guard';
 import {
   OrganizationEntity,
@@ -49,6 +51,8 @@ import {
       WebhookDeliveryEntity,
     ]),
     AuthModule,
+    ApiKeyModule,
+    AuditEventsModule,
   ],
   controllers: [AppController],
   providers: [

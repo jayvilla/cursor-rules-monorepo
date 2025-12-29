@@ -21,6 +21,12 @@ export class CsrfGuard implements CanActivate {
       return true;
     }
 
+    // Skip CSRF check if API key authentication is used
+    const apiKey = request.headers['x-api-key'];
+    if (apiKey) {
+      return true;
+    }
+
     // Get CSRF token from header
     const token = request.headers['x-csrf-token'] as string;
     if (!token) {
