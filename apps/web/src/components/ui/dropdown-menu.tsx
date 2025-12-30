@@ -109,6 +109,6 @@ export interface DropdownMenuSeparatorProps {
 export const DropdownMenuSeparator: React.FC<DropdownMenuSeparatorProps> = ({
   className,
 }) => {
-  return <div className={cn('my-1 h-px bg-border', className)} />;
+  return <div className={cn('my-1 h-px bg-[hsl(var(--border))]', className)} />;
 };
 

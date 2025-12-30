@@ -91,8 +91,8 @@ export function AppShell({ children, pageTitle }: AppShellProps) {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-muted">Loading...</div>
+      <div className="flex h-screen items-center justify-center bg-[hsl(var(--bg))]">
+        <div className="text-[hsl(var(--muted-foreground))]">Loading...</div>
       </div>
     );
   }
@@ -102,21 +102,21 @@ export function AppShell({ children, pageTitle }: AppShellProps) {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-bg">
+    <div className="flex h-screen overflow-hidden bg-[hsl(var(--bg))]">
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-card transition-transform duration-300 lg:static lg:translate-x-0',
+          'fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-transform duration-300 lg:static lg:translate-x-0',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         {/* Logo/Product Name */}
-        <div className="flex h-16 items-center border-b border-border px-6">
+        <div className="flex h-16 items-center border-b border-[hsl(var(--border))] px-6">
           <Link href="/audit-logs" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
-              <span className="text-sm font-bold text-white">AL</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]">
+              <span className="text-sm font-bold text-[hsl(var(--accent2-foreground))]">AL</span>
             </div>
-            <span className="text-lg font-semibold text-fg">AuditLog</span>
+            <span className="text-lg font-semibold text-[hsl(var(--foreground))]">AuditLog</span>
           </Link>
         </div>
 
@@ -136,20 +136,20 @@ export function AppShell({ children, pageTitle }: AppShellProps) {
                 className={cn(
                   'group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-muted-2 text-fg'
-                    : 'text-muted hover:bg-muted hover:text-fg',
+                    ? 'bg-[hsl(var(--muted))] text-[hsl(var(--foreground))]'
+                    : 'text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))]',
                   item.comingSoon && 'cursor-not-allowed opacity-50'
                 )}
               >
                 <item.icon
                   className={cn(
                     'h-5 w-5 flex-shrink-0',
-                    isActive ? 'text-accent' : 'text-muted group-hover:text-fg'
+                    isActive ? 'text-[hsl(var(--accent2))]' : 'text-[hsl(var(--muted-foreground))] group-hover:text-[hsl(var(--foreground))]'
                   )}
                 />
                 <span className="flex-1">{item.name}</span>
                 {item.comingSoon && (
-                  <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted">
+                  <span className="rounded-full bg-[hsl(var(--muted))] px-2 py-0.5 text-xs text-[hsl(var(--muted-foreground))]">
                     Soon
                   </span>
                 )}
@@ -170,25 +170,25 @@ export function AppShell({ children, pageTitle }: AppShellProps) {
       {/* Main content area */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Topbar */}
-        <header className="flex h-16 items-center gap-4 border-b border-border bg-card px-4 lg:px-6">
+        <header className="flex h-16 items-center gap-4 border-b border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 lg:px-6">
           {/* Mobile menu button */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="lg:hidden rounded-lg p-2 text-muted hover:bg-muted hover:text-fg"
+            className="lg:hidden rounded-lg p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))]"
             aria-label="Toggle sidebar"
           >
             <MenuIcon className="h-5 w-5" />
           </button>
 
           {/* Page title */}
-          <h1 className="flex-1 text-lg font-semibold text-fg">
+          <h1 className="flex-1 text-lg font-semibold text-[hsl(var(--foreground))]">
             {pageTitle || getPageTitle(pathname)}
           </h1>
 
           {/* Search input */}
           <div className="hidden md:block">
             <div className="relative">
-              <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+              <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[hsl(var(--muted-foreground))]" />
               <Input
                 type="search"
                 placeholder="Search..."
@@ -201,22 +201,22 @@ export function AppShell({ children, pageTitle }: AppShellProps) {
           {/* User menu */}
           <DropdownMenu
             trigger={
-              <button className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-muted">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-xs font-medium text-white">
+              <button className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-[hsl(var(--muted))]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--accent2))] text-xs font-medium text-[hsl(var(--accent2-foreground))]">
                   {user.email.charAt(0).toUpperCase()}
                 </div>
                 <div className="hidden text-left md:block">
-                  <div className="text-xs font-medium text-fg">{user.email}</div>
-                  <div className="text-xs text-muted capitalize">{user.role}</div>
+                  <div className="text-xs font-medium text-[hsl(var(--foreground))]">{user.email}</div>
+                  <div className="text-xs text-[hsl(var(--muted-foreground))] capitalize">{user.role}</div>
                 </div>
-                <ChevronDownIcon className="hidden h-4 w-4 text-muted md:block" />
+                <ChevronDownIcon className="hidden h-4 w-4 text-[hsl(var(--muted-foreground))] md:block" />
               </button>
             }
             align="right"
           >
             <div className="px-3 py-2">
-              <div className="text-xs font-medium text-fg">{user.email}</div>
-              <div className="text-xs text-muted capitalize">{user.role}</div>
+              <div className="text-xs font-medium text-[hsl(var(--foreground))]">{user.email}</div>
+              <div className="text-xs text-[hsl(var(--muted-foreground))] capitalize">{user.role}</div>
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
