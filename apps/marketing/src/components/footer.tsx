@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="border-t border-[hsl(var(--border))] bg-[hsl(var(--bg))]">
+    <footer className="relative z-10 border-t border-[hsl(var(--border))] bg-[hsl(var(--bg))]">
       <Container>
         <div className="py-12 md:py-16">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">

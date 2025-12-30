@@ -2,8 +2,17 @@ import './global.css';
 import { Navbar } from '../components/navbar';
 import { Footer } from '../components/footer';
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001';
+
+// Optimize font loading with next/font
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+  preload: true,
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -67,8 +76,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={inter.variable}>
+      <body className={inter.className}>
         <Navbar />
         <main>{children}</main>
         <Footer />
