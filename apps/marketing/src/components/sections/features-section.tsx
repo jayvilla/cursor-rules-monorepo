@@ -97,7 +97,7 @@ export function FeaturesSection() {
     },
     {
       title: 'RBAC & org isolation',
-      description: 'Fine-grained permissions ensure only authorized users can view, filter, and export audit logs. Perfect for compliance and security.',
+      description: 'Fine-grained permissions ensure only authorized users can view and export audit logs. Perfect for compliance and security.',
       icon: (
         <svg
           className="h-6 w-6 text-[hsl(var(--accent2))]"

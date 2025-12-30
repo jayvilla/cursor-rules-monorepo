@@ -10,6 +10,8 @@ const nextConfig = {
   // Use this to set Nx-specific options
   // See: https://nx.dev/recipes/next/next-config-setup
   nx: {},
+  // Transpile shared packages so Next.js can process them
+  transpilePackages: ['@audit-log-and-activity-tracking-saas/ui'],
 };
 
 const plugins = [
