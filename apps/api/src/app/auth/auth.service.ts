@@ -13,7 +13,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<UserEntity | null> {
     const user = await this.userRepository.findOne({
-      where: { email },
+      where: { email: email.toLowerCase().trim() },
       relations: ['organization'],
     });
 
@@ -38,6 +38,10 @@ export class AuthService {
     hash: string,
   ): Promise<boolean> {
     try {
+      // Only check bcrypt if hash starts with bcrypt identifier
+      if (!hash.startsWith('$2a$') && !hash.startsWith('$2b$') && !hash.startsWith('$2y$')) {
+        return false;
+      }
       return await bcrypt.compare(plainPassword, hash);
     } catch {
       return false;
