@@ -21,7 +21,24 @@ module.exports = {
     //     ...createGlobPatternsForDependencies(__dirname)
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        bg: 'var(--bg)',
+        fg: 'var(--fg)',
+        muted: 'var(--muted)',
+        'muted-2': 'var(--muted-2)',
+        border: 'var(--border)',
+        card: 'var(--card)',
+        'card-2': 'var(--card-2)',
+        accent: 'var(--accent)',
+        'accent-2': 'var(--accent-2)',
+        danger: 'var(--danger)',
+        success: 'var(--success)',
+      },
+      fontFamily: {
+        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };
