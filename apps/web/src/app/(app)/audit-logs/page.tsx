@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { getMe, getAuditEvents, exportAuditEventsAsJson, exportAuditEventsAsCsv, type AuditEvent, type GetAuditEventsParams } from '../../lib/api-client';
+import { getMe, getAuditEvents, exportAuditEventsAsJson, exportAuditEventsAsCsv, type AuditEvent, type GetAuditEventsParams } from '../../../lib/api-client';
 
 interface User {
   id: string;
@@ -36,12 +36,11 @@ export default function AuditLogsPage() {
   useEffect(() => {
     async function loadData() {
       try {
+        // Load user for role checks (AppShell handles auth redirect)
         const meResponse = await getMe();
-        if (!meResponse || !meResponse.user) {
-          window.location.href = '/login';
-          return;
+        if (meResponse?.user) {
+          setUser(meResponse.user);
         }
-        setUser(meResponse.user);
 
         // Load audit events with current filters
         setIsLoading(true);
@@ -242,16 +241,16 @@ export default function AuditLogsPage() {
 
   if (isLoading && events.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-        <div className="text-slate-600">Loading...</div>
+      <div className="flex items-center justify-center py-12">
+        <div className="text-muted">Loading...</div>
       </div>
     );
   }
 
   if (error && events.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-        <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
+      <div className="flex items-center justify-center py-12">
+        <div className="bg-card-2 border border-danger text-danger px-6 py-4 rounded-lg">
           {error}
         </div>
       </div>
@@ -259,28 +258,16 @@ export default function AuditLogsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="container mx-auto px-4 py-8 max-w-[95vw]">
-        {/* Header */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900 mb-2">Audit Logs</h1>
-              <p className="text-slate-600">
-                Welcome, {user?.name || user?.email}! 
-                {user && (
-                  <span className={`ml-2 px-2 py-1 rounded text-xs font-semibold ${getRoleBadgeColor(user.role)}`}>
-                    {user.role.toUpperCase()}
-                  </span>
-                )}
-              </p>
-            </div>
-            {/* Export Dropdown */}
-            <div className="relative" ref={exportDropdownRef}>
+    <div>
+      {/* Header */}
+      <div className="mb-6">
+        <div className="flex items-center justify-end mb-4">
+          {/* Export Dropdown */}
+          <div className="relative" ref={exportDropdownRef}>
               <button
                 onClick={() => setShowExportDropdown(!showExportDropdown)}
                 disabled={!user || !isAdminOrAuditor(user.role) || isExporting}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-4 py-2 bg-accent hover:bg-accent-2 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 <svg
                   className="w-4 h-4"
@@ -313,11 +300,11 @@ export default function AuditLogsPage() {
                 </svg>
               </button>
               {showExportDropdown && user && isAdminOrAuditor(user.role) && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-10">
+                <div className="absolute right-0 mt-2 w-48 bg-card-2 rounded-lg shadow-lg border border-border z-10">
                   <button
                     onClick={handleExportJson}
                     disabled={isExporting}
-                    className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-t-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="w-full text-left px-4 py-2 text-sm text-fg hover:bg-muted rounded-t-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                   >
                     <svg
                       className="w-4 h-4"
@@ -338,7 +325,7 @@ export default function AuditLogsPage() {
                   <button
                     onClick={handleExportCsv}
                     disabled={isExporting}
-                    className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-b-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="w-full text-left px-4 py-2 text-sm text-fg hover:bg-muted rounded-b-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                   >
                     <svg
                       className="w-4 h-4"
@@ -359,21 +346,21 @@ export default function AuditLogsPage() {
                 </div>
               )}
             </div>
-          </div>
           {exportError && (
-            <div className="mt-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            <div className="mt-4 bg-card-2 border border-danger text-danger px-4 py-3 rounded-lg text-sm">
               {exportError}
             </div>
           )}
         </div>
+      </div>
 
-        {/* Filters */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Filters</h2>
+      {/* Filters */}
+      <div className="bg-card rounded-lg border border-border p-6 mb-6">
+          <h2 className="text-lg font-semibold text-fg mb-4">Filters</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Date Range */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-fg mb-2">
                 Start Date
               </label>
               <input
@@ -383,11 +370,11 @@ export default function AuditLogsPage() {
                   const value = e.target.value;
                   handleFilterChange('startDate', value ? new Date(value).toISOString() : undefined);
                 }}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-border bg-card-2 text-fg rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-fg mb-2">
                 End Date
               </label>
               <input
@@ -397,13 +384,13 @@ export default function AuditLogsPage() {
                   const value = e.target.value;
                   handleFilterChange('endDate', value ? new Date(value).toISOString() : undefined);
                 }}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-border bg-card-2 text-fg rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
               />
             </div>
 
             {/* Action */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-fg mb-2">
                 Action
               </label>
               <input
@@ -411,19 +398,19 @@ export default function AuditLogsPage() {
                 value={filters.action || ''}
                 onChange={(e) => handleFilterChange('action', e.target.value)}
                 placeholder="e.g., created, updated"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-border bg-card-2 text-fg rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
               />
             </div>
 
             {/* Actor Type */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-fg mb-2">
                 Actor Type
               </label>
               <select
                 value={filters.actorType || ''}
                 onChange={(e) => handleFilterChange('actorType', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-border bg-card-2 text-fg rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
               >
                 <option value="">All</option>
                 <option value="user">User</option>
@@ -434,7 +421,7 @@ export default function AuditLogsPage() {
 
             {/* Resource Type */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-fg mb-2">
                 Resource Type
               </label>
               <input
@@ -442,13 +429,13 @@ export default function AuditLogsPage() {
                 value={filters.resourceType || ''}
                 onChange={(e) => handleFilterChange('resourceType', e.target.value)}
                 placeholder="e.g., user, api-key"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-border bg-card-2 text-fg rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
               />
             </div>
 
             {/* Resource ID */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-fg mb-2">
                 Resource ID
               </label>
               <input
@@ -456,13 +443,13 @@ export default function AuditLogsPage() {
                 value={filters.resourceId || ''}
                 onChange={(e) => handleFilterChange('resourceId', e.target.value)}
                 placeholder="UUID"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-border bg-card-2 text-fg rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
               />
             </div>
 
             {/* Metadata Text */}
             <div className="md:col-span-2 lg:col-span-3">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-fg mb-2">
                 Metadata Search
               </label>
               <input
@@ -470,39 +457,39 @@ export default function AuditLogsPage() {
                 value={filters.metadataText || ''}
                 onChange={(e) => handleFilterChange('metadataText', e.target.value)}
                 placeholder="Search in metadata JSON"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-border bg-card-2 text-fg rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
               />
             </div>
           </div>
         </div>
 
-        {/* Results Table */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+      {/* Results Table */}
+      <div className="bg-card rounded-lg border border-border overflow-hidden">
           {events.length === 0 ? (
-            <div className="px-6 py-8 text-center text-slate-500">
+            <div className="px-6 py-8 text-center text-muted">
               No audit events found
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[1200px]">
-                <thead className="bg-slate-50">
+                <thead className="bg-muted">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider min-w-[180px]">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider min-w-[180px]">
                       Timestamp
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider min-w-[200px]">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider min-w-[200px]">
                       Actor
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider min-w-[120px]">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider min-w-[120px]">
                       Action
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider min-w-[250px]">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider min-w-[250px]">
                       Resource
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider min-w-[140px]">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider min-w-[140px]">
                       IP Address
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider min-w-[120px]">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider min-w-[120px]">
                       Details
                     </th>
                   </tr>
@@ -539,32 +526,32 @@ export default function AuditLogsPage() {
                                 height: `${virtualRow.size}px`,
                                 transform: `translateY(${virtualRow.start}px)`,
                               }}
-                              className="bg-slate-50 border-t border-slate-200"
+                              className="bg-muted border-t border-border"
                             >
                               <td colSpan={6} className="px-6 py-4">
                                 <div className="space-y-4">
                                   {item.event.metadata && (
                                     <div>
-                                      <h4 className="text-sm font-semibold text-slate-900 mb-2">Metadata</h4>
-                                      <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-xs">
+                                      <h4 className="text-sm font-semibold text-fg mb-2">Metadata</h4>
+                                      <pre className="bg-card-2 text-fg p-4 rounded-lg overflow-x-auto text-xs border border-border">
                                         {JSON.stringify(item.event.metadata, null, 2)}
                                       </pre>
                                     </div>
                                   )}
                                   {item.event.userAgent && (
                                     <div>
-                                      <h4 className="text-sm font-semibold text-slate-900 mb-1">User Agent</h4>
-                                      <p className="text-sm text-slate-600">{item.event.userAgent}</p>
+                                      <h4 className="text-sm font-semibold text-fg mb-1">User Agent</h4>
+                                      <p className="text-sm text-muted">{item.event.userAgent}</p>
                                     </div>
                                   )}
                                   <div className="grid grid-cols-2 gap-4 text-sm">
                                     <div>
-                                      <span className="font-semibold text-slate-700">Event ID:</span>
-                                      <span className="ml-2 text-slate-600 font-mono text-xs">{item.event.id}</span>
+                                      <span className="font-semibold text-fg">Event ID:</span>
+                                      <span className="ml-2 text-muted font-mono text-xs">{item.event.id}</span>
                                     </div>
                                     <div>
-                                      <span className="font-semibold text-slate-700">Organization ID:</span>
-                                      <span className="ml-2 text-slate-600 font-mono text-xs">{item.event.orgId}</span>
+                                      <span className="font-semibold text-fg">Organization ID:</span>
+                                      <span className="ml-2 text-muted font-mono text-xs">{item.event.orgId}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -584,40 +571,40 @@ export default function AuditLogsPage() {
                               height: `${virtualRow.size}px`,
                               transform: `translateY(${virtualRow.start}px)`,
                             }}
-                            className="hover:bg-slate-50 cursor-pointer transition-colors border-b border-slate-200"
+                            className="hover:bg-muted cursor-pointer transition-colors border-b border-border"
                             onClick={() => toggleRow(item.event.id)}
                           >
-                            <td className="px-6 py-4 text-sm text-slate-900 min-w-[180px]">
+                            <td className="px-6 py-4 text-sm text-fg min-w-[180px]">
                               {formatDate(item.event.createdAt)}
                             </td>
-                            <td className="px-6 py-4 text-sm text-slate-900 min-w-[200px]">
+                            <td className="px-6 py-4 text-sm text-fg min-w-[200px]">
                               <div>
                                 <span className="font-medium">{item.event.actorType}</span>
                                 {item.event.actorId && (
-                                  <div className="text-xs text-slate-500 break-all font-mono">
+                                  <div className="text-xs text-muted break-all font-mono">
                                     {item.event.actorId}
                                   </div>
                                 )}
                               </div>
                             </td>
-                            <td className="px-6 py-4 text-sm text-slate-900 min-w-[120px]">
-                              <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium">
+                            <td className="px-6 py-4 text-sm text-fg min-w-[120px]">
+                              <span className="px-2 py-1 bg-accent/20 text-accent rounded text-xs font-medium">
                                 {item.event.action}
                               </span>
                             </td>
-                            <td className="px-6 py-4 text-sm text-slate-900 min-w-[250px]">
+                            <td className="px-6 py-4 text-sm text-fg min-w-[250px]">
                               <div>
                                 <span className="font-medium">{item.event.resourceType}</span>
-                                <div className="text-xs text-slate-500 break-all font-mono">
+                                <div className="text-xs text-muted break-all font-mono">
                                   {item.event.resourceId}
                                 </div>
                               </div>
                             </td>
-                            <td className="px-6 py-4 text-sm text-slate-500 min-w-[140px]">
+                            <td className="px-6 py-4 text-sm text-muted min-w-[140px]">
                               {item.event.ipAddress || '-'}
                             </td>
-                            <td className="px-6 py-4 text-sm text-slate-500 min-w-[120px]">
-                              <button className="text-blue-600 hover:text-blue-800 font-medium">
+                            <td className="px-6 py-4 text-sm text-muted min-w-[120px]">
+                              <button className="text-accent hover:text-accent-2 font-medium">
                                 {expandedRows.has(item.event.id) ? 'Hide' : 'Show'} Details
                               </button>
                             </td>
@@ -633,11 +620,11 @@ export default function AuditLogsPage() {
 
           {/* Load More Button */}
           {nextCursor && (
-            <div className="px-6 py-4 border-t border-slate-200 bg-slate-50">
+            <div className="px-6 py-4 border-t border-border bg-muted">
               <button
                 onClick={() => loadAuditEvents(false)}
                 disabled={isLoadingMore}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-accent hover:bg-accent-2 text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoadingMore ? 'Loading...' : 'Load More'}
               </button>
@@ -645,12 +632,11 @@ export default function AuditLogsPage() {
           )}
 
           {error && events.length > 0 && (
-            <div className="px-6 py-4 bg-red-50 border-t border-red-200">
-              <p className="text-red-700 text-sm">{error}</p>
+            <div className="px-6 py-4 bg-card-2 border-t border-danger">
+              <p className="text-danger text-sm">{error}</p>
             </div>
           )}
         </div>
-      </div>
     </div>
   );
 }
