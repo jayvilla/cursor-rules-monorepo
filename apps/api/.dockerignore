@@ -1,0 +1,28 @@
+# Source files (not needed in Docker context for production build)
+src/**/*.spec.ts
+src/**/*.test.ts
+
+# Development files
+*.md
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Testing
+coverage
+
+# Temporary files
+tmp
+temp
+

@@ -6,6 +6,214 @@
 
 [Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
 
+## Local Development Setup
+
+### Prerequisites
+
+- [Docker](https://www.docker.com/get-started) and Docker Compose
+- [pnpm](https://pnpm.io/installation) (v8 or later)
+- Node.js 22 or later
+
+### Quick Start
+
+1. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
+
+2. **Set up environment variables:**
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env` and ensure these values are set:
+   - `DB_HOST=postgres` (when running in Docker) or `DB_HOST=localhost` (when running locally)
+   - `WEB_ORIGIN=http://localhost:3000` (for CORS and cookie sessions)
+   - `NEXT_PUBLIC_API_URL=http://localhost:8000/api` (for web app API calls)
+   - `SESSION_SECRET` (generate a random secret for production)
+
+3. **Start PostgreSQL database (Docker):**
+   ```bash
+   pnpm docker:up
+   ```
+   
+   This starts **only** the PostgreSQL container with health checks. Wait for it to be healthy before proceeding.
+   
+   > **Note:** `pnpm docker:up` uses `docker-compose.local.yml` which only runs PostgreSQL. To run everything in Docker, use `pnpm docker:all` instead.
+
+4. **Run database migrations:**
+   ```bash
+   pnpm nx migration:run api
+   ```
+
+5. **Seed the database (optional):**
+   ```bash
+   pnpm nx seed api
+   ```
+
+6. **Start all services (API + Web with hot reload):**
+   ```bash
+   pnpm dev
+   ```
+   
+   This runs both the API (port 8000) and Web (port 3000) with hot reload via Nx.
+
+### Alternative: Run Services in Docker
+
+If you prefer to run API and Web in Docker containers with hot reload:
+
+1. **Start all services (PostgreSQL + API + Web):**
+   ```bash
+   docker-compose up
+   ```
+   
+   This will:
+   - Start PostgreSQL with health checks
+   - Start API service on port 8000 (with hot reload via Nx)
+   - Start Web service on port 3000 (with hot reload via Nx)
+
+2. **Run migrations:**
+   ```bash
+   pnpm nx migration:run api
+   ```
+
+3. **Access the applications:**
+   - API: http://localhost:8000/api
+   - API Docs: http://localhost:8000/api/docs
+   - Web: http://localhost:3000
+
+### Docker Commands
+
+**For local development (PostgreSQL only):**
+- **Start PostgreSQL:** `pnpm docker:up` (uses `docker-compose.local.yml`)
+- **Stop PostgreSQL:** `pnpm docker:down`
+- **View PostgreSQL logs:** `pnpm docker:logs`
+- **Reset database:** `pnpm docker:reset` (⚠️ This deletes all data)
+
+**For running everything in Docker:**
+- **Start all services (PostgreSQL + API + Web):** `pnpm docker:all` or `docker-compose up -d`
+- **Stop all services:** `pnpm docker:all:down` or `docker-compose down`
+
+### Cookie Sessions & CORS Configuration
+
+The API is configured to work with cookie-based sessions:
+
+- **CORS** is enabled with `credentials: true` to allow cookies
+- **Origin** is set via `WEB_ORIGIN` environment variable (default: `http://localhost:3000`)
+- **Cookies** are configured with:
+  - `httpOnly: true` (security)
+  - `sameSite: 'lax'` (CSRF protection)
+  - `secure: false` in development, `true` in production
+
+Ensure your `.env` has:
+```env
+WEB_ORIGIN=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:8000/api
+```
+
+### Troubleshooting
+
+**Port already in use (EADDRINUSE):**
+
+If you see errors like `Error: listen EADDRINUSE: address already in use :::8000`:
+
+1. **Check if Docker containers are running:**
+   ```bash
+   docker-compose ps
+   ```
+
+2. **If Docker containers are running and you want to run locally:**
+   ```bash
+   docker-compose down
+   ```
+
+3. **If you want to find and stop a specific process on Windows:**
+   ```powershell
+   # Find the process using port 8000
+   Get-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess | Stop-Process -Force
+   
+   # Find the process using port 3000
+   Get-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess | Stop-Process -Force
+   ```
+
+4. **Or change the ports in `.env`:**
+   ```env
+   PORT=8001
+   WEB_PORT=3001
+   NEXT_PUBLIC_API_URL=http://localhost:8001/api
+   WEB_ORIGIN=http://localhost:3001
+   ```
+
+**Database connection issues:**
+- Ensure PostgreSQL container is healthy: `docker-compose ps`
+- Check database credentials in `.env` match docker-compose.yml
+- When running locally (not in Docker), use `DB_HOST=localhost`
+- When running in Docker, use `DB_HOST=postgres`
+
+**Cookie sessions not working:**
+- Verify `WEB_ORIGIN` matches your web app URL
+- Ensure API CORS allows credentials
+- Check browser console for CORS errors
+- Ensure `NEXT_PUBLIC_API_URL` is set correctly in `.env`
+
+## Production Docker Builds
+
+### Building Production Images
+
+**Build API image:**
+```bash
+docker build -f apps/api/Dockerfile -t cursor-rules-api:latest .
+```
+
+**Build Web image:**
+```bash
+docker build -f apps/web/Dockerfile -t cursor-rules-web:latest --build-arg NEXT_PUBLIC_API_URL=http://localhost:8000/api .
+```
+
+### Dockerfile Features
+
+Both Dockerfiles use **multi-stage builds** for minimal production images:
+
+**API Dockerfile (`apps/api/Dockerfile`):**
+- Stage 1: Base with pnpm setup
+- Stage 2: Install dependencies
+- Stage 3: Build NestJS app with Nx
+- Stage 4: Production runtime with pruned dependencies
+- Uses Nx's `prune-lockfile` and `copy-workspace-modules` for minimal deps
+- Runs as non-root user for security
+- Includes health checks
+
+**Web Dockerfile (`apps/web/Dockerfile`):**
+- Stage 1: Base with pnpm setup
+- Stage 2: Install dependencies
+- Stage 3: Build Next.js app with Nx
+- Stage 4: Production runtime
+- Supports both Next.js standalone and standard modes
+- Runs as non-root user for security
+- Includes health checks
+
+### Running Production Containers
+
+**API:**
+```bash
+docker run -p 8000:8000 \
+  -e DB_HOST=postgres \
+  -e DB_USERNAME=postgres \
+  -e DB_PASSWORD=postgres \
+  -e DB_DATABASE=postgres \
+  -e SESSION_SECRET=your-secret \
+  -e WEB_ORIGIN=http://localhost:3000 \
+  cursor-rules-api:latest
+```
+
+**Web:**
+```bash
+docker run -p 3000:3000 \
+  -e NEXT_PUBLIC_API_URL=http://localhost:8000/api \
+  -e NODE_ENV=production \
+  cursor-rules-web:latest
+```
+
 ## Run tasks
 
 To run tasks with Nx use:
