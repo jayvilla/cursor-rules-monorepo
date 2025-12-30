@@ -1,164 +1,352 @@
-# CursorRulesMonorepo
+# Audit Log & Activity Tracking SaaS
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+An MVP-focused audit logging platform with append-only logs, filtering, export capabilities, role-based access control (RBAC), and webhook delivery. Built for organizations that need to track and monitor user activities, API usage, and system events in a secure, immutable audit trail.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+**Target Users:** Development teams, DevOps engineers, and organizations requiring compliance-ready audit logging with real-time webhook notifications.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+**Primary Problem Solved:** Provides a centralized, append-only audit logging system with fine-grained access control, enabling teams to track all critical events while maintaining data integrity and security.
 
-## Local Development Setup
+**Architecture:** Monorepo structure using Nx with a NestJS REST API backend and Next.js frontend, connected to PostgreSQL for persistent storage. Uses cookie-based sessions for web authentication and API keys for programmatic access.
 
-### Prerequisites
+---
 
-- [Docker](https://www.docker.com/get-started) and Docker Compose
-- [pnpm](https://pnpm.io/installation) (v8 or later)
+## Tech Stack
+
+**Languages & Runtimes:**
+- TypeScript 5.9
+- Node.js 22+
+
+**Backend:**
+- NestJS 11 (REST API)
+- TypeORM 0.3 (PostgreSQL ORM)
+- Express 5 (HTTP server)
+- Express Session (cookie-based sessions)
+- Swagger/OpenAPI (API documentation)
+
+**Frontend:**
+- Next.js 16 (React framework)
+- React 19
+- Tailwind CSS 3.4 (styling)
+- Axios (HTTP client)
+
+**Database:**
+- PostgreSQL 16
+
+**Infrastructure & Tools:**
+- Nx 22.3 (monorepo management)
+- pnpm 8+ (package manager)
+- Docker & Docker Compose (containerization)
+- Jest 30 (testing)
+- Playwright (E2E testing)
+
+**Shared Libraries:**
+- `libs/shared/types` - Shared DTOs and types between frontend and backend
+
+---
+
+## Repository Structure
+
+```
+cursor-rules-monorepo/
+├── apps/
+│   ├── api/              # NestJS backend application
+│   │   ├── src/
+│   │   │   ├── app/       # Feature modules (auth, audit-events, webhooks, etc.)
+│   │   │   ├── entities/  # TypeORM entities
+│   │   │   ├── migrations/# Database migrations
+│   │   │   └── test/      # Test utilities and setup
+│   │   └── Dockerfile     # Production Docker image
+│   ├── web/              # Next.js frontend application
+│   │   ├── src/
+│   │   │   ├── app/       # Next.js app router pages
+│   │   │   └── lib/       # Client utilities
+│   │   └── Dockerfile     # Production Docker image
+│   ├── api-e2e/          # API integration tests
+│   └── web-e2e/          # Web E2E tests (Playwright)
+├── libs/
+│   └── shared/
+│       └── types/         # Shared DTOs and TypeScript types
+├── docker-compose.yml     # Full stack Docker Compose
+├── docker-compose.local.yml # PostgreSQL only for local dev
+└── .env.example           # Environment variable template
+```
+
+**Key Modules:**
+- `apps/api/src/app/auth/` - Authentication and session management
+- `apps/api/src/app/audit-events/` - Core audit logging (append-only)
+- `apps/api/src/app/webhooks/` - Webhook delivery system
+- `apps/api/src/app/api-key/` - API key management and authentication
+- `apps/web/src/app/audit-logs/` - Audit log viewing interface
+- `apps/web/src/app/login/` - Authentication UI
+
+---
+
+## Prerequisites
+
+**Required Runtime:**
 - Node.js 22 or later
+- pnpm 8 or later
 
-### Quick Start
+**Required Tools:**
+- Docker Desktop (or Docker Engine + Docker Compose)
+- Git
 
-1. **Install dependencies:**
+**System Dependencies:**
+- PostgreSQL 16 (via Docker or local installation)
+
+**Optional:**
+- Nx Console (VS Code/IntelliJ extension) for enhanced developer experience
+
+---
+
+## Environment Setup
+
+### Root `.env` File
+
+Create a `.env` file in the repository root by copying `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+**Purpose:** Configures both API and Web applications, plus Docker Compose services.
+
+**Required Variables:**
+
+```env
+# PostgreSQL Docker Container Configuration
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
+DB_PORT=5432
+
+# Application Database Configuration
+# Use 'postgres' when API runs in Docker, 'localhost' when running locally
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_DATABASE=postgres
+DB_SSL=false
+
+# Application Environment
+NODE_ENV=development
+
+# API Port (NestJS)
+PORT=8000
+
+# Web Port (Next.js)
+WEB_PORT=3000
+
+# Session Configuration (REQUIRED - generate a random secret for production)
+SESSION_SECRET=change-this-to-a-random-secret-in-production
+
+# CORS Configuration (must match web app URL for cookie sessions)
+WEB_ORIGIN=http://localhost:3000
+
+# Next.js Public API URL (used by web app to call API)
+NEXT_PUBLIC_API_URL=http://localhost:8000/api
+```
+
+**Security Notes:**
+- `SESSION_SECRET` must be a strong random string in production (use `openssl rand -base64 32`)
+- Never commit `.env` files to version control
+- `DB_PASSWORD` should be changed from defaults in production
+
+### API-Specific `.env` (Optional)
+
+If running the API independently, you can also create `apps/api/.env` with database configuration only.
+
+---
+
+## Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd cursor-rules-monorepo
+   ```
+
+2. **Install dependencies:**
    ```bash
    pnpm install
    ```
 
-2. **Set up environment variables:**
+3. **Set up environment variables:**
    ```bash
    cp .env.example .env
    ```
    
-   Edit `.env` and ensure these values are set:
-   - `DB_HOST=postgres` (when running in Docker) or `DB_HOST=localhost` (when running locally)
-   - `WEB_ORIGIN=http://localhost:3000` (for CORS and cookie sessions)
-   - `NEXT_PUBLIC_API_URL=http://localhost:8000/api` (for web app API calls)
-   - `SESSION_SECRET` (generate a random secret for production)
+   Edit `.env` and ensure:
+   - `DB_HOST=localhost` (when running API locally)
+   - `DB_HOST=postgres` (when running API in Docker)
+   - `WEB_ORIGIN` matches your web app URL
+   - `SESSION_SECRET` is set (generate a random secret)
 
-3. **Start PostgreSQL database (Docker):**
+4. **Start PostgreSQL database:**
    ```bash
    pnpm docker:up
    ```
    
-   This starts **only** the PostgreSQL container with health checks. Wait for it to be healthy before proceeding.
-   
-   > **Note:** `pnpm docker:up` uses `docker-compose.local.yml` which only runs PostgreSQL. To run everything in Docker, use `pnpm docker:all` instead.
+   This starts only the PostgreSQL container. Wait for it to be healthy before proceeding.
 
-4. **Run database migrations:**
+5. **Run database migrations:**
    ```bash
    pnpm nx migration:run api
    ```
 
-5. **Seed the database (optional):**
+6. **Seed the database (optional):**
    ```bash
    pnpm nx seed api
    ```
 
-6. **Start all services (API + Web with hot reload):**
-   ```bash
-   pnpm dev
-   ```
-   
-   This runs both the API (port 8000) and Web (port 3000) with hot reload via Nx.
+---
 
-### Alternative: Run Services in Docker
+## Running the Project
 
-If you prefer to run API and Web in Docker containers with hot reload:
+### Local Development (Recommended)
 
-1. **Start all services (PostgreSQL + API + Web):**
-   ```bash
-   docker-compose up
-   ```
-   
-   This will:
-   - Start PostgreSQL with health checks
-   - Start API service on port 8000 (with hot reload via Nx)
-   - Start Web service on port 3000 (with hot reload via Nx)
+**Start all services with hot reload:**
+```bash
+pnpm dev
+```
 
-2. **Run migrations:**
-   ```bash
-   pnpm nx migration:run api
-   ```
+This command runs:
+- **API** on `http://localhost:8000` (NestJS with hot reload)
+- **Web** on `http://localhost:3000` (Next.js with hot reload)
 
-3. **Access the applications:**
-   - API: http://localhost:8000/api
-   - API Docs: http://localhost:8000/api/docs
-   - Web: http://localhost:3000
+**Access Points:**
+- Web Application: http://localhost:3000
+- API Base URL: http://localhost:8000/api
+- API Documentation (Swagger): http://localhost:8000/api/docs
+
+### Running Services Individually
+
+**Start API only:**
+```bash
+pnpm serve:api
+# or
+pnpm nx serve api
+```
+
+**Start Web only:**
+```bash
+pnpm dev:web
+# or
+pnpm nx dev web
+```
+
+### Docker Compose (Full Stack)
+
+**Start all services in Docker:**
+```bash
+pnpm docker:all
+# or
+docker-compose up -d
+```
+
+This starts:
+- PostgreSQL on port 5432
+- API on port 8000
+- Web on port 3000
+
+**Note:** When running in Docker, ensure `DB_HOST=postgres` in your `.env` file.
 
 ### Docker Commands
 
-**For local development (PostgreSQL only):**
-- **Start PostgreSQL:** `pnpm docker:up` (uses `docker-compose.local.yml`)
-- **Stop PostgreSQL:** `pnpm docker:down`
-- **View PostgreSQL logs:** `pnpm docker:logs`
-- **Reset database:** `pnpm docker:reset` (⚠️ This deletes all data)
+**PostgreSQL only (for local development):**
+- Start: `pnpm docker:up`
+- Stop: `pnpm docker:down`
+- View logs: `pnpm docker:logs`
+- Reset database (⚠️ deletes all data): `pnpm docker:reset`
 
-**For running everything in Docker:**
-- **Start all services (PostgreSQL + API + Web):** `pnpm docker:all` or `docker-compose up -d`
-- **Stop all services:** `pnpm docker:all:down` or `docker-compose down`
+**Full stack:**
+- Start all: `pnpm docker:all` or `docker-compose up -d`
+- Stop all: `pnpm docker:all:down` or `docker-compose down`
 
-### Cookie Sessions & CORS Configuration
+---
 
-The API is configured to work with cookie-based sessions:
+## Testing
 
-- **CORS** is enabled with `credentials: true` to allow cookies
-- **Origin** is set via `WEB_ORIGIN` environment variable (default: `http://localhost:3000`)
-- **Cookies** are configured with:
-  - `httpOnly: true` (security)
-  - `sameSite: 'lax'` (CSRF protection)
-  - `secure: false` in development, `true` in production
+### Testing Strategy
 
-Ensure your `.env` has:
-```env
-WEB_ORIGIN=http://localhost:3000
-NEXT_PUBLIC_API_URL=http://localhost:8000/api
+The project uses a multi-layered testing approach:
+- **Unit Tests:** Jest for individual components and services
+- **Integration Tests:** Jest + Supertest for API endpoints with real database
+- **E2E Tests:** Playwright for full user workflows
+
+### Running Tests
+
+**API Integration Tests:**
+```bash
+# Ensure PostgreSQL is running
+pnpm docker:up
+
+# Run all API tests
+pnpm nx test api
+
+# Run in watch mode
+pnpm nx test api --watch
+
+# Run with coverage
+pnpm nx test api --coverage
 ```
 
-### Troubleshooting
+**Web E2E Tests:**
+```bash
+pnpm nx e2e web-e2e
+```
 
-**Port already in use (EADDRINUSE):**
+**All Tests:**
+```bash
+pnpm nx run-many --target=test --all
+```
 
-If you see errors like `Error: listen EADDRINUSE: address already in use :::8000`:
+### Test Infrastructure
 
-1. **Check if Docker containers are running:**
-   ```bash
-   docker-compose ps
-   ```
+**Test Database:**
+- Tests use a dedicated database (`audit_test` by default)
+- Database is created automatically if missing
+- Migrations run automatically before tests
+- Database is truncated between tests for isolation
 
-2. **If Docker containers are running and you want to run locally:**
-   ```bash
-   docker-compose down
-   ```
+**Test Environment Variables:**
+- Set `DB_DATABASE_TEST` to override default test database name
+- Test database credentials use same `DB_USERNAME` and `DB_PASSWORD` as development
 
-3. **If you want to find and stop a specific process on Windows:**
-   ```powershell
-   # Find the process using port 8000
-   Get-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess | Stop-Process -Force
-   
-   # Find the process using port 3000
-   Get-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess | Stop-Process -Force
-   ```
+**Test Coverage:**
+- ✅ Authentication and session management
+- ✅ Audit event creation and retrieval
+- ✅ API key authentication
+- ✅ RBAC (role-based access control)
+- ✅ Webhook delivery
 
-4. **Or change the ports in `.env`:**
-   ```env
-   PORT=8001
-   WEB_PORT=3001
-   NEXT_PUBLIC_API_URL=http://localhost:8001/api
-   WEB_ORIGIN=http://localhost:3001
-   ```
+---
 
-**Database connection issues:**
-- Ensure PostgreSQL container is healthy: `docker-compose ps`
-- Check database credentials in `.env` match docker-compose.yml
-- When running locally (not in Docker), use `DB_HOST=localhost`
-- When running in Docker, use `DB_HOST=postgres`
+## Build / Deployment
 
-**Cookie sessions not working:**
-- Verify `WEB_ORIGIN` matches your web app URL
-- Ensure API CORS allows credentials
-- Check browser console for CORS errors
-- Ensure `NEXT_PUBLIC_API_URL` is set correctly in `.env`
+### Building for Production
 
-## Production Docker Builds
+**Build API:**
+```bash
+pnpm build:api
+# or
+pnpm nx build api
+```
 
-### Building Production Images
+**Build Web:**
+```bash
+pnpm build:web
+# or
+pnpm nx build web
+```
+
+**Build all:**
+```bash
+pnpm nx run-many --target=build --all
+```
+
+### Docker Production Builds
 
 **Build API image:**
 ```bash
@@ -167,193 +355,141 @@ docker build -f apps/api/Dockerfile -t cursor-rules-api:latest .
 
 **Build Web image:**
 ```bash
-docker build -f apps/web/Dockerfile -t cursor-rules-web:latest --build-arg NEXT_PUBLIC_API_URL=http://localhost:8000/api .
+docker build -f apps/web/Dockerfile -t cursor-rules-web:latest \
+  --build-arg NEXT_PUBLIC_API_URL=http://localhost:8000/api .
 ```
 
-### Dockerfile Features
+**Dockerfile Features:**
+- Multi-stage builds for minimal image size
+- Non-root user execution for security
+- Health checks included
+- Optimized dependency installation
 
-Both Dockerfiles use **multi-stage builds** for minimal production images:
+### Production Deployment
 
-**API Dockerfile (`apps/api/Dockerfile`):**
-- Stage 1: Base with pnpm setup
-- Stage 2: Install dependencies
-- Stage 3: Build NestJS app with Nx
-- Stage 4: Production runtime with pruned dependencies
-- Uses Nx's `prune-lockfile` and `copy-workspace-modules` for minimal deps
-- Runs as non-root user for security
-- Includes health checks
+**Environment Variables for Production:**
+- Set `NODE_ENV=production`
+- Use strong `SESSION_SECRET` (generate with `openssl rand -base64 32`)
+- Configure `WEB_ORIGIN` to your production frontend URL
+- Set `DB_SSL=true` and configure SSL certificates for database
+- Use secure database credentials
 
-**Web Dockerfile (`apps/web/Dockerfile`):**
-- Stage 1: Base with pnpm setup
-- Stage 2: Install dependencies
-- Stage 3: Build Next.js app with Nx
-- Stage 4: Production runtime
-- Supports both Next.js standalone and standard modes
-- Runs as non-root user for security
-- Includes health checks
+**Running Production Containers:**
 
-### Running Production Containers
-
-**API:**
+API:
 ```bash
 docker run -p 8000:8000 \
   -e DB_HOST=postgres \
   -e DB_USERNAME=postgres \
-  -e DB_PASSWORD=postgres \
+  -e DB_PASSWORD=your-secure-password \
   -e DB_DATABASE=postgres \
   -e SESSION_SECRET=your-secret \
-  -e WEB_ORIGIN=http://localhost:3000 \
+  -e WEB_ORIGIN=https://your-frontend-domain.com \
+  -e NODE_ENV=production \
   cursor-rules-api:latest
 ```
 
-**Web:**
+Web:
 ```bash
 docker run -p 3000:3000 \
-  -e NEXT_PUBLIC_API_URL=http://localhost:8000/api \
+  -e NEXT_PUBLIC_API_URL=https://your-api-domain.com/api \
   -e NODE_ENV=production \
   cursor-rules-web:latest
 ```
 
-## Testing
+---
 
-### API Integration Tests
+## Configuration & Security Notes
 
-The API includes integration tests that use Jest + supertest to test the full HTTP stack with a real PostgreSQL database.
+### Authentication
 
-**Prerequisites:**
-- PostgreSQL must be running (via Docker or locally)
-- Test database will be created automatically if it doesn't exist
+**Session-Based (Web):**
+- Cookie-based sessions stored in PostgreSQL
+- Cookies are `httpOnly`, `sameSite: 'lax'`, and `secure` in production
+- Session duration: 30 days
+- Session secret must be set via `SESSION_SECRET` environment variable
 
-**Running Tests:**
+**API Key (Programmatic):**
+- API keys use Bearer token format: `Authorization: Bearer <api-key>`
+- Keys are hashed in the database (bcrypt)
+- Keys can be scoped to organizations
+- Last used timestamp tracked
 
-1. **Ensure PostgreSQL is running:**
-   ```bash
-   pnpm docker:up
-   ```
+### CORS Configuration
 
-2. **Set test database environment variable (optional):**
-   ```bash
-   # Defaults to 'audit_test' if not set
-   export DB_DATABASE_TEST=audit_test
-   ```
+- CORS is enabled with `credentials: true` to support cookie sessions
+- Origin is configured via `WEB_ORIGIN` environment variable
+- Default development origin: `http://localhost:3000`
+- Production must set `WEB_ORIGIN` to actual frontend domain
 
-3. **Run all integration tests:**
-   ```bash
-   pnpm nx test api
-   ```
+### Security Considerations
 
-4. **Run tests in watch mode:**
-   ```bash
-   pnpm nx test api --watch
-   ```
+**Production Checklist:**
+- ✅ Change default database passwords
+- ✅ Generate strong `SESSION_SECRET`
+- ✅ Enable `secure` cookies (automatic when `NODE_ENV=production`)
+- ✅ Configure SSL for database connections (`DB_SSL=true`)
+- ✅ Restrict CORS origins to known frontend domains
+- ✅ Use environment variables for all secrets (never hardcode)
+- ✅ Run containers as non-root users (Dockerfiles configured)
 
-**Test Coverage:**
+**CSRF Protection:**
+- CSRF tokens required for state-changing operations
+- Implemented via `x-csrf-token` header
+- SameSite cookie policy provides additional protection
 
-The integration tests cover:
-- ✅ Login sets session cookie (httpOnly)
-- ✅ `/auth/me` endpoint works with session cookie
-- ✅ Audit event ingestion with API key authentication
-- ✅ RBAC: Members can only see their own user events, admins see all org events
+---
 
-**Test Database:**
+## Known Limitations / TODOs
 
-Tests use a dedicated test database (`audit_test` by default) that is:
-- Created automatically if it doesn't exist
-- Migrated automatically before tests run
-- Truncated between tests to ensure isolation
-- Never affects your development database
+### Current Limitations
 
-**Test Structure:**
+**MVP Scope Boundaries:**
+- ❌ Real-time event streaming (SSE/WebSocket) - not implemented
+- ❌ Advanced analytics/dashboards - basic filtering only
+- ❌ Custom event schemas/validation - flexible metadata only
+- ❌ Event retention policies - no automatic cleanup
+- ❌ Multi-tenant isolation beyond orgId - single org per user
+- ❌ Audit log archiving - all events stored indefinitely
 
-- Tests are located in `apps/api/src/**/*.integration.spec.ts`
-- Test utilities are in `apps/api/src/test/`
-- Global setup/teardown handles database creation and migrations
+**Performance Considerations:**
+- Large audit event queries may be slow without pagination
+- No built-in rate limiting for audit event creation (API key rate limiting exists)
+- Webhook delivery is synchronous (may block on slow endpoints)
 
-## Run tasks
+### Planned Features (Future)
 
-To run tasks with Nx use:
+- Real-time event streaming via Server-Sent Events (SSE)
+- Advanced filtering and search capabilities
+- Event retention and archival policies
+- Multi-organization support per user
+- Webhook delivery queue with background workers
+- Audit log analytics and reporting
+- Custom event schema validation
 
-```sh
-npx nx <target> <project-name>
-```
+### Known Issues
 
-For example:
+- None currently documented. Please report issues via GitHub Issues.
 
-```sh
-npx nx build myproject
-```
+---
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+## Additional Resources
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+**Architecture Documentation:**
+- See `ARCHITECTURE.md` for detailed API specifications, DTOs, and module structure
 
-## Add new projects
+**Nx Workspace:**
+- Run `npx nx graph` to visualize project dependencies
+- Use `npx nx list` to see available generators
+- Install [Nx Console](https://nx.dev/getting-started/editor-setup) for IDE integration
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+**API Documentation:**
+- Swagger UI available at http://localhost:8000/api/docs when API is running
 
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
-```
-
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
-
-```sh
-# Generate an app
-npx nx g @nx/react:app demo
-
-# Generate a library
-npx nx g @nx/react:lib some-lib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
-```
-
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+**Development Scripts:**
+- `pnpm dev` - Start API + Web with hot reload
+- `pnpm docker:up` - Start PostgreSQL only
+- `pnpm docker:all` - Start all services in Docker
+- `pnpm nx test api` - Run API tests
+- `pnpm nx migration:run api` - Run database migrations
+- `pnpm nx seed api` - Seed development database
