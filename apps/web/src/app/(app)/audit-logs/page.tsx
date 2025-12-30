@@ -15,7 +15,7 @@ interface User {
   id: string;
   email: string;
   name: string | null;
-  role: 'admin' | 'user';
+  role: 'admin' | 'member' | 'viewer';
   orgId: string;
 }
 

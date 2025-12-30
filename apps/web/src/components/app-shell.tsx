@@ -12,7 +12,7 @@ interface User {
   id: string;
   email: string;
   name: string | null;
-  role: 'admin' | 'user';
+  role: 'admin' | 'member' | 'viewer';
   orgId: string;
 }
 
@@ -21,12 +21,24 @@ interface AppShellProps {
   pageTitle?: string;
 }
 
-const navigation = [
-  { name: 'Audit Logs', href: '/audit-logs', icon: LogIcon },
-  { name: 'API Keys', href: '/api-keys', icon: KeyIcon },
-  { name: 'Webhooks', href: '/webhooks', icon: WebhookIcon, comingSoon: true },
-  { name: 'Settings', href: '/settings', icon: SettingsIcon },
+type NavigationItem = {
+  name: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  comingSoon?: boolean;
+  roles: ('admin' | 'member' | 'viewer')[];
+};
+
+const allNavigationItems: NavigationItem[] = [
+  { name: 'Audit Logs', href: '/audit-logs', icon: LogIcon, roles: ['member', 'viewer'] },
+  { name: 'API Keys', href: '/api-keys', icon: KeyIcon, roles: ['admin'] },
+  { name: 'Webhooks', href: '/webhooks', icon: WebhookIcon, comingSoon: true, roles: ['admin'] },
+  { name: 'Settings', href: '/settings', icon: SettingsIcon, roles: ['admin', 'member', 'viewer'] },
 ];
+
+function getNavigationForRole(role: 'admin' | 'member' | 'viewer'): NavigationItem[] {
+  return allNavigationItems.filter((item) => item.roles.includes(role));
+}
 
 export function AppShell({ children, pageTitle }: AppShellProps) {
   const pathname = usePathname();
@@ -110,7 +122,7 @@ export function AppShell({ children, pageTitle }: AppShellProps) {
 
         {/* Navigation */}
         <nav className="flex-1 space-y-1 px-3 py-4">
-          {navigation.map((item) => {
+          {getNavigationForRole(user.role).map((item) => {
             const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
             return (
               <Link
@@ -222,7 +234,7 @@ export function AppShell({ children, pageTitle }: AppShellProps) {
 
 function getPageTitle(pathname: string | null): string {
   if (!pathname) return 'Dashboard';
-  const route = navigation.find((item) => pathname === item.href || pathname.startsWith(item.href + '/'));
+  const route = allNavigationItems.find((item) => pathname === item.href || pathname.startsWith(item.href + '/'));
   return route?.name || 'Dashboard';
 }
 
