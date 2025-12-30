@@ -6,6 +6,7 @@ import { Container } from '../components/ui/container';
 import { Section } from '../components/ui/section';
 import { Badge } from '../components/ui/badge';
 import { MotionDiv, MotionH1, MotionP, fadeSlideUp, staggerContainer, cardHover, defaultTransition, useReducedMotion } from '../lib/motion';
+import HeroVisual from '../components/three/HeroVisual';
 
 export default function HomePage() {
   const prefersReducedMotion = useReducedMotion();
@@ -13,8 +14,12 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <Section spacing="xl">
-        <Container size="lg">
+      <Section spacing="xl" className="relative overflow-hidden">
+        {/* 3D Hero Visual Background */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <HeroVisual />
+        </div>
+        <Container size="lg" className="relative z-10">
           <MotionDiv
             className="mx-auto max-w-4xl text-center"
             variants={prefersReducedMotion ? {} : staggerContainer}
@@ -133,7 +138,7 @@ export default function HomePage() {
                   <CardTitle>Role-Based Access</CardTitle>
                   <CardDescription>
                     Fine-grained permissions ensure only authorized users can view, filter, and export
-                    audit logs. Perfect for compliance and security requirements.
+                    audit logs. Perfect for compliance and security.
                   </CardDescription>
                 </CardHeader>
               </Card>
