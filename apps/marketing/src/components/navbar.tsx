@@ -57,6 +57,12 @@ export function Navbar() {
             >
               Docs
             </Link>
+            <Link
+              href="/security"
+              className="text-sm font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+            >
+              Security
+            </Link>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm" href="/login">
                 Log in
@@ -119,6 +125,13 @@ export function Navbar() {
               onClick={() => setIsOpen(false)}
             >
               Docs
+            </Link>
+            <Link
+              href="/security"
+              className="text-sm font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+              onClick={() => setIsOpen(false)}
+            >
+              Security
             </Link>
             <div className="flex flex-col space-y-2 pt-4">
               <Button
