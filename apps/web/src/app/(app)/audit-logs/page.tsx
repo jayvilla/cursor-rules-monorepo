@@ -494,6 +494,7 @@ export default function AuditLogsPage() {
                     </TableHead>
                   </TableRow>
                 </TableHeader>
+              </Table>
               <div
                 ref={tableContainerRef}
                 className="overflow-auto"
