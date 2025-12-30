@@ -58,7 +58,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         <div
           ref={menuRef}
           className={cn(
-            'absolute z-50 mt-2 min-w-[180px] rounded-lg border border-border bg-card-2 shadow-lg',
+            'absolute z-50 mt-2 min-w-[180px] rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-lg',
             'py-1',
             align === 'left' ? 'left-0' : 'right-0',
             className
@@ -85,9 +85,9 @@ export const DropdownMenuItem = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        'w-full px-3 py-2 text-left text-sm text-fg',
-        'hover:bg-muted active:bg-muted-2',
-        'focus:bg-muted focus:outline-none',
+        'w-full px-3 py-2 text-left text-sm text-[hsl(var(--foreground))]',
+        'hover:bg-[hsl(var(--muted))] active:bg-[hsl(var(--muted))]/80',
+        'focus:bg-[hsl(var(--muted))] focus:outline-none',
         'transition-colors first:rounded-t-lg last:rounded-b-lg',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         className
