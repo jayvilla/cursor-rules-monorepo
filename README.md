@@ -157,6 +157,21 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api
 
 If running the API independently, you can also create `apps/api/.env` with database configuration only.
 
+### Marketing App `.env` (Optional)
+
+The marketing app uses `NEXT_PUBLIC_SITE_URL` for SEO metadata, canonical URLs, sitemap generation, and robots.txt. Create `apps/marketing/.env` or set the variable in your root `.env`:
+
+```env
+# Marketing App - Site URL for SEO
+NEXT_PUBLIC_SITE_URL=http://localhost:3001
+```
+
+**Note:** In production, set this to your actual domain (e.g., `https://auditlog.example.com`). This is used for:
+- OpenGraph and Twitter card metadata
+- Canonical URLs
+- Sitemap generation
+- Robots.txt generation
+
 ---
 
 ## Installation
