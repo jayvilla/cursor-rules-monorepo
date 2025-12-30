@@ -20,6 +20,9 @@
       ],
       "@audit-log-and-activity-tracking-saas/design-system": [
         "libs/shared/design-system/src/index.ts"
+      ],
+      "@audit-log-and-activity-tracking-saas/ui": [
+        "libs/shared/ui/src/index.ts"
       ]
     }
   },

@@ -13,9 +13,6 @@ import {
   Input,
   Textarea,
   Select,
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   Modal,
   Table,
   TableHeader,
@@ -24,7 +21,7 @@ import {
   TableHead,
   TableCell,
   Skeleton,
-} from '../../components/ui';
+} from '@audit-log-and-activity-tracking-saas/ui';
 
 export default function UIDemoPage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -32,26 +29,27 @@ export default function UIDemoPage() {
   const [selectValue, setSelectValue] = useState('option1');
 
   return (
-    <div className="min-h-screen bg-bg p-8">
+    <div className="min-h-screen bg-[hsl(var(--bg))] p-8">
       <div className="mx-auto max-w-6xl space-y-12">
         <div>
-          <h1 className="mb-2 text-3xl font-bold text-fg">UI Components Demo</h1>
-          <p className="text-muted">Linear-style design system components</p>
+          <h1 className="mb-2 text-3xl font-bold text-[hsl(var(--foreground))]">Shared UI Components Demo</h1>
+          <p className="text-[hsl(var(--muted-foreground))]">Token-based design system components from @audit-log-and-activity-tracking-saas/ui</p>
         </div>
 
         {/* Button Section */}
         <section>
-          <h2 className="mb-4 text-2xl font-semibold text-fg">Buttons</h2>
+          <h2 className="mb-4 text-2xl font-semibold text-[hsl(var(--foreground))]">Buttons</h2>
           <Card>
             <CardContent className="space-y-6 pt-6">
               <div className="space-y-4">
                 <div>
                   <h3 className="mb-3 text-sm font-medium text-muted">Variants</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Button variant="primary">Primary</Button>
-                    <Button variant="secondary">Secondary</Button>
+                    <Button variant="default">Default</Button>
+                    <Button variant="accent">Accent</Button>
+                    <Button variant="accent2">Accent 2</Button>
+                    <Button variant="outline">Outline</Button>
                     <Button variant="ghost">Ghost</Button>
-                    <Button variant="destructive">Destructive</Button>
                   </div>
                 </div>
                 <div>
@@ -65,10 +63,9 @@ export default function UIDemoPage() {
                 <div>
                   <h3 className="mb-3 text-sm font-medium text-muted">States</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Button loading>Loading</Button>
                     <Button disabled>Disabled</Button>
-                    <Button variant="primary" loading>
-                      Loading Primary
+                    <Button variant="accent2" disabled>
+                      Disabled Accent
                     </Button>
                   </div>
                 </div>
@@ -79,7 +76,7 @@ export default function UIDemoPage() {
 
         {/* Card Section */}
         <section>
-          <h2 className="mb-4 text-2xl font-semibold text-fg">Cards</h2>
+          <h2 className="mb-4 text-2xl font-semibold text-[hsl(var(--foreground))]">Cards</h2>
           <div className="grid gap-4 md:grid-cols-3">
             <Card>
               <CardHeader>
@@ -108,14 +105,14 @@ export default function UIDemoPage() {
                 </p>
               </CardContent>
             </Card>
-            <Card variant="flat">
+            <Card variant="elevated">
               <CardHeader>
-                <CardTitle>Flat Card</CardTitle>
-                <CardDescription>Card with flat variant</CardDescription>
+                <CardTitle>Elevated Card</CardTitle>
+                <CardDescription>Card with elevated variant</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted">
-                  This card has no border, just background.
+                  This card has shadow and border for elevation.
                 </p>
               </CardContent>
             </Card>
@@ -124,17 +121,16 @@ export default function UIDemoPage() {
 
         {/* Badge Section */}
         <section>
-          <h2 className="mb-4 text-2xl font-semibold text-fg">Badges</h2>
+          <h2 className="mb-4 text-2xl font-semibold text-[hsl(var(--foreground))]">Badges</h2>
           <Card>
             <CardContent className="space-y-6 pt-6">
               <div>
                 <h3 className="mb-3 text-sm font-medium text-muted">Variants</h3>
                 <div className="flex flex-wrap gap-3">
                   <Badge variant="default">Default</Badge>
-                  <Badge variant="primary">Primary</Badge>
-                  <Badge variant="success">Success</Badge>
-                  <Badge variant="destructive">Destructive</Badge>
-                  <Badge variant="secondary">Secondary</Badge>
+                  <Badge variant="accent">Accent</Badge>
+                  <Badge variant="accent2">Accent 2</Badge>
+                  <Badge variant="muted">Muted</Badge>
                 </div>
               </div>
               <div>
@@ -150,7 +146,7 @@ export default function UIDemoPage() {
 
         {/* Form Elements Section */}
         <section>
-          <h2 className="mb-4 text-2xl font-semibold text-fg">Form Elements</h2>
+          <h2 className="mb-4 text-2xl font-semibold text-[hsl(var(--foreground))]">Form Elements</h2>
           <Card>
             <CardHeader>
               <CardTitle>Inputs</CardTitle>
@@ -158,7 +154,7 @@ export default function UIDemoPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-fg">Text Input</label>
+                <label className="text-sm font-medium text-[hsl(var(--foreground))]">Text Input</label>
                 <Input
                   placeholder="Enter text..."
                   value={inputValue}
@@ -166,15 +162,15 @@ export default function UIDemoPage() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-fg">Input with Error</label>
+                <label className="text-sm font-medium text-[hsl(var(--foreground))]">Input with Error</label>
                 <Input error placeholder="This has an error" />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-fg">Textarea</label>
+                <label className="text-sm font-medium text-[hsl(var(--foreground))]">Textarea</label>
                 <Textarea placeholder="Enter longer text..." rows={4} />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-fg">Select</label>
+                <label className="text-sm font-medium text-[hsl(var(--foreground))]">Select</label>
                 <Select
                   value={selectValue}
                   onChange={(e) => setSelectValue(e.target.value)}
@@ -188,61 +184,21 @@ export default function UIDemoPage() {
           </Card>
         </section>
 
-        {/* Dropdown Menu Section */}
+        {/* Button with Link Section */}
         <section>
-          <h2 className="mb-4 text-2xl font-semibold text-fg">Dropdown Menu</h2>
+          <h2 className="mb-4 text-2xl font-semibold text-[hsl(var(--foreground))]">Button as Link</h2>
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-wrap gap-4">
-                <DropdownMenu
-                  trigger={
-                    <Button variant="secondary">
-                      Open Menu
-                      <svg
-                        className="ml-2 h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </Button>
-                  }
-                >
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Logout</DropdownMenuItem>
-                </DropdownMenu>
-                <DropdownMenu
-                  align="right"
-                  trigger={
-                    <Button variant="ghost">
-                      Right Aligned
-                      <svg
-                        className="ml-2 h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </Button>
-                  }
-                >
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem>Delete</DropdownMenuItem>
-                </DropdownMenu>
+                <Button href="/" variant="accent2">
+                  Link Button
+                </Button>
+                <Button href="/" variant="outline">
+                  Outline Link
+                </Button>
+                <Button href="/" variant="ghost">
+                  Ghost Link
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -250,7 +206,7 @@ export default function UIDemoPage() {
 
         {/* Modal Section */}
         <section>
-          <h2 className="mb-4 text-2xl font-semibold text-fg">Modal</h2>
+          <h2 className="mb-4 text-2xl font-semibold text-[hsl(var(--foreground))]">Modal</h2>
           <Card>
             <CardContent className="pt-6">
               <Button onClick={() => setModalOpen(true)}>Open Modal</Button>
@@ -277,7 +233,7 @@ export default function UIDemoPage() {
 
         {/* Table Section */}
         <section>
-          <h2 className="mb-4 text-2xl font-semibold text-fg">Table</h2>
+          <h2 className="mb-4 text-2xl font-semibold text-[hsl(var(--foreground))]">Table</h2>
           <Card>
             <CardContent className="p-0 pt-6">
               <Table>
@@ -293,7 +249,7 @@ export default function UIDemoPage() {
                   <TableRow>
                     <TableCell className="font-medium">John Doe</TableCell>
                     <TableCell>
-                      <Badge variant="success">Active</Badge>
+                      <Badge variant="accent2">Active</Badge>
                     </TableCell>
                     <TableCell>Admin</TableCell>
                     <TableCell className="text-right">
@@ -317,7 +273,7 @@ export default function UIDemoPage() {
                   <TableRow>
                     <TableCell className="font-medium">Bob Johnson</TableCell>
                     <TableCell>
-                      <Badge variant="destructive">Inactive</Badge>
+                      <Badge variant="muted">Inactive</Badge>
                     </TableCell>
                     <TableCell>User</TableCell>
                     <TableCell className="text-right">
@@ -334,7 +290,7 @@ export default function UIDemoPage() {
 
         {/* Skeleton Section */}
         <section>
-          <h2 className="mb-4 text-2xl font-semibold text-fg">Skeleton</h2>
+          <h2 className="mb-4 text-2xl font-semibold text-[hsl(var(--foreground))]">Skeleton</h2>
           <Card>
             <CardContent className="space-y-4 pt-6">
               <Skeleton className="h-12 w-full" />
