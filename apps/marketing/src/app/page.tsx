@@ -1,40 +1,64 @@
+'use client';
+
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Container } from '../components/ui/container';
 import { Section } from '../components/ui/section';
 import { Badge } from '../components/ui/badge';
+import { MotionDiv, MotionH1, MotionP, fadeSlideUp, staggerContainer, cardHover, defaultTransition, useReducedMotion } from '../lib/motion';
 
 export default function HomePage() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <>
       {/* Hero Section */}
       <Section spacing="xl">
         <Container size="lg">
-          <div className="mx-auto max-w-4xl text-center">
-            <Badge variant="accent2" className="mb-6">
-              Enterprise-Grade Audit Logging
-            </Badge>
-            <h1 className="mb-6 text-5xl font-bold tracking-tight text-[hsl(var(--foreground))] sm:text-6xl lg:text-7xl">
+          <MotionDiv
+            className="mx-auto max-w-4xl text-center"
+            variants={prefersReducedMotion ? {} : staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            <MotionDiv variants={prefersReducedMotion ? {} : fadeSlideUp}>
+              <Badge variant="accent2" className="mb-6">
+                Enterprise-Grade Audit Logging
+              </Badge>
+            </MotionDiv>
+            <MotionH1
+              className="mb-6 text-5xl font-bold tracking-tight text-[hsl(var(--foreground))] sm:text-6xl lg:text-7xl"
+              variants={prefersReducedMotion ? {} : fadeSlideUp}
+              transition={defaultTransition}
+            >
               Track every action.
               <br />
               <span className="bg-gradient-to-r from-[hsl(var(--accent2))] to-[hsl(var(--accent2))]/70 bg-clip-text text-transparent">
                 Trust nothing.
               </span>
-            </h1>
-            <p className="mb-8 text-xl text-[hsl(var(--muted-foreground))] sm:text-2xl">
+            </MotionH1>
+            <MotionP
+              className="mb-8 text-xl text-[hsl(var(--muted-foreground))] sm:text-2xl"
+              variants={prefersReducedMotion ? {} : fadeSlideUp}
+              transition={defaultTransition}
+            >
               Immutable audit logs with real-time webhooks, role-based access control, and
               compliance-ready exports. Built for teams that need to know exactly what happened,
               when, and by whom.
-            </p>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            </MotionP>
+            <MotionDiv
+              className="flex flex-col items-center justify-center gap-4 sm:flex-row"
+              variants={prefersReducedMotion ? {} : fadeSlideUp}
+              transition={defaultTransition}
+            >
               <Button size="lg" variant="default" href="/signup">
                 Get started free
               </Button>
               <Button size="lg" variant="outline" href="/docs">
                 View documentation
               </Button>
-            </div>
-          </div>
+            </MotionDiv>
+          </MotionDiv>
         </Container>
       </Section>
 
@@ -51,7 +75,13 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Card variant="bordered">
+            <MotionDiv
+              variants={prefersReducedMotion ? {} : cardHover}
+              initial="rest"
+              whileHover="hover"
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+            >
+              <Card variant="bordered">
               <CardHeader>
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
                   <svg
@@ -75,58 +105,79 @@ export default function HomePage() {
                 </CardDescription>
               </CardHeader>
             </Card>
+            </MotionDiv>
 
-            <Card variant="bordered">
-              <CardHeader>
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
-                  <svg
-                    className="h-6 w-6 text-[hsl(var(--accent2))]"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    />
-                  </svg>
-                </div>
-                <CardTitle>Role-Based Access</CardTitle>
-                <CardDescription>
-                  Fine-grained permissions ensure only authorized users can view, filter, and export
-                  audit logs. Perfect for compliance and security requirements.
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <MotionDiv
+              variants={prefersReducedMotion ? {} : cardHover}
+              initial="rest"
+              whileHover="hover"
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+            >
+              <Card variant="bordered">
+                <CardHeader>
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
+                    <svg
+                      className="h-6 w-6 text-[hsl(var(--accent2))]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
+                    </svg>
+                  </div>
+                  <CardTitle>Role-Based Access</CardTitle>
+                  <CardDescription>
+                    Fine-grained permissions ensure only authorized users can view, filter, and export
+                    audit logs. Perfect for compliance and security requirements.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </MotionDiv>
 
-            <Card variant="bordered">
-              <CardHeader>
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
-                  <svg
-                    className="h-6 w-6 text-[hsl(var(--accent2))]"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
-                </div>
-                <CardTitle>Real-Time Webhooks</CardTitle>
-                <CardDescription>
-                  Get instant notifications when critical events occur. Configure webhooks with
-                  automatic retries and delivery status tracking.
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <MotionDiv
+              variants={prefersReducedMotion ? {} : cardHover}
+              initial="rest"
+              whileHover="hover"
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+            >
+              <Card variant="bordered">
+                <CardHeader>
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
+                    <svg
+                      className="h-6 w-6 text-[hsl(var(--accent2))]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                  <CardTitle>Real-Time Webhooks</CardTitle>
+                  <CardDescription>
+                    Get instant notifications when critical events occur. Configure webhooks with
+                    automatic retries and delivery status tracking.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </MotionDiv>
 
-            <Card variant="bordered">
+            <MotionDiv
+              variants={prefersReducedMotion ? {} : cardHover}
+              initial="rest"
+              whileHover="hover"
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+            >
+              <Card variant="bordered">
               <CardHeader>
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
                   <svg
@@ -150,33 +201,47 @@ export default function HomePage() {
                 </CardDescription>
               </CardHeader>
             </Card>
+            </MotionDiv>
 
-            <Card variant="bordered">
-              <CardHeader>
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
-                  <svg
-                    className="h-6 w-6 text-[hsl(var(--accent2))]"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                </div>
-                <CardTitle>Export & Compliance</CardTitle>
-                <CardDescription>
-                  Export audit logs in JSON or CSV format. Perfect for compliance audits, security
-                  reviews, and data analysis.
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <MotionDiv
+              variants={prefersReducedMotion ? {} : cardHover}
+              initial="rest"
+              whileHover="hover"
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+            >
+              <Card variant="bordered">
+                <CardHeader>
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
+                    <svg
+                      className="h-6 w-6 text-[hsl(var(--accent2))]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                  <CardTitle>Export & Compliance</CardTitle>
+                  <CardDescription>
+                    Export audit logs in JSON or CSV format. Perfect for compliance audits, security
+                    reviews, and data analysis.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </MotionDiv>
 
-            <Card variant="bordered">
+            <MotionDiv
+              variants={prefersReducedMotion ? {} : cardHover}
+              initial="rest"
+              whileHover="hover"
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+            >
+              <Card variant="bordered">
               <CardHeader>
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
                   <svg
@@ -200,6 +265,7 @@ export default function HomePage() {
                 </CardDescription>
               </CardHeader>
             </Card>
+            </MotionDiv>
           </div>
         </Container>
       </Section>

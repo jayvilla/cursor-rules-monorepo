@@ -5,12 +5,28 @@ import { Container } from './ui/container';
 import { cn } from '../lib/utils';
 import Link from 'next/link';
 import { useState } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useReducedMotion } from '../lib/motion';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  const prefersReducedMotion = useReducedMotion();
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    setScrolled(latest > 20);
+  });
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-[hsl(var(--border))] bg-[hsl(var(--bg))]/80 backdrop-blur-md">
+    <motion.nav
+      className={cn(
+        'sticky top-0 z-50 w-full border-b border-[hsl(var(--border))] bg-[hsl(var(--bg))]/80 transition-all duration-300',
+        scrolled && !prefersReducedMotion
+          ? 'backdrop-blur-xl bg-[hsl(var(--bg))]/95'
+          : 'backdrop-blur-md'
+      )}
+    >
       <Container>
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -127,7 +143,7 @@ export function Navbar() {
           </div>
         </div>
       </Container>
-    </nav>
+    </motion.nav>
   );
 }
 
