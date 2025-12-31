@@ -7,7 +7,7 @@ import Link from 'next/link';
 interface BaseButtonProps {
   children: ReactNode;
   variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'icon';
   loading?: boolean;
 }
 
@@ -40,6 +40,7 @@ const sizeClasses = {
   sm: 'h-8 px-3 text-sm font-medium leading-5', // 32px height, 14px text
   md: 'h-10 px-4 text-sm font-medium leading-5', // 40px height, 14px text (Figma)
   lg: 'h-12 px-6 text-base font-medium leading-6', // 48px height, 16px text
+  icon: 'h-10 w-10 p-0', // Square icon button, 40px
 };
 
 export function Button({

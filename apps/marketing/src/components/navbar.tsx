@@ -1,138 +1,181 @@
 'use client';
 
-import { Button } from './ui/button';
-import { Container } from './ui/container';
-import { cn } from '../lib/utils';
+import { Button } from '@audit-log-and-activity-tracking-saas/ui';
+import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import { useReducedMotion } from '../lib/motion';
+import { cn } from '../lib/utils';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const { scrollY } = useScroll();
-  const prefersReducedMotion = useReducedMotion();
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    setScrolled(latest > 20);
-  });
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
   return (
-    <motion.nav
-      className={cn(
-        'sticky top-0 z-50 w-full border-b border-border bg-bg-overlay transition-all duration-300',
-        scrolled && !prefersReducedMotion
-          ? 'backdrop-blur-xl bg-bg-overlay'
-          : 'backdrop-blur-md'
-      )}
-    >
-      <Container>
+    <nav className="sticky top-0 z-50 border-b border-border bg-bg-overlay backdrop-blur-md">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center space-x-2 text-base font-semibold text-fg transition-opacity hover:opacity-80"
-          >
-            <span>AuditLog</span>
-          </Link>
+          <div className="flex items-center gap-8">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-4 w-4 text-fg-on-accent"
+                >
+                  <path
+                    d="M12 2L2 7L12 12L22 7L12 2Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M2 17L12 22L22 17"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M2 12L12 17L22 12"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <span className="font-semibold text-fg">AuditLog</span>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden items-center space-x-8 md:flex">
-            <Link
-              href="/features"
-              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
-            >
-              Features
-            </Link>
-            <Link
-              href="/pricing"
-              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/docs"
-              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
-            >
-              Docs
-            </Link>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" href={`${appUrl}/login`}>
-                Sign in
+            {/* Nav links */}
+            <div className="hidden md:flex items-center gap-1">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                href="/features"
+                className="text-fg-muted hover:text-fg"
+              >
+                Features
               </Button>
-              <Button variant="primary" size="sm" href={`${appUrl}/login`}>
-                Get started
+              <Button 
+                variant="ghost" 
+                size="sm"
+                href="/docs"
+                className="text-fg-muted hover:text-fg"
+              >
+                Docs
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                href="/security"
+                className="text-fg-muted hover:text-fg"
+              >
+                Security
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                href="/pricing"
+                className="text-fg-muted hover:text-fg"
+              >
+                Pricing
               </Button>
             </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            <svg
-              className="h-6 w-6 text-fg"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          {/* Actions */}
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              href={`${appUrl}/login`}
+              className="hidden sm:inline-flex text-fg-muted hover:text-fg"
             >
-              {isOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+              Sign in
+            </Button>
+            <Button 
+              size="sm"
+              variant="primary"
+              href={`${appUrl}/login`}
+            >
+              Get started
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="md:hidden"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <div
-          className={cn(
-            'overflow-hidden transition-all duration-300 md:hidden',
-            isOpen ? 'max-h-96 pb-4' : 'max-h-0'
-          )}
-        >
-          <div className="mt-4 flex flex-col space-y-4">
-            <Link
+        {/* Mobile menu */}
+        {isOpen && (
+          <div className="md:hidden border-t border-border py-4 space-y-2">
+            <Button 
+              variant="ghost" 
+              size="sm"
               href="/features"
-              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
+              className="w-full justify-start text-fg-muted hover:text-fg"
               onClick={() => setIsOpen(false)}
             >
               Features
-            </Link>
-            <Link
-              href="/pricing"
-              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
-              onClick={() => setIsOpen(false)}
-            >
-              Pricing
-            </Link>
-            <Link
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm"
               href="/docs"
-              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
+              className="w-full justify-start text-fg-muted hover:text-fg"
               onClick={() => setIsOpen(false)}
             >
               Docs
-            </Link>
-            <div className="flex flex-col space-y-2 pt-4">
-              <Button variant="ghost" size="sm" href={`${appUrl}/login`} className="w-full" onClick={() => setIsOpen(false)}>
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              href="/security"
+              className="w-full justify-start text-fg-muted hover:text-fg"
+              onClick={() => setIsOpen(false)}
+            >
+              Security
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              href="/pricing"
+              className="w-full justify-start text-fg-muted hover:text-fg"
+              onClick={() => setIsOpen(false)}
+            >
+              Pricing
+            </Button>
+            <div className="pt-2 border-t border-border space-y-2">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                href={`${appUrl}/login`}
+                className="w-full justify-start text-fg-muted hover:text-fg"
+                onClick={() => setIsOpen(false)}
+              >
                 Sign in
               </Button>
-              <Button variant="primary" size="sm" href={`${appUrl}/login`} className="w-full" onClick={() => setIsOpen(false)}>
+              <Button 
+                size="sm"
+                variant="primary"
+                href={`${appUrl}/login`}
+                className="w-full"
+                onClick={() => setIsOpen(false)}
+              >
                 Get started
               </Button>
             </div>
           </div>
-        </div>
-      </Container>
-    </motion.nav>
+        )}
+      </div>
+    </nav>
   );
 }
-

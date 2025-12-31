@@ -2,15 +2,16 @@ import './global.css';
 import { Navbar } from '../components/navbar';
 import { Footer } from '../components/footer';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001';
 
 // Optimize font loading with next/font
-const inter = Inter({
+const roboto = Roboto({
   subsets: ['latin'],
+  weight: ['400', '500', '600'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-roboto',
   preload: true,
 });
 
@@ -76,8 +77,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className={inter.className}>
+    <html lang="en" className={roboto.variable}>
+      <body className={roboto.className}>
         <Navbar />
         <main>{children}</main>
         <Footer />
