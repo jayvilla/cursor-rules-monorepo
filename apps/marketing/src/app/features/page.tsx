@@ -57,7 +57,7 @@ export default function FeaturesPage() {
               <Card
                 key={feature.title}
                 variant="bordered"
-                className="group relative overflow-hidden bg-bg-card/50 backdrop-blur-sm p-6 hover:bg-bg-card/80 transition-all duration-300"
+                className="text-card-foreground flex flex-col gap-6 rounded-xl border group relative overflow-hidden border-border bg-card/50 backdrop-blur-sm p-6 hover:bg-accent-10 hover:border-primary/20 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
               >
                 <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent-10">
                   <Icon className="h-5 w-5 text-accent" />

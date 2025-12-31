@@ -47,6 +47,13 @@ module.exports = {
       '30': 'var(--accent-30)',
       '05': 'var(--accent-05)',
     },
+    // Primary alias for accent
+    primary: {
+      DEFAULT: 'var(--accent)',
+      '10': 'var(--accent-10)',
+      '30': 'var(--accent-30)',
+      '05': 'var(--accent-05)',
+    },
     
     // Semantic colors - Exact Figma values
     semantic: {
@@ -97,6 +104,7 @@ module.exports = {
   
   boxShadow: {
     accent: 'var(--shadow-accent)',
+    primary: 'var(--shadow-accent)',
     // Legacy shadows for backward compatibility
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',

@@ -188,7 +188,7 @@ export default function HomePage() {
               return (
                 <Card
                   key={feature.title}
-                  className="group relative overflow-hidden border border-border bg-bg-card/50 backdrop-blur-sm p-6 hover:bg-bg-card/80 hover:border-accent/20 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300"
+                  className="text-card-foreground flex flex-col gap-6 rounded-xl border group relative overflow-hidden border-border bg-card/50 backdrop-blur-sm p-6 hover:bg-accent-10 hover:border-primary/20 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
                 >
                   {/* Icon - Exact Figma: 40px container, 20px icon, bg-accent-10 */}
                   <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent-10 text-accent group-hover:bg-accent-30 group-hover:scale-110 transition-all duration-300">
