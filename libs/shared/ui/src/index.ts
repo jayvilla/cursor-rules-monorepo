@@ -74,3 +74,28 @@ export {
 } from './lib/dialog';
 
 export { Avatar, AvatarImage, AvatarFallback } from './lib/avatar';
+
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+} from './lib/dropdown-menu';
+
+export { Popover, PopoverTrigger, PopoverContent } from './lib/popover';
+
+export { Checkbox } from './lib/checkbox';
+
+export { Calendar } from './lib/calendar';
+export type { CalendarProps } from './lib/calendar';

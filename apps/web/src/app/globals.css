@@ -1,6 +1,9 @@
 /* Import shared design system styles first */
 @import '../../../../libs/shared/design-system/src/styles/index.css';
 
+/* Import react-day-picker styles */
+@import 'react-day-picker/dist/style.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
