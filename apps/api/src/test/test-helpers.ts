@@ -33,13 +33,9 @@ async function ensureDataCommitted(dataSource: DataSource): Promise<void> {
   try {
     // Execute a simple query to force a round-trip and ensure connection state is synced
     await dataSource.query('SELECT 1');
-    // Also query the connection directly to ensure it's synced
-    const connection = (dataSource as any).driver.master;
-    if (connection && connection.query) {
-      await connection.query('SELECT 1');
-    }
     // Small delay to ensure PostgreSQL has fully processed the commit
-    await new Promise(resolve => setTimeout(resolve, 20));
+    // Use a longer delay in tests to ensure visibility across connections
+    await new Promise(resolve => setTimeout(resolve, 50));
   } catch (error) {
     // If query fails, that's okay - continue anyway
   }
@@ -103,10 +99,12 @@ export async function createTestApiKey(
   }
   
   const keyHash = crypto.createHash('sha256').update(apiKey).digest('hex');
+  const keyPrefix = apiKey.substring(0, 8); // First 8 characters
   const entity = apiKeyRepo.create({
     orgId,
     name,
     keyHash,
+    keyPrefix,
   });
   const saved = await apiKeyRepo.save(entity);
   
@@ -147,5 +145,34 @@ export async function createTestAuditEvent(
   await ensureDataCommitted(dataSource);
   
   return saved;
+}
+
+/**
+ * Helper to get CSRF token using a supertest agent
+ * This ensures cookies are preserved across requests
+ */
+export async function getCsrfToken(agent: any): Promise<string> {
+  const response = await agent.get('/api/auth/csrf').expect(200);
+  return response.body.token;
+}
+
+/**
+ * Helper to perform a mutating request with CSRF protection
+ * Fetches CSRF token first, then performs the request with credentials
+ */
+export async function requestWithCsrf(
+  agent: any,
+  method: 'post' | 'patch' | 'put' | 'delete',
+  path: string,
+  data?: any,
+): Promise<any> {
+  const csrfToken = await getCsrfToken(agent);
+  const req = agent[method](path).set('x-csrf-token', csrfToken);
+  
+  if (data) {
+    req.send(data);
+  }
+  
+  return req;
 }
 

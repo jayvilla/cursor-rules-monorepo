@@ -97,5 +97,12 @@ export class RateLimiterService {
       }
     }
   }
+
+  /**
+   * Reset all rate limits (useful for testing)
+   */
+  reset(): void {
+    this.limits.clear();
+  }
 }
 

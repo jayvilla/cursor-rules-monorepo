@@ -36,6 +36,9 @@ afterEach(async () => {
       RESTART IDENTITY CASCADE;
     `);
   }
+
+  // Reset rate limiter state (if app DataSource is available, we can get the service)
+  // This will be handled per-test-app in test files that need it
 });
 
 afterAll(async () => {

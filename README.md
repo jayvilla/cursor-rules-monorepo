@@ -317,8 +317,8 @@ This starts:
 ### Testing Strategy
 
 The project uses a multi-layered testing approach:
-- **Unit Tests:** Jest for individual components and services
-- **Integration Tests:** Jest + Supertest for API endpoints with real database
+- **API Integration Tests:** Jest + Supertest for API endpoints with real database
+- **UI Component Tests:** Vitest + React Testing Library for shared UI components
 - **E2E Tests:** Playwright for full user workflows
 
 ### Running Tests
@@ -328,7 +328,9 @@ The project uses a multi-layered testing approach:
 # Ensure PostgreSQL is running
 pnpm docker:up
 
-# Run all API tests
+# Run all API integration tests
+pnpm test:api:integration
+# or
 pnpm nx test api
 
 # Run in watch mode
@@ -338,34 +340,107 @@ pnpm nx test api --watch
 pnpm nx test api --coverage
 ```
 
-**Web E2E Tests:**
+**UI Component Tests:**
 ```bash
-pnpm nx e2e web-e2e
+# Run shared UI component tests
+pnpm test:ui
+
+# Run in watch mode
+cd libs/shared/ui && pnpm vitest
 ```
 
-**All Tests:**
+**Web E2E Tests:**
 ```bash
-pnpm nx run-many --target=test --all
+# Run Playwright E2E tests (starts API and web servers automatically)
+pnpm test:e2e
+# or
+pnpm nx e2e web-e2e
+
+# Run with UI mode
+pnpm nx e2e web-e2e --ui
+```
+
+**Run All Tests:**
+```bash
+pnpm test:all
 ```
 
 ### Test Infrastructure
 
-**Test Database:**
+**API Integration Tests:**
 - Tests use a dedicated database (`audit_test` by default)
 - Database is created automatically if missing
 - Migrations run automatically before tests
 - Database is truncated between tests for isolation
+- Tests use real HTTP server and database (no mocks)
+- Session cookies are preserved across requests using `supertest.agent()`
 
-**Test Environment Variables:**
+**UI Component Tests:**
+- Uses Vitest + React Testing Library
+- Tests are located in `libs/shared/ui/src/lib/*.test.tsx`
+- Tests key components: Button, Input, Dialog, Table
+
+**E2E Tests:**
+- Uses Playwright
+- Automatically starts API and web servers before tests
+- Tests critical user journeys: signup, login, audit logs, API keys
+
+### Test Environment Variables
+
+**API Tests:**
+- Copy `apps/api/.env.test.example` to `apps/api/.env.test` (optional)
 - Set `DB_DATABASE_TEST` to override default test database name
 - Test database credentials use same `DB_USERNAME` and `DB_PASSWORD` as development
 
-**Test Coverage:**
-- ✅ Authentication and session management
+**Web E2E Tests:**
+- Copy `apps/web/.env.test.example` to `apps/web/.env.test` (optional)
+- Ensure `NEXT_PUBLIC_API_URL` points to test API
+
+### Test Coverage
+
+**API Integration Tests:**
+- ✅ Authentication (register, login, logout, /auth/me)
+- ✅ CSRF protection
+- ✅ User profile updates
 - ✅ Audit event creation and retrieval
+- ✅ Audit event filtering and pagination
+- ✅ Audit event exports (JSON, CSV)
 - ✅ API key authentication
 - ✅ RBAC (role-based access control)
-- ✅ Webhook delivery
+- ✅ Webhook CRUD operations
+
+**UI Component Tests:**
+- ✅ Button (disabled, loading, props forwarding)
+- ✅ Input (rendering, aria props, error state)
+- ✅ Dialog (open/close behavior)
+- ✅ Table (rendering, empty state)
+
+**E2E Tests:**
+- ✅ Signup → redirect to overview
+- ✅ Login → audit logs page → filter interaction
+- ✅ Create API key → revoke API key
+
+### Prerequisites
+
+- **PostgreSQL:** Required for API integration tests. Start with `pnpm docker:up`
+- **Node.js:** Version 20+ recommended
+- **Docker:** Required for PostgreSQL database (for integration tests)
+
+### Common Issues
+
+**Database Connection Errors:**
+- Ensure PostgreSQL is running: `pnpm docker:up`
+- Check database credentials match your `.env` file
+- Verify test database exists or let tests create it
+
+**Port Conflicts:**
+- API tests use port 8000 (configurable via `PORT` env var)
+- Web E2E tests use port 3000 (configurable via `PORT` env var)
+- Ensure these ports are available or change in `.env` files
+
+**CSRF Token Errors in Tests:**
+- API integration tests use `getCsrfToken()` helper to fetch tokens
+- E2E tests should work automatically as the frontend handles CSRF tokens
 
 ---
 
