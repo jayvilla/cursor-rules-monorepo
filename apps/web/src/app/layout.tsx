@@ -1,10 +1,11 @@
-import { Inter } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
+const roboto = Roboto({
   subsets: ['latin'],
+  weight: ['400', '500', '600'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-roboto',
   preload: true,
 });
 
@@ -22,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={roboto.variable}>
+      <body className={roboto.className}>{children}</body>
     </html>
   );
 }

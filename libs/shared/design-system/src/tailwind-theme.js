@@ -15,73 +15,91 @@
 
 module.exports = {
   colors: {
-    // Background colors
-    bg: 'hsl(var(--bg))',
-    foreground: 'hsl(var(--foreground))',
+    // Background colors - Exact Figma values
+    bg: 'var(--bg)',
+    'bg-overlay': 'var(--bg-overlay)',
+    'bg-card': 'var(--bg-card)',
+    'bg-gradient-from': 'var(--bg-gradient-from)',
+    'bg-gradient-to': 'var(--bg-gradient-to)',
+    
+    // UI Element Backgrounds
+    'bg-ui-50': 'var(--bg-ui-50)',
+    'bg-ui-40': 'var(--bg-ui-40)',
+    'bg-ui-30': 'var(--bg-ui-30)',
+    'bg-ui-20': 'var(--bg-ui-20)',
+    
+    // Foreground/Text colors - Exact Figma values
+    fg: 'var(--fg)',
+    'fg-muted': 'var(--fg-muted)',
+    'fg-on-accent': 'var(--fg-on-accent)',
+    
     // Alias for backward compatibility
-    fg: 'hsl(var(--foreground))',
+    foreground: 'var(--fg)',
     
-    // Muted colors
-    muted: {
-      DEFAULT: 'hsl(var(--muted))',
-      foreground: 'hsl(var(--muted-foreground))',
-      // Variant for backward compatibility
-      '2': 'hsl(var(--muted-2))',
-    },
+    // Border colors
+    border: 'var(--border)',
+    'border-transparent': 'var(--border-transparent)',
     
-    // Border
-    border: 'hsl(var(--border))',
-    
-    // Card colors
-    card: {
-      DEFAULT: 'hsl(var(--card))',
-      foreground: 'hsl(var(--card-foreground))',
-      // Variant for backward compatibility
-      '2': 'hsl(var(--card-2))',
-    },
-    
-    // Accent colors
+    // Accent/Primary colors - Exact Figma values
     accent: {
-      DEFAULT: 'hsl(var(--accent))',
-      foreground: 'hsl(var(--accent-foreground))',
-      // Alias for backward compatibility
-      '2': 'hsl(var(--accent2))',
+      DEFAULT: 'var(--accent)',
+      '10': 'var(--accent-10)',
+      '30': 'var(--accent-30)',
+      '05': 'var(--accent-05)',
     },
     
-    // Secondary accent (accent2) - primary name
+    // Semantic colors - Exact Figma values
+    semantic: {
+      success: 'var(--semantic-success)',
+      info: 'var(--semantic-info)',
+      purple: 'var(--semantic-purple)',
+    },
+    
+    // Legacy aliases for backward compatibility (will be deprecated)
+    muted: {
+      DEFAULT: 'var(--bg-card)',
+      foreground: 'var(--fg-muted)',
+    },
+    card: {
+      DEFAULT: 'var(--bg-card)',
+      foreground: 'var(--fg)',
+    },
     accent2: {
-      DEFAULT: 'hsl(var(--accent2))',
-      foreground: 'hsl(var(--accent2-foreground))',
-    },
-    
-    // Gradient colors (for gradient utilities)
-    gradient: {
-      from: 'hsl(var(--gradient-from))',
-      via: 'hsl(var(--gradient-via))',
-      to: 'hsl(var(--gradient-to))',
+      DEFAULT: 'var(--accent)',
+      foreground: 'var(--fg-on-accent)',
     },
   },
   
   fontFamily: {
-    sans: ['var(--font-inter)', 'var(--font-sans)', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+    sans: ['Roboto', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'sans-serif'],
+  },
+  
+  spacing: {
+    '1': 'var(--spacing-1)',
+    '2': 'var(--spacing-2)',
+    '3': 'var(--spacing-3)',
+    '4': 'var(--spacing-4)',
+    '6': 'var(--spacing-6)',
+    '8': 'var(--spacing-8)',
+    '10': 'var(--spacing-10)',
   },
   
   borderRadius: {
-    // Minimal, Linear-style border radius
-    sm: '0.375rem',   // 6px - small elements
-    md: '0.5rem',     // 8px - buttons, inputs
-    lg: '0.75rem',    // 12px - cards, modals (default)
-    xl: '1rem',       // 16px - large cards
-    full: '9999px',   // full - badges, avatars
+    // Exact Figma values
+    sm: 'var(--radius-sm)',
+    md: 'var(--radius-md)',
+    lg: 'var(--radius-lg)',
+    xl: 'var(--radius-xl)',
+    pill: 'var(--radius-pill)',
+    // Legacy aliases
+    full: '9999px',
   },
   
   boxShadow: {
-    // Minimal shadows - Linear-style
+    accent: 'var(--shadow-accent)',
+    // Legacy shadows for backward compatibility
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
     lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-    // Cards typically use no shadow (bordered variant) or minimal shadow
-    // Dropdowns and modals use shadow-lg
   },
 };
-
