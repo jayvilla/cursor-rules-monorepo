@@ -21,7 +21,7 @@ An MVP-focused audit logging platform with append-only logs, filtering, export c
 - TypeORM 0.3 (PostgreSQL ORM)
 - Express 5 (HTTP server)
 - Express Session (cookie-based sessions)
-- Swagger/OpenAPI (API documentation)
+- Scalar API Reference (API documentation with OpenAPI)
 
 **Frontend:**
 - Next.js 16 (React framework)
@@ -264,7 +264,8 @@ This command runs:
 **Access Points:**
 - Web Application: http://localhost:3000
 - API Base URL: http://localhost:8000/api
-- API Documentation (Swagger): http://localhost:8000/api/docs
+- API Documentation (Scalar): http://localhost:8000/api/docs
+- OpenAPI JSON: http://localhost:8000/api/openapi.json
 
 ### Running Services Individually
 
@@ -605,7 +606,9 @@ docker run -p 3000:3000 \
 - Install [Nx Console](https://nx.dev/getting-started/editor-setup) for IDE integration
 
 **API Documentation:**
-- Swagger UI available at http://localhost:8000/api/docs when API is running
+- Scalar API Reference available at http://localhost:8000/api/docs when API is running
+- OpenAPI JSON specification available at http://localhost:8000/api/openapi.json
+- Documentation can be disabled by setting `DOCS_ENABLED=false` in your `.env` file
 
 **Development Scripts:**
 - `pnpm dev` - Start API + Web with hot reload

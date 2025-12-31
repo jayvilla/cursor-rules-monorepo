@@ -7,6 +7,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { apiReference } from '@scalar/nestjs-api-reference';
 import { AppModule } from './app/app.module';
 import { initSentry } from './config/sentry.config';
 import { SentryExceptionFilter } from './filters/sentry-exception.filter';
@@ -99,16 +100,36 @@ async function bootstrap() {
     app.useGlobalFilters(new SentryExceptionFilter());
   }
 
-  // Configure Swagger
+  // Configure OpenAPI document generation
   const config = new DocumentBuilder()
-    .setTitle('API Documentation')
-    .setDescription('API documentation for the application')
+    .setTitle('Audit Logging API')
+    .setDescription('API documentation for the Audit Logging and Activity Tracking application')
     .setVersion('1.0')
     .addTag('auth', 'Authentication endpoints')
     .addTag('app', 'Application endpoints')
+    .addTag('audit-events', 'Audit event endpoints')
+    .addTag('webhooks', 'Webhook endpoints')
+    .addTag('api-key', 'API key management endpoints')
+    .addTag('users', 'User management endpoints')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+
+  // Serve OpenAPI JSON at /api/openapi.json
+  app.getHttpAdapter().get('/api/openapi.json', (req: any, res: any) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(document);
+  });
+
+  // Serve Scalar API documentation at /api/docs (if enabled)
+  const docsEnabled = configService.get<string>('DOCS_ENABLED', 'true') !== 'false';
+  if (docsEnabled) {
+    app.use(
+      '/api/docs',
+      apiReference({
+        url: '/api/openapi.json',
+      }),
+    );
+  }
 
   const port = process.env.PORT || 8000;
   
@@ -118,6 +139,10 @@ async function bootstrap() {
       `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
     );
     Logger.log(`🌐 CORS enabled for origin: ${webOrigin}`);
+    if (docsEnabled) {
+      Logger.log(`📚 API Documentation available at: http://localhost:${port}/${globalPrefix}/docs`);
+      Logger.log(`📄 OpenAPI JSON available at: http://localhost:${port}/${globalPrefix}/openapi.json`);
+    }
   } catch (error: any) {
     if (error.code === 'EADDRINUSE') {
       Logger.error(

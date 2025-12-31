@@ -31,6 +31,9 @@ export const envSchema = z.object({
   RATE_LIMIT_AUDIT_INGEST_MAX_REQUESTS: z.coerce.number().int().positive().optional().default(300),
   RATE_LIMIT_AUDIT_QUERY_MAX_REQUESTS: z.coerce.number().int().positive().optional().default(60),
   RATE_LIMIT_API_KEY_MANAGEMENT_MAX_REQUESTS: z.coerce.number().int().positive().optional().default(10),
+
+  // API Documentation (optional, enabled by default)
+  DOCS_ENABLED: z.enum(['true', 'false']).optional().default('true'),
 });
 
 export type EnvSchema = z.infer<typeof envSchema>;
