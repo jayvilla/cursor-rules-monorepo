@@ -80,21 +80,21 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         ref={modalRef}
         className={cn(
-          'relative z-50 w-full rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-xl',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent2))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--bg))]',
+          'relative z-50 w-full rounded-xl border border-border bg-bg-card shadow-accent',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg',
           sizeClasses[size],
           className
         )}
         tabIndex={-1}
       >
         {title && (
-          <div className="flex items-center justify-between border-b border-[hsl(var(--border))] px-6 py-4">
-            <h2 id="modal-title" className="text-lg font-semibold text-[hsl(var(--foreground))]">
+          <div className="flex items-center justify-between border-b border-border px-6 py-4">
+            <h2 id="modal-title" className="text-lg font-semibold text-fg">
               {title}
             </h2>
             <button
               onClick={onClose}
-              className="rounded-md p-1 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent2))] focus:ring-offset-2 focus:ring-offset-[hsl(var(--bg))] transition-colors"
+              className="rounded-md p-1 text-fg-muted hover:bg-bg-card hover:text-fg focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-bg transition-colors"
               aria-label="Close modal"
             >
               <svg
@@ -118,4 +118,3 @@ export const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
-

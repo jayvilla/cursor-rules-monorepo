@@ -1,47 +1,44 @@
-import { cn } from './utils';
-import { ReactNode } from 'react';
+'use client';
 
-interface BadgeProps {
-  children: ReactNode;
-  className?: string;
-  variant?: 'default' | 'accent' | 'accent2' | 'muted';
-  size?: 'sm' | 'md' | 'lg';
+import { cn } from './utils';
+import { ReactNode, HTMLAttributes } from 'react';
+
+export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+  variant?: 'default' | 'success' | 'info' | 'accent';
+  size?: 'sm' | 'md';
 }
 
+// Based on Figma status tags with colored dots
 const variantClasses = {
-  default:
-    'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] border-[hsl(var(--border))]',
-  accent:
-    'bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] border-[hsl(var(--border))]',
-  accent2:
-    'bg-[hsl(var(--accent2))] text-[hsl(var(--accent2-foreground))] border-[hsl(var(--border))]',
-  muted:
-    'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] border-[hsl(var(--border))]',
+  default: 'bg-bg-card text-fg border-border',
+  success: 'bg-bg-card text-semantic-success border-border',
+  info: 'bg-bg-card text-semantic-info border-border',
+  accent: 'bg-accent-10 text-accent border-border',
 };
 
 const sizeClasses = {
-  sm: 'px-2 py-0.5 text-xs',
-  md: 'px-3 py-1 text-sm',
-  lg: 'px-4 py-1.5 text-base',
+  sm: 'px-2 py-0.5 text-xs leading-4', // 12px text
+  md: 'px-2.5 py-1 text-xs leading-4', // 12px text
 };
 
 export function Badge({
   children,
   className,
   variant = 'default',
-  size = 'md',
+  size = 'sm',
+  ...props
 }: BadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full border font-medium',
+        'inline-flex items-center gap-1.5 rounded-full border font-normal',
         variantClasses[variant],
         sizeClasses[size],
         className
       )}
+      {...props}
     >
       {children}
     </span>
   );
 }
-

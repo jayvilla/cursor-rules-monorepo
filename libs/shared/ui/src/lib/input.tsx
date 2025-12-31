@@ -14,14 +14,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          'flex h-10 w-full rounded-lg border bg-[hsl(var(--card))] px-3 py-2 text-sm text-[hsl(var(--foreground))]',
-          'placeholder:text-[hsl(var(--muted-foreground))]',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent2))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--bg))]',
+          'flex h-10 w-full rounded-md border bg-bg-card px-3 py-2 text-sm text-fg',
+          'placeholder:text-fg-muted',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg',
           'disabled:cursor-not-allowed disabled:opacity-50',
           'transition-colors',
           error
-            ? 'border-[hsl(var(--accent2))] focus-visible:ring-[hsl(var(--accent2))]'
-            : 'border-[hsl(var(--border))] hover:border-[hsl(var(--muted))]',
+            ? 'border-accent focus-visible:ring-accent'
+            : 'border-border hover:border-accent-30',
           className
         )}
         ref={ref}
@@ -32,4 +32,3 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = 'Input';
-

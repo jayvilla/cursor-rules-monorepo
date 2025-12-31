@@ -1,5 +1,6 @@
-export { Button } from './button';
-export type { ButtonProps } from './button';
+// Re-export from shared UI library
+export { Button } from '@audit-log-and-activity-tracking-saas/ui';
+export type { ButtonProps } from '@audit-log-and-activity-tracking-saas/ui';
 
 export {
   Card,
@@ -8,34 +9,20 @@ export {
   CardDescription,
   CardContent,
   CardFooter,
-} from './card';
-export type { CardProps } from './card';
+} from '@audit-log-and-activity-tracking-saas/ui';
+export type { CardProps } from '@audit-log-and-activity-tracking-saas/ui';
 
-export { Badge } from './badge';
-export type { BadgeProps } from './badge';
+export { Badge } from '@audit-log-and-activity-tracking-saas/ui';
+export type { BadgeProps } from '@audit-log-and-activity-tracking-saas/ui';
 
-export { Input } from './input';
-export type { InputProps } from './input';
+export { Input } from '@audit-log-and-activity-tracking-saas/ui';
+export type { InputProps } from '@audit-log-and-activity-tracking-saas/ui';
 
-export { Textarea } from './textarea';
-export type { TextareaProps } from './textarea';
+export { Textarea } from '@audit-log-and-activity-tracking-saas/ui';
+export type { TextareaProps } from '@audit-log-and-activity-tracking-saas/ui';
 
-export { Select } from './select';
-export type { SelectProps } from './select';
-
-export {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from './dropdown-menu';
-export type {
-  DropdownMenuProps,
-  DropdownMenuItemProps,
-  DropdownMenuSeparatorProps,
-} from './dropdown-menu';
-
-export { Modal } from './modal';
-export type { ModalProps } from './modal';
+export { Select } from '@audit-log-and-activity-tracking-saas/ui';
+export type { SelectProps } from '@audit-log-and-activity-tracking-saas/ui';
 
 export {
   Table,
@@ -46,7 +33,7 @@ export {
   TableRow,
   TableCell,
   TableCaption,
-} from './table';
+} from '@audit-log-and-activity-tracking-saas/ui';
 export type {
   TableProps,
   TableHeaderProps,
@@ -56,8 +43,22 @@ export type {
   TableRowProps,
   TableCellProps,
   TableCaptionProps,
-} from './table';
+} from '@audit-log-and-activity-tracking-saas/ui';
 
-export { Skeleton } from './skeleton';
-export type { SkeletonProps } from './skeleton';
+export { Modal } from '@audit-log-and-activity-tracking-saas/ui';
+export type { ModalProps } from '@audit-log-and-activity-tracking-saas/ui';
 
+export { Skeleton } from '@audit-log-and-activity-tracking-saas/ui';
+export type { SkeletonProps } from '@audit-log-and-activity-tracking-saas/ui';
+
+// DropdownMenu is app-specific, keep local version
+export {
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from './dropdown-menu';
+export type {
+  DropdownMenuProps,
+  DropdownMenuItemProps,
+  DropdownMenuSeparatorProps,
+} from './dropdown-menu';

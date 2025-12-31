@@ -28,7 +28,7 @@ export const TableHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <thead
     ref={ref}
-    className={cn('border-b border-[hsl(var(--border))] [&_tr]:border-b', className)}
+    className={cn('border-b border-border [&_tr]:border-b', className)}
     {...props}
   />
 ));
@@ -61,7 +61,7 @@ export const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      'border-t border-[hsl(var(--border))] bg-[hsl(var(--muted))] font-medium [&>tr]:last:border-b-0',
+      'border-t border-border bg-bg-card font-medium [&>tr]:last:border-b-0',
       className
     )}
     {...props}
@@ -80,8 +80,8 @@ export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
     <tr
       ref={ref}
       className={cn(
-        'border-b border-[hsl(var(--border))] transition-colors',
-        hover && 'hover:bg-[hsl(var(--muted))]/50',
+        'border-b border-border transition-colors',
+        hover && 'hover:bg-bg-card',
         className
       )}
       {...props}
@@ -101,7 +101,7 @@ export const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      'h-12 px-4 text-left align-middle font-semibold text-[hsl(var(--foreground))] [&:has([role=checkbox])]:pr-0',
+      'h-12 px-4 text-left align-middle font-semibold text-fg [&:has([role=checkbox])]:pr-0',
       className
     )}
     {...props}
@@ -117,7 +117,7 @@ export const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
   ({ className, ...props }, ref) => (
     <td
       ref={ref}
-      className={cn('p-4 align-middle text-[hsl(var(--foreground))] [&:has([role=checkbox])]:pr-0', className)}
+      className={cn('p-4 align-middle text-fg [&:has([role=checkbox])]:pr-0', className)}
       {...props}
     />
   )
@@ -134,10 +134,9 @@ export const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn('mt-4 text-sm text-[hsl(var(--muted-foreground))]', className)}
+    className={cn('mt-4 text-sm text-fg-muted', className)}
     {...props}
   />
 ));
 
 TableCaption.displayName = 'TableCaption';
-

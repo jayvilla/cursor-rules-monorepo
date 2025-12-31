@@ -13,6 +13,7 @@ export {
   CardContent,
   CardFooter,
 } from './lib/card';
+export type { CardProps } from './lib/card';
 
 export { Badge } from './lib/badge';
 export type { BadgeProps } from './lib/badge';

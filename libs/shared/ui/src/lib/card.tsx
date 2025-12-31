@@ -1,97 +1,83 @@
-import { cn } from './utils';
-import { ReactNode } from 'react';
+'use client';
 
-interface CardProps {
-  children: ReactNode;
-  className?: string;
-  variant?: 'default' | 'elevated' | 'bordered';
+import { cn } from './utils';
+import { ReactNode, HTMLAttributes } from 'react';
+
+export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+  variant?: 'default' | 'bordered';
 }
 
-const variantClasses = {
-  default: 'bg-[hsl(var(--card))]',
-  elevated:
-    'bg-[hsl(var(--card))] shadow-lg shadow-black/20 border border-[hsl(var(--border))]',
-  bordered: 'bg-[hsl(var(--card))] border border-[hsl(var(--border))]',
-};
-
-export function Card({ children, className, variant = 'default' }: CardProps) {
+// Exact Figma values: bg-card, border, radius-xl (12px), padding 24px
+export function Card({ children, className, variant = 'bordered', ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'rounded-xl p-6 transition-all duration-200',
-        variantClasses[variant],
+        'rounded-xl bg-bg-card transition-colors', // radius-xl = 12px from Figma
+        variant === 'bordered' && 'border border-border',
+        'p-6', // 24px padding from Figma
         className
       )}
+      {...props}
     >
       {children}
     </div>
   );
 }
 
-interface CardHeaderProps {
-  children: ReactNode;
-  className?: string;
-}
+export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {}
 
-export function CardHeader({ children, className }: CardHeaderProps) {
+export function CardHeader({ children, className, ...props }: CardHeaderProps) {
   return (
-    <div className={cn('mb-4 space-y-1.5', className)}>{children}</div>
+    <div className={cn('mb-4 space-y-1.5', className)} {...props}>
+      {children}
+    </div>
   );
 }
 
-interface CardTitleProps {
-  children: ReactNode;
-  className?: string;
-}
+export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {}
 
-export function CardTitle({ children, className }: CardTitleProps) {
+export function CardTitle({ children, className, ...props }: CardTitleProps) {
   return (
     <h3
       className={cn(
-        'text-xl font-semibold leading-none tracking-tight text-[hsl(var(--card-foreground))]',
+        'text-base font-semibold leading-6 text-fg', // 16px text from Figma
         className
       )}
+      {...props}
     >
       {children}
     </h3>
   );
 }
 
-interface CardDescriptionProps {
-  children: ReactNode;
-  className?: string;
-}
+export interface CardDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {}
 
-export function CardDescription({ children, className }: CardDescriptionProps) {
+export function CardDescription({ children, className, ...props }: CardDescriptionProps) {
   return (
     <p
       className={cn(
-        'text-sm text-[hsl(var(--muted-foreground))]',
+        'text-sm leading-[22.75px] text-fg-muted', // 14px text, exact line-height from Figma
         className
       )}
+      {...props}
     >
       {children}
     </p>
   );
 }
 
-interface CardContentProps {
-  children: ReactNode;
-  className?: string;
+export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {}
+
+export function CardContent({ children, className, ...props }: CardContentProps) {
+  return <div className={cn('', className)} {...props}>{children}</div>;
 }
 
-export function CardContent({ children, className }: CardContentProps) {
-  return <div className={cn('', className)}>{children}</div>;
-}
+export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {}
 
-interface CardFooterProps {
-  children: ReactNode;
-  className?: string;
-}
-
-export function CardFooter({ children, className }: CardFooterProps) {
+export function CardFooter({ children, className, ...props }: CardFooterProps) {
   return (
-    <div className={cn('mt-4 flex items-center', className)}>{children}</div>
+    <div className={cn('mt-4 flex items-center border-t border-border pt-4', className)} {...props}>
+      {children}
+    </div>
   );
 }
-

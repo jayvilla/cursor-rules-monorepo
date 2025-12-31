@@ -11,16 +11,16 @@ export interface SkeletonProps
 export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
   ({ className, variant = 'rectangular', ...props }, ref) => {
     const variantClasses = {
-      text: 'h-4 rounded',
+      text: 'h-4 rounded-sm',
       circular: 'rounded-full',
-      rectangular: 'rounded-lg',
+      rectangular: 'rounded-md',
     };
 
     return (
       <div
         ref={ref}
         className={cn(
-          'animate-pulse bg-[hsl(var(--muted))]',
+          'animate-pulse bg-bg-ui-30', // Using UI element background from Figma
           variantClasses[variant],
           className
         )}
@@ -31,4 +31,3 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
 );
 
 Skeleton.displayName = 'Skeleton';
-
