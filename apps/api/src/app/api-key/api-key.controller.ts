@@ -22,6 +22,7 @@ import { UserRole } from '../../entities/user.entity';
 import { ApiKeyService } from './api-key.service';
 import { CreateApiKeyDto } from './dto/create-api-key.dto';
 import { UpdateApiKeyDto } from './dto/update-api-key.dto';
+import { UserRateLimitGuard, RateLimit } from './user-rate-limit.guard';
 
 @ApiTags('api-keys')
 @Controller('api-keys')
@@ -29,7 +30,8 @@ export class ApiKeyController {
   constructor(private readonly apiKeyService: ApiKeyService) {}
 
   @Post()
-  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
+  @UseGuards(AuthGuard, RolesGuard, UserRateLimitGuard, CsrfGuard)
+  @RateLimit('apiKeyManagement')
   @Roles(UserRole.ADMIN, UserRole.USER)
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new API key' })
@@ -49,6 +51,7 @@ export class ApiKeyController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 429, description: 'Rate limit exceeded' })
   async createApiKey(@Body() createDto: CreateApiKeyDto, @Req() req: Request) {
     const orgId = req.session.orgId;
     const userId = req.session.userId;
@@ -176,7 +179,8 @@ export class ApiKeyController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
+  @UseGuards(AuthGuard, RolesGuard, UserRateLimitGuard, CsrfGuard)
+  @RateLimit('apiKeyManagement')
   @Roles(UserRole.ADMIN, UserRole.USER)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Revoke (delete) an API key' })
@@ -193,6 +197,7 @@ export class ApiKeyController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 404, description: 'API key not found' })
+  @ApiResponse({ status: 429, description: 'Rate limit exceeded' })
   async deleteApiKey(@Param('id') id: string, @Req() req: Request) {
     const orgId = req.session.orgId;
     const userId = req.session.userId;

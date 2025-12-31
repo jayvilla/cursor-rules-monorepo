@@ -18,6 +18,7 @@ import { RegisterDto } from './dto/register.dto';
 import { AuthGuard } from './auth.guard';
 import { CsrfGuard } from './csrf.guard';
 import { CsrfService } from './csrf.service';
+import { AuthRateLimitGuard } from './rate-limit.guard';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../entities/user.entity';
@@ -62,13 +63,14 @@ export class AuthController {
   }
 
   @Post('register')
-  @UseGuards(CsrfGuard)
+  @UseGuards(AuthRateLimitGuard, CsrfGuard)
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Register new user' })
   @ApiOkResponse({ description: 'Registration successful' })
   @ApiResponse({ status: 400, description: 'Invalid input' })
   @ApiResponse({ status: 409, description: 'Email already exists' })
   @ApiResponse({ status: 403, description: 'Invalid CSRF token' })
+  @ApiResponse({ status: 429, description: 'Rate limit exceeded' })
   async register(@Body() registerDto: RegisterDto, @Req() req: Request) {
     const { user, organization } = await this.authService.register(
       registerDto.email,
@@ -97,12 +99,13 @@ export class AuthController {
   }
 
   @Post('login')
-  @UseGuards(CsrfGuard)
+  @UseGuards(AuthRateLimitGuard, CsrfGuard)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login user' })
   @ApiOkResponse({ description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   @ApiResponse({ status: 403, description: 'Invalid CSRF token' })
+  @ApiResponse({ status: 429, description: 'Rate limit exceeded' })
   async login(@Body() loginDto: LoginDto, @Req() req: Request) {
     const user = await this.authService.validateUser(
       loginDto.email,

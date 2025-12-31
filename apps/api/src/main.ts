@@ -8,6 +8,20 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
+import { initSentry } from './config/sentry.config';
+import { SentryExceptionFilter } from './filters/sentry-exception.filter';
+import { validateEnv } from './config/env.schema';
+
+// Validate environment variables first (fail fast)
+try {
+  validateEnv();
+} catch (error) {
+  Logger.error(error instanceof Error ? error.message : String(error));
+  process.exit(1);
+}
+
+// Initialize Sentry as early as possible (after env validation)
+initSentry();
 
 // Use require for CommonJS modules that don't have proper ES module exports
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -79,6 +93,11 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  // Enable Sentry exception filter globally (only if Sentry is initialized)
+  if (process.env.SENTRY_DSN) {
+    app.useGlobalFilters(new SentryExceptionFilter());
+  }
 
   // Configure Swagger
   const config = new DocumentBuilder()

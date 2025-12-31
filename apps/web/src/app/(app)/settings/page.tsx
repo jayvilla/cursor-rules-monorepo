@@ -59,9 +59,6 @@ export default function SettingsPage() {
   const handleSaveName = async () => {
     if (!user) return;
 
-    // TODO: Implement PATCH /api/users/me endpoint in backend
-    // The endpoint should accept { name: string } and return updated user
-    // For now, this is a placeholder that will fail gracefully
     setIsSaving(true);
     setSaveError(null);
     setSaveSuccess(false);
@@ -82,10 +79,8 @@ export default function SettingsPage() {
       );
 
       if (!response.ok) {
-        // Endpoint doesn't exist yet - show TODO message
-        setSaveError(
-          'Name update is not yet available. Backend endpoint PATCH /api/users/me needs to be implemented.'
-        );
+        const error = await response.json().catch(() => ({ message: 'Failed to update name' }));
+        setSaveError(error.message || 'Failed to update name');
         return;
       }
 
@@ -97,9 +92,7 @@ export default function SettingsPage() {
       }
     } catch (err: any) {
       console.error('Failed to update name:', err);
-      setSaveError(
-        'Name update is not yet available. Backend endpoint PATCH /api/users/me needs to be implemented.'
-      );
+      setSaveError('Failed to update name. Please try again.');
     } finally {
       setIsSaving(false);
     }

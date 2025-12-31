@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { ApiKeyModule } from './api-key/api-key.module';
 import { AuditEventsModule } from './audit-events/audit-events.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
+import { UsersModule } from './users/users.module';
 import { CsrfGuard } from './auth/csrf.guard';
 import {
   OrganizationEntity,
@@ -62,6 +63,7 @@ import {
     ApiKeyModule,
     AuditEventsModule,
     WebhooksModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

@@ -18,6 +18,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RolesGuard, Roles } from '../auth/roles.guard';
 import { UserRole } from '../../entities/user.entity';
 import { RateLimiterService } from '../api-key/rate-limiter.service';
+import { UserRateLimitGuard, RateLimit } from '../api-key/user-rate-limit.guard';
 import { AuditEventsService } from './audit-events.service';
 import { DemoSeedingService } from './demo-seeding.service';
 import { CreateAuditEventDto } from './dto/create-audit-event.dto';
@@ -89,7 +90,8 @@ export class AuditEventsController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, UserRateLimitGuard)
+  @RateLimit('auditQuery')
   @ApiOperation({ summary: 'Get audit events' })
   @ApiOkResponse({
     description: 'Audit events retrieved successfully',
@@ -125,6 +127,7 @@ export class AuditEventsController {
     },
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 429, description: 'Rate limit exceeded' })
   async getAuditEvents(
     @Query() query: GetAuditEventsDto,
     @Req() req: Request,
@@ -146,7 +149,8 @@ export class AuditEventsController {
   }
 
   @Get('export.json')
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, UserRateLimitGuard)
+  @RateLimit('auditQuery')
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Export audit events as JSON (admin/auditor only)' })
   @ApiOkResponse({
@@ -195,7 +199,8 @@ export class AuditEventsController {
   }
 
   @Get('export.csv')
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, UserRateLimitGuard)
+  @RateLimit('auditQuery')
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Export audit events as CSV (admin/auditor only, streams results)' })
   @ApiOkResponse({
@@ -250,7 +255,8 @@ export class AuditEventsController {
   }
 
   @Get('overview')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, UserRateLimitGuard)
+  @RateLimit('auditQuery')
   @ApiOperation({ summary: 'Get overview metrics for dashboard' })
   @ApiOkResponse({
     description: 'Overview metrics retrieved successfully',
