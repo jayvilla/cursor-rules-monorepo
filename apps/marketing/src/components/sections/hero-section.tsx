@@ -73,25 +73,25 @@ export function HeroSection() {
             animate="visible"
           >
             <MotionH1
-              className="mb-6 text-5xl font-bold tracking-tight text-[hsl(var(--foreground))] sm:text-6xl lg:text-7xl"
+              className="mb-6 text-5xl font-bold tracking-tight text-fg sm:text-6xl lg:text-7xl"
               variants={prefersReducedMotion ? {} : fadeSlideUp}
             >
               Audit logs you can trust.
             </MotionH1>
             <MotionP
-              className="mb-8 text-xl text-[hsl(var(--muted-foreground))] sm:text-2xl"
+              className="mb-8 text-xl text-fg-muted sm:text-2xl"
               variants={prefersReducedMotion ? {} : fadeSlideUp}
             >
-              Append-only logs with role-based access control, export capabilities, and webhook integrations.
+              Append-only audit events with powerful filtering, RBAC, webhooks, and exports. Built for engineering teams and regulated companies that need reliable activity tracking.
             </MotionP>
             <MotionDiv
               className="flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start"
               variants={prefersReducedMotion ? {} : fadeSlideUp}
             >
-              <Button size="lg" variant="default" href="/dashboard">
+              <Button size="md" variant="primary" href="/dashboard">
                 View Dashboard
               </Button>
-              <Button size="lg" variant="outline" href="/docs">
+              <Button size="md" variant="secondary" href="/docs">
                 Read Docs
               </Button>
             </MotionDiv>

@@ -3,6 +3,7 @@
 import { Container } from '../../components/ui/container';
 import { Section } from '../../components/ui/section';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card';
+import { Button } from '../../components/ui';
 import { MotionDiv, MotionH2, MotionP, fadeSlideUp, cardHover, staggerContainer, useReducedMotion } from '../../lib/motion';
 import Link from 'next/link';
 
@@ -25,14 +26,14 @@ function FeatureCard({ title, description, details, icon }: FeatureCardProps) {
     >
       <Card variant="bordered" className="h-full">
         <CardHeader>
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
+          <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-accent-10">
             {icon}
           </div>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-[hsl(var(--muted-foreground))]">{details}</p>
+          <p className="text-sm text-fg-muted">{details}</p>
         </CardContent>
       </Card>
     </MotionDiv>
@@ -50,7 +51,7 @@ export default function FeaturesPage() {
         'Every audit event is permanently recorded with cryptographic integrity. Once created, events cannot be modified or deleted, ensuring a complete and tamper-proof audit trail. This immutability guarantee is essential for compliance, security investigations, and legal requirements.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -71,7 +72,7 @@ export default function FeaturesPage() {
         'Our consistent event model uses three core components: Actor (who performed the action), Resource (what was acted upon), and Action (what happened). This structure makes events easy to query, filter, and understand. Actors can be users, API keys, or system processes, while resources can be any entity in your system.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -92,7 +93,7 @@ export default function FeaturesPage() {
         'Powerful filtering capabilities let you quickly find the events you need. Filter by action type, actor type, resource type, date ranges, and use full-text search across metadata. All queries are optimized with database indexes for fast performance, even with millions of events. Pagination with cursor-based navigation ensures efficient data retrieval.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -113,7 +114,7 @@ export default function FeaturesPage() {
         'Role-based access control (RBAC) with three permission levels: Viewer, Member, and Admin. Each organization is completely isolated, ensuring data privacy and security. Viewers can read and export logs, Members can manage API keys and webhooks, and Admins have full organizational control. Perfect for compliance requirements and multi-tenant scenarios.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -134,7 +135,7 @@ export default function FeaturesPage() {
         'Export your audit logs in industry-standard formats for compliance audits, security reviews, and data analysis. Choose between JSON for programmatic processing or CSV for spreadsheet analysis. Exports include all event data with full metadata, timestamps, and context. Perfect for regulatory reporting and forensic investigations.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -155,7 +156,7 @@ export default function FeaturesPage() {
         'Configure webhooks to receive real-time notifications when specific events happen. Automatic retry logic ensures reliable delivery even during temporary network issues. Track delivery status, retry attempts, and failure reasons. Perfect for integrating with incident response systems, Slack notifications, or custom automation workflows.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -176,7 +177,7 @@ export default function FeaturesPage() {
         'Create and manage API keys for programmatic access to your audit logs. Keys are scoped to your organization and can be rotated or revoked at any time. API keys use the x-api-key header for authentication and provide full access to create audit events. Perfect for server-side integrations and automated logging.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -197,7 +198,7 @@ export default function FeaturesPage() {
         'Web-based authentication uses secure HTTP-only cookies with CSRF protection. Sessions are stored server-side and automatically expire after inactivity. Supports SameSite cookie policies for enhanced security. Perfect for web dashboards and user-facing applications where users need to log in and manage their audit logs.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -218,7 +219,7 @@ export default function FeaturesPage() {
         'Every audit event can include custom metadata as JSON, allowing you to capture any additional context needed for your use case. Common examples include IP addresses, user agents, file sizes, request IDs, and custom business logic data. Metadata is fully searchable and can be used in filtering and exports.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -244,12 +245,11 @@ export default function FeaturesPage() {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="mb-4 text-4xl font-bold text-[hsl(var(--foreground))] sm:text-5xl">
-              Features
+            <h1 className="mb-4 text-base font-normal text-fg sm:text-base">
+              Everything you need for audit logging
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-[hsl(var(--muted-foreground))]">
-              Everything you need for complete audit visibility. Powerful features designed for
-              security, compliance, and peace of mind.
+            <p className="mx-auto max-w-2xl text-lg text-fg-muted">
+              A complete platform designed for engineering teams who need reliable, scalable audit trails.
             </p>
           </MotionDiv>
 
@@ -279,18 +279,12 @@ export default function FeaturesPage() {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                  <Link
-                    href="/docs"
-                    className="inline-flex items-center justify-center rounded-lg border border-[hsl(var(--border))] bg-transparent px-4 py-2 text-sm font-medium text-[hsl(var(--foreground))] transition-colors hover:bg-[hsl(var(--muted))]"
-                  >
+                  <Button variant="secondary" href="/docs">
                     View documentation
-                  </Link>
-                  <Link
-                    href="/pricing"
-                    className="inline-flex items-center justify-center rounded-lg bg-[hsl(var(--foreground))] px-4 py-2 text-sm font-medium text-[hsl(var(--bg))] transition-colors hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))]"
-                  >
+                  </Button>
+                  <Button variant="primary" href="/pricing">
                     See pricing
-                  </Link>
+                  </Button>
                 </div>
               </CardContent>
             </Card>

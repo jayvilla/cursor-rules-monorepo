@@ -8,7 +8,7 @@ export function SecuritySection() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <Section spacing="lg" className="bg-[hsl(var(--muted))]/30">
+    <Section spacing="lg" className="bg-bg-ui-30">
       <Container size="lg">
         <MotionDiv
           className="mx-auto max-w-3xl text-center"
@@ -17,13 +17,13 @@ export function SecuritySection() {
           animate="visible"
         >
           <MotionH2
-            className="mb-6 text-3xl font-bold text-[hsl(var(--foreground))] sm:text-4xl"
+            className="mb-6 text-3xl font-bold text-fg sm:text-4xl"
             variants={prefersReducedMotion ? {} : fadeSlideUp}
           >
             Security & Compliance
           </MotionH2>
           <MotionP
-            className="text-lg leading-relaxed text-[hsl(var(--muted-foreground))]"
+            className="text-lg leading-relaxed text-fg-muted"
             variants={prefersReducedMotion ? {} : fadeSlideUp}
           >
             Every audit log is designed for complete auditability. Append-only architecture ensures

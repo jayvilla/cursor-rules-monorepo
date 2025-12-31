@@ -3,20 +3,20 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="relative z-10 border-t border-[hsl(var(--border))] bg-[hsl(var(--bg))]">
+    <footer className="relative z-10 border-t border-border bg-bg">
       <Container>
         <div className="py-12 md:py-16">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {/* Product */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-[hsl(var(--foreground))]">
+              <h3 className="text-sm font-semibold text-fg">
                 Product
               </h3>
               <ul className="space-y-3">
                 <li>
                   <Link
                     href="/features"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
                     Features
                   </Link>
@@ -24,17 +24,17 @@ export function Footer() {
                 <li>
                   <Link
                     href="/pricing"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
                     Pricing
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/changelog"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    href="/security"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
-                    Changelog
+                    Security
                   </Link>
                 </li>
               </ul>
@@ -42,32 +42,32 @@ export function Footer() {
 
             {/* Resources */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-[hsl(var(--foreground))]">
+              <h3 className="text-sm font-semibold text-fg">
                 Resources
               </h3>
               <ul className="space-y-3">
                 <li>
                   <Link
                     href="/docs"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
                     Documentation
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/guides"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    href="/docs"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
-                    Guides
+                    API Reference
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/api"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    href="/docs"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
-                    API Reference
+                    Guides
                   </Link>
                 </li>
               </ul>
@@ -75,14 +75,14 @@ export function Footer() {
 
             {/* Company */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-[hsl(var(--foreground))]">
+              <h3 className="text-sm font-semibold text-fg">
                 Company
               </h3>
               <ul className="space-y-3">
                 <li>
                   <Link
                     href="/about"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
                     About
                   </Link>
@@ -90,7 +90,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/blog"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
                     Blog
                   </Link>
@@ -98,7 +98,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/careers"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
                     Careers
                   </Link>
@@ -108,14 +108,14 @@ export function Footer() {
 
             {/* Legal */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-[hsl(var(--foreground))]">
+              <h3 className="text-sm font-semibold text-fg">
                 Legal
               </h3>
               <ul className="space-y-3">
                 <li>
                   <Link
                     href="/privacy"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
                     Privacy
                   </Link>
@@ -123,7 +123,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/terms"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
                     Terms
                   </Link>
@@ -131,9 +131,9 @@ export function Footer() {
                 <li>
                   <Link
                     href="/security"
-                    className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                    className="text-sm text-fg-muted transition-colors hover:text-fg"
                   >
-                    Security
+                    Compliance
                   </Link>
                 </li>
               </ul>
@@ -141,17 +141,17 @@ export function Footer() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="mt-12 border-t border-[hsl(var(--border))] pt-8">
+          <div className="mt-12 border-t border-border pt-8">
             <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
-              <p className="text-sm text-[hsl(var(--muted-foreground))]">
-                © {new Date().getFullYear()} AuditLog. All rights reserved.
+              <p className="text-xs text-fg-muted">
+                © 2025 AuditLog. All rights reserved.
               </p>
-              <div className="flex items-center space-x-6">
+              <div className="flex items-center gap-6">
                 <a
                   href="https://twitter.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                  className="text-xs text-fg-muted transition-colors hover:text-fg"
                   aria-label="Twitter"
                 >
                   <svg
@@ -167,7 +167,7 @@ export function Footer() {
                   href="https://github.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+                  className="text-xs text-fg-muted transition-colors hover:text-fg"
                   aria-label="GitHub"
                 >
                   <svg

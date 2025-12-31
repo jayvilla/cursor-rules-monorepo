@@ -257,7 +257,7 @@ export default function AuditLogsPage() {
         </Card>
         {/* Table skeleton */}
         <Card variant="bordered" className="overflow-hidden">
-          <div className="border-b border-[hsl(var(--border))] p-4">
+          <div className="border-b border-border p-4">
             <Skeleton className="h-4 w-32" />
           </div>
           <div className="p-6 space-y-4">
@@ -273,9 +273,9 @@ export default function AuditLogsPage() {
   if (error && events.length === 0) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Card variant="bordered" className="border-[hsl(var(--accent2))]/20 bg-[hsl(var(--accent2))]/10">
+        <Card variant="bordered" className="border-accent-30 bg-accent-10">
           <CardContent className="p-6">
-            <p className="text-sm font-medium text-[hsl(var(--accent2))]">{error}</p>
+            <p className="text-sm font-medium text-accent">{error}</p>
           </CardContent>
         </Card>
       </div>
@@ -286,14 +286,14 @@ export default function AuditLogsPage() {
     <div className="space-y-6">
       {/* Header with Export */}
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-[hsl(var(--foreground))]" id="audit-logs-heading">
+        <h1 className="text-xl font-semibold text-fg" id="audit-logs-heading">
           Audit Logs
         </h1>
         {user && isAdminOrAuditor(user.role) && (
           <DropdownMenu
             align="right"
             trigger={
-              <Button variant="outline" size="sm" disabled={isExporting}>
+              <Button variant="secondary" size="sm" disabled={isExporting}>
                 {isExporting && (
                   <svg
                     className="mr-2 h-4 w-4 animate-spin"
@@ -371,9 +371,9 @@ export default function AuditLogsPage() {
       </div>
 
       {exportError && (
-        <Card variant="bordered" className="border-[hsl(var(--accent2))]/20 bg-[hsl(var(--accent2))]/10">
+        <Card variant="bordered" className="border-accent-30 bg-accent-10">
           <CardContent className="p-4">
-            <p className="text-sm text-[hsl(var(--accent2))]">{exportError}</p>
+            <p className="text-sm text-accent">{exportError}</p>
           </CardContent>
         </Card>
       )}
@@ -381,7 +381,7 @@ export default function AuditLogsPage() {
       {/* Filters */}
       <Card variant="bordered" role="region" aria-labelledby="filters-heading">
         <CardHeader>
-          <CardTitle id="filters-heading" className="text-sm font-semibold text-[hsl(var(--card-foreground))]">
+          <CardTitle id="filters-heading" className="text-sm font-semibold text-fg">
             Filters
           </CardTitle>
         </CardHeader>
@@ -389,7 +389,7 @@ export default function AuditLogsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Date Range */}
             <div className="space-y-2">
-              <label htmlFor="filter-start-date" className="block text-xs font-medium text-[hsl(var(--foreground))]">
+              <label htmlFor="filter-start-date" className="block text-xs font-medium text-fg">
                 Start Date
               </label>
               <Input
@@ -404,7 +404,7 @@ export default function AuditLogsPage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="filter-end-date" className="block text-xs font-medium text-[hsl(var(--foreground))]">
+              <label htmlFor="filter-end-date" className="block text-xs font-medium text-fg">
                 End Date
               </label>
               <Input
@@ -421,7 +421,7 @@ export default function AuditLogsPage() {
 
             {/* Action */}
             <div className="space-y-2">
-              <label htmlFor="filter-action" className="block text-xs font-medium text-[hsl(var(--foreground))]">
+              <label htmlFor="filter-action" className="block text-xs font-medium text-fg">
                 Action
               </label>
               <Input
@@ -436,7 +436,7 @@ export default function AuditLogsPage() {
 
             {/* Actor Type */}
             <div className="space-y-2">
-              <label htmlFor="filter-actor-type" className="block text-xs font-medium text-[hsl(var(--foreground))]">
+              <label htmlFor="filter-actor-type" className="block text-xs font-medium text-fg">
                 Actor Type
               </label>
               <Select
@@ -454,7 +454,7 @@ export default function AuditLogsPage() {
 
             {/* Resource Type */}
             <div className="space-y-2">
-              <label htmlFor="filter-resource-type" className="block text-xs font-medium text-[hsl(var(--foreground))]">
+              <label htmlFor="filter-resource-type" className="block text-xs font-medium text-fg">
                 Resource Type
               </label>
               <Input
@@ -469,7 +469,7 @@ export default function AuditLogsPage() {
 
             {/* Resource ID */}
             <div className="space-y-2">
-              <label htmlFor="filter-resource-id" className="block text-xs font-medium text-[hsl(var(--foreground))]">
+              <label htmlFor="filter-resource-id" className="block text-xs font-medium text-fg">
                 Resource ID
               </label>
               <Input
@@ -484,7 +484,7 @@ export default function AuditLogsPage() {
 
             {/* Metadata Text */}
             <div className="md:col-span-2 lg:col-span-3 space-y-2">
-              <label htmlFor="filter-metadata" className="block text-xs font-medium text-[hsl(var(--foreground))]">
+              <label htmlFor="filter-metadata" className="block text-xs font-medium text-fg">
                 Metadata Search
               </label>
               <Input
@@ -505,7 +505,7 @@ export default function AuditLogsPage() {
         {events.length === 0 && !isLoading ? (
           <CardContent className="flex flex-col items-center justify-center py-16 px-6" role="status" aria-live="polite">
             <svg
-              className="w-12 h-12 text-[hsl(var(--muted-foreground))] mb-4"
+              className="w-12 h-12 text-fg-muted mb-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -518,8 +518,8 @@ export default function AuditLogsPage() {
                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
               />
             </svg>
-            <p className="text-sm font-medium text-[hsl(var(--muted-foreground))] mb-1">No audit events found</p>
-            <p className="text-xs text-[hsl(var(--muted-foreground))]">Try adjusting your filters</p>
+            <p className="text-sm font-medium text-fg-muted mb-1">No audit events found</p>
+            <p className="text-xs text-fg-muted">Try adjusting your filters</p>
           </CardContent>
         ) : (
           <>
@@ -527,22 +527,22 @@ export default function AuditLogsPage() {
               <Table role="table" aria-label="Audit events">
                 <TableHeader>
                   <TableRow hover={false}>
-                    <TableHead className="min-w-[180px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                    <TableHead className="min-w-[180px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                       Timestamp
                     </TableHead>
-                    <TableHead className="min-w-[200px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                    <TableHead className="min-w-[200px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                       Actor
                     </TableHead>
-                    <TableHead className="min-w-[120px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                    <TableHead className="min-w-[120px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                       Action
                     </TableHead>
-                    <TableHead className="min-w-[250px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                    <TableHead className="min-w-[250px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                       Resource
                     </TableHead>
-                    <TableHead className="min-w-[140px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                    <TableHead className="min-w-[140px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                       IP Address
                     </TableHead>
-                    <TableHead className="min-w-[120px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                    <TableHead className="min-w-[120px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                       Details
                     </TableHead>
                   </TableRow>
@@ -580,18 +580,18 @@ export default function AuditLogsPage() {
                                 height: `${virtualRow.size}px`,
                                 transform: `translateY(${virtualRow.start}px)`,
                               }}
-                              className="bg-[hsl(var(--muted))]/30"
+                              className="bg-bg-ui-30"
                             >
                               <TableCell colSpan={6} className="p-6">
                                 <div className="space-y-4">
                                   {item.event.metadata && (
                                     <div>
-                                      <h4 className="text-xs font-semibold text-[hsl(var(--muted-foreground))] mb-2">Metadata</h4>
+                                      <h4 className="text-xs font-semibold text-fg-muted mb-2">Metadata</h4>
                                       <Card variant="bordered" className="overflow-hidden">
-                                        <div className="bg-[hsl(var(--muted))]/30 px-4 py-2 text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                                        <div className="bg-bg-ui-30 px-4 py-2 text-sm font-medium text-fg-muted">
                                           JSON
                                         </div>
-                                        <pre className="overflow-x-auto bg-[hsl(var(--card))] p-6 text-sm text-[hsl(var(--foreground))]">
+                                        <pre className="overflow-x-auto bg-bg-card p-6 text-sm text-fg">
                                           <code>{JSON.stringify(item.event.metadata, null, 2)}</code>
                                         </pre>
                                       </Card>
@@ -599,12 +599,12 @@ export default function AuditLogsPage() {
                                   )}
                                   {item.event.userAgent && (
                                     <div>
-                                      <h4 className="text-xs font-semibold text-[hsl(var(--muted-foreground))] mb-2">User Agent</h4>
+                                      <h4 className="text-xs font-semibold text-fg-muted mb-2">User Agent</h4>
                                       <Card variant="bordered" className="overflow-hidden">
-                                        <div className="bg-[hsl(var(--muted))]/30 px-4 py-2 text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                                        <div className="bg-bg-ui-30 px-4 py-2 text-sm font-medium text-fg-muted">
                                           User Agent
                                         </div>
-                                        <pre className="overflow-x-auto bg-[hsl(var(--card))] p-4 text-sm text-[hsl(var(--foreground))]">
+                                        <pre className="overflow-x-auto bg-bg-card p-4 text-sm text-fg">
                                           <code className="font-mono">{item.event.userAgent}</code>
                                         </pre>
                                       </Card>
@@ -612,12 +612,12 @@ export default function AuditLogsPage() {
                                   )}
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <span className="text-xs font-medium text-[hsl(var(--muted-foreground))]">Event ID:</span>
-                                      <span className="ml-2 text-xs text-[hsl(var(--muted-foreground))] font-mono">{item.event.id}</span>
+                                      <span className="text-xs font-medium text-fg-muted">Event ID:</span>
+                                      <span className="ml-2 text-xs text-fg-muted font-mono">{item.event.id}</span>
                                     </div>
                                     <div>
-                                      <span className="text-xs font-medium text-[hsl(var(--muted-foreground))]">Organization ID:</span>
-                                      <span className="ml-2 text-xs text-[hsl(var(--muted-foreground))] font-mono">{item.event.orgId}</span>
+                                      <span className="text-xs font-medium text-fg-muted">Organization ID:</span>
+                                      <span className="ml-2 text-xs text-fg-muted font-mono">{item.event.orgId}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -649,14 +649,14 @@ export default function AuditLogsPage() {
                             role="button"
                             aria-label={`${expandedRows.has(item.event.id) ? 'Collapse' : 'Expand'} event ${item.event.id}`}
                           >
-                            <TableCell className="min-w-[180px] text-sm text-[hsl(var(--foreground))]">
+                            <TableCell className="min-w-[180px] text-sm text-fg">
                               {formatDate(item.event.createdAt)}
                             </TableCell>
                             <TableCell className="min-w-[200px] text-sm">
                               <div>
-                                <span className="font-medium text-[hsl(var(--foreground))]">{item.event.actorType}</span>
+                                <span className="font-medium text-fg">{item.event.actorType}</span>
                                 {item.event.actorId && (
-                                  <div className="text-xs text-[hsl(var(--muted-foreground))] break-all font-mono mt-0.5">
+                                  <div className="text-xs text-fg-muted break-all font-mono mt-0.5">
                                     {item.event.actorId}
                                   </div>
                                 )}
@@ -669,18 +669,18 @@ export default function AuditLogsPage() {
                             </TableCell>
                             <TableCell className="min-w-[250px] text-sm">
                               <div>
-                                <span className="font-medium text-[hsl(var(--foreground))]">{item.event.resourceType}</span>
-                                <div className="text-xs text-[hsl(var(--muted-foreground))] break-all font-mono mt-0.5">
+                                <span className="font-medium text-fg">{item.event.resourceType}</span>
+                                <div className="text-xs text-fg-muted break-all font-mono mt-0.5">
                                   {item.event.resourceId}
                                 </div>
                               </div>
                             </TableCell>
-                            <TableCell className="min-w-[140px] text-sm text-[hsl(var(--muted-foreground))]">
+                            <TableCell className="min-w-[140px] text-sm text-fg-muted">
                               {item.event.ipAddress || '-'}
                             </TableCell>
                             <TableCell className="min-w-[120px]">
                               <button
-                                className="text-xs font-medium text-[hsl(var(--accent2))] hover:text-[hsl(var(--accent2))]/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent2))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--bg))] rounded px-2 py-1"
+                                className="text-xs font-medium text-accent hover:text-accent/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded px-2 py-1"
                                 aria-expanded={expandedRows.has(item.event.id)}
                                 aria-label={expandedRows.has(item.event.id) ? 'Hide event details' : 'Show event details'}
                               >
@@ -698,7 +698,7 @@ export default function AuditLogsPage() {
 
             {/* Load More Button */}
             {nextCursor && (
-              <div className="border-t border-[hsl(var(--border))] p-4">
+              <div className="border-t border-border p-4">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -734,8 +734,8 @@ export default function AuditLogsPage() {
             )}
 
             {error && events.length > 0 && (
-              <div className="border-t border-[hsl(var(--border))] p-4 bg-[hsl(var(--muted))]/30">
-                <p className="text-sm text-[hsl(var(--accent2))]">{error}</p>
+              <div className="border-t border-border p-4 bg-bg-ui-30">
+                <p className="text-sm text-accent">{error}</p>
               </div>
             )}
           </>

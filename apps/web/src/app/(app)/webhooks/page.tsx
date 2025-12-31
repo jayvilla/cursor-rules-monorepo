@@ -9,12 +9,12 @@ export default function WebhooksPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold text-fg">Webhooks</h1>
-        <p className="text-sm text-muted mt-1">Configure webhooks to receive real-time event notifications</p>
+        <p className="text-sm text-fg-muted mt-1">Configure webhooks to receive real-time event notifications</p>
       </div>
 
-      <Card className="p-8">
+      <Card variant="bordered" className="p-8">
         <div className="text-center">
-          <p className="text-sm text-muted">Webhooks management coming soon</p>
+          <p className="text-sm text-fg-muted">Webhooks management coming soon</p>
         </div>
       </Card>
     </div>

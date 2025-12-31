@@ -20,16 +20,16 @@ function Step({ number, title, description, icon }: StepProps) {
       variants={prefersReducedMotion ? {} : fadeSlideUp}
     >
       <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))]">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl border border-border bg-bg-card">
           {icon}
         </div>
-        <div className="mb-2 text-sm font-medium text-[hsl(var(--accent2))]">
+        <div className="mb-2 text-sm font-medium text-accent">
           Step {number}
         </div>
-        <h3 className="mb-3 text-xl font-semibold text-[hsl(var(--foreground))]">
+        <h3 className="mb-3 text-xl font-semibold text-fg">
           {title}
         </h3>
-        <p className="text-[hsl(var(--muted-foreground))]">
+        <p className="text-fg-muted">
           {description}
         </p>
       </div>
@@ -47,7 +47,7 @@ export function HowItWorksSection() {
       description: 'Send audit events via REST API. Simple, secure, and designed for high throughput.',
       icon: (
         <svg
-          className="h-8 w-8 text-[hsl(var(--accent2))]"
+          className="h-8 w-8 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -67,7 +67,7 @@ export function HowItWorksSection() {
       description: 'Filter, search, and analyze events with powerful query capabilities. Find what you need in seconds.',
       icon: (
         <svg
-          className="h-8 w-8 text-[hsl(var(--accent2))]"
+          className="h-8 w-8 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -87,7 +87,7 @@ export function HowItWorksSection() {
       description: 'Export to CSV or JSON for compliance audits, or stream events in real-time via webhooks.',
       icon: (
         <svg
-          className="h-8 w-8 text-[hsl(var(--accent2))]"
+          className="h-8 w-8 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -113,13 +113,13 @@ export function HowItWorksSection() {
           animate="visible"
         >
           <MotionH2
-            className="mb-4 text-3xl font-bold text-[hsl(var(--foreground))] sm:text-4xl"
+            className="mb-4 text-3xl font-bold text-fg sm:text-4xl"
             variants={prefersReducedMotion ? {} : fadeSlideUp}
           >
             How it works
           </MotionH2>
           <MotionP
-            className="text-lg text-[hsl(var(--muted-foreground))]"
+            className="text-lg text-fg-muted"
             variants={prefersReducedMotion ? {} : fadeSlideUp}
           >
             Three simple steps to complete audit visibility

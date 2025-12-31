@@ -46,8 +46,8 @@ export default function SettingsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-xl font-semibold text-[hsl(var(--foreground))]">Settings</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1">Loading...</p>
+          <h1 className="text-xl font-semibold text-fg">Settings</h1>
+          <p className="text-sm text-fg-muted mt-1">Loading...</p>
         </div>
         <Card variant="bordered">
           <CardHeader>
@@ -68,8 +68,8 @@ export default function SettingsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-xl font-semibold text-[hsl(var(--foreground))]">Settings</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1">Unable to load user information</p>
+          <h1 className="text-xl font-semibold text-fg">Settings</h1>
+          <p className="text-sm text-fg-muted mt-1">Unable to load user information</p>
         </div>
       </div>
     );
@@ -82,8 +82,8 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-semibold text-[hsl(var(--foreground))]">Settings</h1>
-        <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1">
+        <h1 className="text-xl font-semibold text-fg">Settings</h1>
+        <p className="text-sm text-fg-muted mt-1">
           {isAdmin
             ? 'Manage your account and organization settings'
             : isMember
@@ -96,27 +96,27 @@ export default function SettingsPage() {
         {/* Account Information */}
         <Card variant="bordered">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-[hsl(var(--card-foreground))]">
+            <CardTitle className="text-lg font-semibold text-fg">
               Account Information
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label htmlFor="user-email" className="text-sm font-medium text-[hsl(var(--muted-foreground))] block mb-1">
+              <label htmlFor="user-email" className="text-sm font-medium text-fg-muted block mb-1">
                 Email
               </label>
-              <p id="user-email" className="text-[hsl(var(--foreground))]">{user.email}</p>
+              <p id="user-email" className="text-fg">{user.email}</p>
             </div>
             {user.name && (
               <div>
-                <label htmlFor="user-name" className="text-sm font-medium text-[hsl(var(--muted-foreground))] block mb-1">
+                <label htmlFor="user-name" className="text-sm font-medium text-fg-muted block mb-1">
                   Name
                 </label>
-                <p id="user-name" className="text-[hsl(var(--foreground))]">{user.name}</p>
+                <p id="user-name" className="text-fg">{user.name}</p>
               </div>
             )}
             <div>
-              <label htmlFor="user-role" className="text-sm font-medium text-[hsl(var(--muted-foreground))] block mb-1">
+              <label htmlFor="user-role" className="text-sm font-medium text-fg-muted block mb-1">
                 Role
               </label>
               <div className="mt-1">
@@ -132,12 +132,12 @@ export default function SettingsPage() {
         {isAdmin && (
           <Card variant="bordered">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-[hsl(var(--card-foreground))]">
+              <CardTitle className="text-lg font-semibold text-fg">
                 Organization Settings
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-[hsl(var(--muted-foreground))]">Organization management features coming soon</p>
+              <p className="text-fg-muted">Organization management features coming soon</p>
             </CardContent>
           </Card>
         )}
@@ -146,12 +146,12 @@ export default function SettingsPage() {
         {isMember && (
           <Card variant="bordered">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-[hsl(var(--card-foreground))]">
+              <CardTitle className="text-lg font-semibold text-fg">
                 Preferences
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-[hsl(var(--muted-foreground))]">Additional settings coming soon</p>
+              <p className="text-fg-muted">Additional settings coming soon</p>
             </CardContent>
           </Card>
         )}
@@ -160,7 +160,7 @@ export default function SettingsPage() {
         {isViewer && (
           <Card variant="bordered">
             <CardContent>
-              <p className="text-[hsl(var(--muted-foreground))] text-sm">
+              <p className="text-fg-muted text-sm">
                 Limited settings available for your role. Contact an administrator for additional configuration options.
               </p>
             </CardContent>

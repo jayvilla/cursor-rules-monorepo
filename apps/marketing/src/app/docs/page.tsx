@@ -19,10 +19,10 @@ export default function DocsPage() {
             animate="visible"
           >
             <div className="mb-12">
-              <h1 className="mb-4 text-4xl font-bold text-[hsl(var(--foreground))] sm:text-5xl">
+              <h1 className="mb-4 text-4xl font-bold text-fg sm:text-5xl">
                 Getting Started
               </h1>
-              <p className="text-lg text-[hsl(var(--muted-foreground))]">
+              <p className="text-lg text-fg-muted">
                 Learn how to authenticate, send audit events, and query your logs.
               </p>
             </div>
@@ -46,21 +46,21 @@ export default function DocsPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="mb-2 text-sm font-semibold text-[hsl(var(--foreground))]">
+                    <h3 className="mb-2 text-sm font-semibold text-fg">
                       Header Format
                     </h3>
-                    <div className="bg-[hsl(var(--muted))]/30 px-4 py-2 text-sm font-medium text-[hsl(var(--muted-foreground))] rounded-t-lg">
+                    <div className="bg-bg-ui-30 px-4 py-2 text-sm font-medium text-fg-muted rounded-t-lg">
                       x-api-key
                     </div>
-                    <pre className="overflow-x-auto bg-[hsl(var(--card))] p-4 text-sm text-[hsl(var(--foreground))] rounded-b-lg border border-t-0 border-[hsl(var(--border))]">
+                    <pre className="overflow-x-auto bg-bg-card p-4 text-sm text-fg rounded-b-lg border border-t-0 border-border">
                       <code>{`x-api-key: your-api-key-here`}</code>
                     </pre>
                   </div>
                   <div>
-                    <h3 className="mb-2 text-sm font-semibold text-[hsl(var(--foreground))]">
+                    <h3 className="mb-2 text-sm font-semibold text-fg">
                       Example Request
                     </h3>
-                    <pre className="overflow-x-auto bg-[hsl(var(--card))] p-4 text-sm text-[hsl(var(--foreground))] rounded-lg border border-[hsl(var(--border))]">
+                    <pre className="overflow-x-auto bg-bg-card p-4 text-sm text-fg rounded-lg border border-border">
                       <code>{`curl -X POST https://api.auditlog.com/v1/audit-events \\
   -H "x-api-key: your-api-key-here" \\
   -H "Content-Type: application/json" \\
@@ -79,8 +79,8 @@ export default function DocsPage() {
   }'`}</code>
                     </pre>
                   </div>
-                  <div className="rounded-lg bg-[hsl(var(--muted))]/20 p-4 text-sm text-[hsl(var(--muted-foreground))]">
-                    <strong className="text-[hsl(var(--foreground))]">Note:</strong> API keys are
+                  <div className="rounded-lg bg-bg-ui-20 p-4 text-sm text-fg-muted">
+                    <strong className="text-fg">Note:</strong> API keys are
                     scoped to your organization and provide full access to create audit events. Keep
                     them secure and rotate them regularly.
                   </div>
@@ -106,10 +106,10 @@ export default function DocsPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="mb-2 text-sm font-semibold text-[hsl(var(--foreground))]">
+                    <h3 className="mb-2 text-sm font-semibold text-fg">
                       Required Fields
                     </h3>
-                    <pre className="overflow-x-auto bg-[hsl(var(--card))] p-4 text-sm text-[hsl(var(--foreground))] rounded-lg border border-[hsl(var(--border))]">
+                    <pre className="overflow-x-auto bg-bg-card p-4 text-sm text-fg rounded-lg border border-border">
                       <code>{`{
   "eventType": "string",        // Event type identifier
   "actor": {                    // Who performed the action
@@ -128,10 +128,10 @@ export default function DocsPage() {
                     </pre>
                   </div>
                   <div>
-                    <h3 className="mb-2 text-sm font-semibold text-[hsl(var(--foreground))]">
+                    <h3 className="mb-2 text-sm font-semibold text-fg">
                       Optional Fields
                     </h3>
-                    <pre className="overflow-x-auto bg-[hsl(var(--card))] p-4 text-sm text-[hsl(var(--foreground))] rounded-lg border border-[hsl(var(--border))]">
+                    <pre className="overflow-x-auto bg-bg-card p-4 text-sm text-fg rounded-lg border border-border">
                       <code>{`{
   "metadata": {                 // Additional context
     "ip": "192.168.1.100",
@@ -145,10 +145,10 @@ export default function DocsPage() {
                     </pre>
                   </div>
                   <div>
-                    <h3 className="mb-2 text-sm font-semibold text-[hsl(var(--foreground))]">
+                    <h3 className="mb-2 text-sm font-semibold text-fg">
                       Complete Example
                     </h3>
-                    <pre className="overflow-x-auto bg-[hsl(var(--card))] p-4 text-sm text-[hsl(var(--foreground))] rounded-lg border border-[hsl(var(--border))]">
+                    <pre className="overflow-x-auto bg-bg-card p-4 text-sm text-fg rounded-lg border border-border">
                       <code>{`{
   "eventType": "document.created",
   "actor": {
@@ -195,97 +195,97 @@ export default function DocsPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="mb-2 text-sm font-semibold text-[hsl(var(--foreground))]">
+                    <h3 className="mb-2 text-sm font-semibold text-fg">
                       Available Filters
                     </h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-start gap-3">
-                        <code className="rounded bg-[hsl(var(--muted))] px-2 py-1 text-xs font-mono">
+                        <code className="rounded bg-bg-ui-30 px-2 py-1 text-xs font-mono">
                           action
                         </code>
-                        <span className="text-[hsl(var(--muted-foreground))]">
+                        <span className="text-fg-muted">
                           Filter by action type (e.g., "create", "update", "delete")
                         </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <code className="rounded bg-[hsl(var(--muted))] px-2 py-1 text-xs font-mono">
+                        <code className="rounded bg-bg-ui-30 px-2 py-1 text-xs font-mono">
                           actorType
                         </code>
-                        <span className="text-[hsl(var(--muted-foreground))]">
+                        <span className="text-fg-muted">
                           Filter by actor type: "user", "api-key", or "system"
                         </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <code className="rounded bg-[hsl(var(--muted))] px-2 py-1 text-xs font-mono">
+                        <code className="rounded bg-bg-ui-30 px-2 py-1 text-xs font-mono">
                           resourceType
                         </code>
-                        <span className="text-[hsl(var(--muted-foreground))]">
+                        <span className="text-fg-muted">
                           Filter by resource type (e.g., "document", "user", "api-key")
                         </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <code className="rounded bg-[hsl(var(--muted))] px-2 py-1 text-xs font-mono">
+                        <code className="rounded bg-bg-ui-30 px-2 py-1 text-xs font-mono">
                           resourceId
                         </code>
-                        <span className="text-[hsl(var(--muted-foreground))]">
+                        <span className="text-fg-muted">
                           Filter by specific resource ID
                         </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <code className="rounded bg-[hsl(var(--muted))] px-2 py-1 text-xs font-mono">
+                        <code className="rounded bg-bg-ui-30 px-2 py-1 text-xs font-mono">
                           startDate
                         </code>
-                        <span className="text-[hsl(var(--muted-foreground))]">
+                        <span className="text-fg-muted">
                           Start date in ISO 8601 format (e.g., "2024-01-01T00:00:00Z")
                         </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <code className="rounded bg-[hsl(var(--muted))] px-2 py-1 text-xs font-mono">
+                        <code className="rounded bg-bg-ui-30 px-2 py-1 text-xs font-mono">
                           endDate
                         </code>
-                        <span className="text-[hsl(var(--muted-foreground))]">
+                        <span className="text-fg-muted">
                           End date in ISO 8601 format
                         </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <code className="rounded bg-[hsl(var(--muted))] px-2 py-1 text-xs font-mono">
+                        <code className="rounded bg-bg-ui-30 px-2 py-1 text-xs font-mono">
                           metadataText
                         </code>
-                        <span className="text-[hsl(var(--muted-foreground))]">
+                        <span className="text-fg-muted">
                           Full-text search in metadata JSON
                         </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <code className="rounded bg-[hsl(var(--muted))] px-2 py-1 text-xs font-mono">
+                        <code className="rounded bg-bg-ui-30 px-2 py-1 text-xs font-mono">
                           limit
                         </code>
-                        <span className="text-[hsl(var(--muted-foreground))]">
+                        <span className="text-fg-muted">
                           Page size (default: 50, max: 100)
                         </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <code className="rounded bg-[hsl(var(--muted))] px-2 py-1 text-xs font-mono">
+                        <code className="rounded bg-bg-ui-30 px-2 py-1 text-xs font-mono">
                           cursor
                         </code>
-                        <span className="text-[hsl(var(--muted-foreground))]">
+                        <span className="text-fg-muted">
                           Pagination cursor (base64 encoded)
                         </span>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <h3 className="mb-2 text-sm font-semibold text-[hsl(var(--foreground))]">
+                    <h3 className="mb-2 text-sm font-semibold text-fg">
                       Example Query
                     </h3>
-                    <pre className="overflow-x-auto bg-[hsl(var(--card))] p-4 text-sm text-[hsl(var(--foreground))] rounded-lg border border-[hsl(var(--border))]">
+                    <pre className="overflow-x-auto bg-bg-card p-4 text-sm text-fg rounded-lg border border-border">
                       <code>{`GET /v1/audit-events?action=create&resourceType=document&startDate=2024-01-01T00:00:00Z&limit=50`}</code>
                     </pre>
                   </div>
                   <div>
-                    <h3 className="mb-2 text-sm font-semibold text-[hsl(var(--foreground))]">
+                    <h3 className="mb-2 text-sm font-semibold text-fg">
                       Response Format
                     </h3>
-                    <pre className="overflow-x-auto bg-[hsl(var(--card))] p-4 text-sm text-[hsl(var(--foreground))] rounded-lg border border-[hsl(var(--border))]">
+                    <pre className="overflow-x-auto bg-bg-card p-4 text-sm text-fg rounded-lg border border-border">
                       <code>{`{
   "data": [
     {
@@ -329,40 +329,40 @@ export default function DocsPage() {
               <CardContent>
                 <div className="space-y-3 text-sm">
                   <div className="flex items-start gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[hsl(var(--primary))] text-xs font-semibold text-[hsl(var(--primary-foreground))]">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-fg-on-accent">
                       1
                     </span>
                     <div>
-                      <p className="font-medium text-[hsl(var(--foreground))]">
+                      <p className="font-medium text-fg">
                         Create an API key
                       </p>
-                      <p className="text-[hsl(var(--muted-foreground))]">
+                      <p className="text-fg-muted">
                         Navigate to your dashboard and generate a new API key for your organization.
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[hsl(var(--primary))] text-xs font-semibold text-[hsl(var(--primary-foreground))]">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-fg-on-accent">
                       2
                     </span>
                     <div>
-                      <p className="font-medium text-[hsl(var(--foreground))]">
+                      <p className="font-medium text-fg">
                         Send your first event
                       </p>
-                      <p className="text-[hsl(var(--muted-foreground))]">
+                      <p className="text-fg-muted">
                         Use the ingestion endpoint to log your first audit event.
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[hsl(var(--primary))] text-xs font-semibold text-[hsl(var(--primary-foreground))]">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-fg-on-accent">
                       3
                     </span>
                     <div>
-                      <p className="font-medium text-[hsl(var(--foreground))]">
+                      <p className="font-medium text-fg">
                         Query your logs
                       </p>
-                      <p className="text-[hsl(var(--muted-foreground))]">
+                      <p className="text-fg-muted">
                         Use the filtering API to retrieve and analyze your audit events.
                       </p>
                     </div>

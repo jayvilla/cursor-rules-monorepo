@@ -51,14 +51,14 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--bg))] px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-bg px-4 py-12">
       <div className="w-full max-w-md">
         <Card variant="bordered">
           <CardHeader className="text-center space-y-2 pb-6">
-            <CardTitle className="text-2xl font-semibold text-[hsl(var(--card-foreground))]">
+            <CardTitle className="text-2xl font-semibold text-fg">
               Welcome Back
             </CardTitle>
-            <CardDescription className="text-[hsl(var(--muted-foreground))]">
+            <CardDescription className="text-fg-muted">
               Sign in to your account
             </CardDescription>
           </CardHeader>
@@ -68,7 +68,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-[hsl(var(--foreground))]"
+                  className="block text-sm font-medium text-fg"
                 >
                   Email
                 </label>
@@ -87,7 +87,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-[hsl(var(--foreground))]"
+                  className="block text-sm font-medium text-fg"
                 >
                   Password
                 </label>
@@ -107,8 +107,8 @@ export default function LoginPage() {
               {error && (
                 <div
                   className={cn(
-                    'bg-[hsl(var(--accent2))]/10 border border-[hsl(var(--accent2))]/20 text-[hsl(var(--accent2))]',
-                    'px-4 py-3 rounded-lg text-sm',
+                    'bg-accent-10 border border-accent-30 text-accent',
+                    'px-4 py-3 rounded-md text-sm',
                     'flex items-center gap-2'
                   )}
                 >
@@ -131,42 +131,21 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                variant="default"
-                size="lg"
+                variant="primary"
+                size="md"
                 disabled={isLoading}
+                loading={isLoading}
                 className="w-full"
               >
-                {isLoading && (
-                  <svg
-                    className="mr-2 h-4 w-4 animate-spin"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                )}
-                {isLoading ? 'Signing in...' : 'Sign In'}
+                Sign In
               </Button>
             </form>
 
             {marketingUrl && (
-              <div className="pt-4 border-t border-[hsl(var(--border))]">
+              <div className="pt-4 border-t border-border">
                 <a
                   href={marketingUrl}
-                  className="text-sm text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors flex items-center justify-center gap-1.5"
+                  className="text-sm text-fg-muted hover:text-fg transition-colors flex items-center justify-center gap-1.5"
                 >
                   <svg
                     className="h-4 w-4"

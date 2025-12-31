@@ -19,13 +19,13 @@ export function DeveloperSection() {
         >
           <div className="mb-12 text-center">
             <MotionH2
-              className="mb-4 text-3xl font-bold text-[hsl(var(--foreground))] sm:text-4xl"
+              className="mb-4 text-3xl font-bold text-fg sm:text-4xl"
               variants={prefersReducedMotion ? {} : fadeSlideUp}
             >
               Developer-first
             </MotionH2>
             <MotionP
-              className="text-lg text-[hsl(var(--muted-foreground))]"
+              className="text-lg text-fg-muted"
               variants={prefersReducedMotion ? {} : fadeSlideUp}
             >
               Simple REST API. Get started in minutes.
@@ -34,10 +34,10 @@ export function DeveloperSection() {
 
           <Card variant="bordered" className="overflow-hidden">
             <CardContent className="p-0">
-              <div className="bg-[hsl(var(--muted))]/30 px-4 py-2 text-sm font-medium text-[hsl(var(--muted-foreground))]">
+              <div className="bg-bg-ui-30 px-4 py-2 text-sm font-medium text-fg-muted">
                 POST /v1/audit-events
               </div>
-              <pre className="overflow-x-auto bg-[hsl(var(--card))] p-6 text-sm text-[hsl(var(--foreground))]">
+              <pre className="overflow-x-auto bg-bg-card p-6 text-sm text-fg">
                 <code>{`{
   "actor": "user:john.doe@example.com",
   "action": "create",

@@ -134,11 +134,11 @@ export default function ApiKeysPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-[hsl(var(--foreground))]">API Keys</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1">Manage your API keys for programmatic access</p>
+          <h1 className="text-xl font-semibold text-fg">API Keys</h1>
+          <p className="text-sm text-fg-muted mt-1">Manage your API keys for programmatic access</p>
         </div>
         <Button
-          variant="default"
+          variant="primary"
           onClick={() => setIsCreateModalOpen(true)}
           aria-label="Create new API key"
         >
@@ -147,9 +147,9 @@ export default function ApiKeysPage() {
       </div>
 
       {error && (
-        <Card variant="bordered" className="border-[hsl(var(--accent2))]/20 bg-[hsl(var(--accent2))]/10">
+        <Card variant="bordered" className="border-accent-30 bg-accent-10">
           <CardContent className="p-4">
-            <p className="text-sm text-[hsl(var(--accent2))]">{error}</p>
+            <p className="text-sm text-accent">{error}</p>
           </CardContent>
         </Card>
       )}
@@ -168,7 +168,7 @@ export default function ApiKeysPage() {
           <CardContent>
             <div className="flex flex-col items-center justify-center py-16 px-6" role="status" aria-live="polite">
               <svg
-                className="w-12 h-12 text-[hsl(var(--muted-foreground))] mb-4"
+                className="w-12 h-12 text-fg-muted mb-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -181,9 +181,9 @@ export default function ApiKeysPage() {
                   d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
                 />
               </svg>
-              <p className="text-sm font-medium text-[hsl(var(--muted-foreground))] mb-4">No API keys found</p>
+              <p className="text-sm font-medium text-fg-muted mb-4">No API keys found</p>
               <Button
-                variant="default"
+                variant="primary"
                 onClick={() => setIsCreateModalOpen(true)}
                 aria-label="Create your first API key"
               >
@@ -196,22 +196,22 @@ export default function ApiKeysPage() {
             <Table role="table" aria-label="API keys">
               <TableHeader>
                 <TableRow hover={false}>
-                  <TableHead className="min-w-[200px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                  <TableHead className="min-w-[200px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                     Name
                   </TableHead>
-                  <TableHead className="min-w-[150px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                  <TableHead className="min-w-[150px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                     Prefix
                   </TableHead>
-                  <TableHead className="min-w-[180px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                  <TableHead className="min-w-[180px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                     Created At
                   </TableHead>
-                  <TableHead className="min-w-[180px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                  <TableHead className="min-w-[180px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                     Last Used At
                   </TableHead>
-                  <TableHead className="min-w-[100px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider" scope="col">
+                  <TableHead className="min-w-[100px] text-xs font-semibold text-fg-muted uppercase tracking-wider" scope="col">
                     Status
                   </TableHead>
-                  <TableHead className="min-w-[80px] text-xs font-semibold text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-right" scope="col">
+                  <TableHead className="min-w-[80px] text-xs font-semibold text-fg-muted uppercase tracking-wider text-right" scope="col">
                     Actions
                   </TableHead>
                 </TableRow>
@@ -221,14 +221,14 @@ export default function ApiKeysPage() {
                   const status = getKeyStatus(key);
                   return (
                     <TableRow key={key.id}>
-                      <TableCell className="font-medium text-[hsl(var(--foreground))]">{key.name}</TableCell>
+                      <TableCell className="font-medium text-fg">{key.name}</TableCell>
                       <TableCell>
-                        <code className="text-xs bg-[hsl(var(--muted))] px-2 py-1 rounded text-[hsl(var(--foreground))] font-mono">
+                        <code className="text-xs bg-bg-ui-30 px-2 py-1 rounded text-fg font-mono">
                           {key.keyPrefix}...
                         </code>
                       </TableCell>
-                      <TableCell className="text-[hsl(var(--muted-foreground))]">{formatDate(key.createdAt)}</TableCell>
-                      <TableCell className="text-[hsl(var(--muted-foreground))]">{formatDate(key.lastUsedAt)}</TableCell>
+                      <TableCell className="text-fg-muted">{formatDate(key.createdAt)}</TableCell>
+                      <TableCell className="text-fg-muted">{formatDate(key.lastUsedAt)}</TableCell>
                       <TableCell>
                         <Badge variant={status.variant} size="sm">
                           {status.label}
@@ -264,7 +264,7 @@ export default function ApiKeysPage() {
                               setKeyToRevoke(key);
                               setIsRevokeModalOpen(true);
                             }}
-                            className="text-[hsl(var(--accent2))]"
+                            className="text-accent"
                           >
                             Revoke Key
                           </DropdownMenuItem>
@@ -288,23 +288,23 @@ export default function ApiKeysPage() {
       >
         {newKeyData ? (
           <div className="space-y-4">
-            <Card variant="bordered" className="border-[hsl(var(--accent2))]/20 bg-[hsl(var(--accent2))]/10">
+            <Card variant="bordered" className="border-accent-30 bg-accent-10">
               <CardContent className="p-4">
-                <p className="text-sm text-[hsl(var(--foreground))] font-medium mb-2">⚠️ Important: Save this key now</p>
-                <p className="text-xs text-[hsl(var(--muted-foreground))]">
+                <p className="text-sm text-fg font-medium mb-2">⚠️ Important: Save this key now</p>
+                <p className="text-xs text-fg-muted">
                   You won't be able to see this key again. Make sure to copy it and store it securely.
                 </p>
               </CardContent>
             </Card>
             <div>
-              <label className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">API Key</label>
+              <label className="block text-sm font-medium text-fg mb-2">API Key</label>
               <Card variant="bordered" className="overflow-hidden">
-                <div className="bg-[hsl(var(--muted))]/30 px-4 py-2 text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                <div className="bg-bg-ui-30 px-4 py-2 text-sm font-medium text-fg-muted">
                   API Key
                 </div>
-                <div className="p-4 bg-[hsl(var(--card))]">
+                <div className="p-4 bg-bg-card">
                   <div className="flex gap-2 items-center">
-                    <code className="flex-1 text-sm text-[hsl(var(--foreground))] font-mono break-all">
+                    <code className="flex-1 text-sm text-fg font-mono break-all">
                       {newKeyData.key}
                     </code>
                     <Button
@@ -344,7 +344,7 @@ export default function ApiKeysPage() {
         ) : (
           <div className="space-y-4">
             <div>
-              <label htmlFor="key-name" className="block text-sm font-medium text-[hsl(var(--foreground))] mb-2">
+              <label htmlFor="key-name" className="block text-sm font-medium text-fg mb-2">
                 Name
               </label>
               <Input
@@ -358,14 +358,14 @@ export default function ApiKeysPage() {
                   }
                 }}
               />
-              <p className="mt-1 text-xs text-[hsl(var(--muted-foreground))]">
+              <p className="mt-1 text-xs text-fg-muted">
                 Give your API key a descriptive name to identify it later
               </p>
             </div>
             {error && (
-              <Card variant="bordered" className="border-[hsl(var(--accent2))]/20 bg-[hsl(var(--accent2))]/10">
+              <Card variant="bordered" className="border-accent-30 bg-accent-10">
                 <CardContent className="p-3">
-                  <p className="text-sm text-[hsl(var(--accent2))]">{error}</p>
+                  <p className="text-sm text-accent">{error}</p>
                 </CardContent>
               </Card>
             )}
@@ -374,7 +374,7 @@ export default function ApiKeysPage() {
                 Cancel
               </Button>
               <Button
-                variant="default"
+                variant="primary"
                 onClick={handleCreateKey}
                 disabled={isCreating}
               >
@@ -419,16 +419,16 @@ export default function ApiKeysPage() {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-sm text-[hsl(var(--foreground))]">
+          <p className="text-sm text-fg">
             Are you sure you want to revoke the API key <strong>{keyToRevoke?.name}</strong>?
           </p>
-          <p className="text-xs text-[hsl(var(--muted-foreground))]">
+          <p className="text-xs text-fg-muted">
             This action cannot be undone. Any applications using this key will stop working immediately.
           </p>
           {error && (
-            <Card variant="bordered" className="border-[hsl(var(--accent2))]/20 bg-[hsl(var(--accent2))]/10">
+            <Card variant="bordered" className="border-accent-30 bg-accent-10">
               <CardContent className="p-3">
-                <p className="text-sm text-[hsl(var(--accent2))]">{error}</p>
+                <p className="text-sm text-accent">{error}</p>
               </CardContent>
             </Card>
           )}

@@ -22,9 +22,9 @@ export function Navbar() {
   return (
     <motion.nav
       className={cn(
-        'sticky top-0 z-50 w-full border-b border-[hsl(var(--border))] bg-[hsl(var(--bg))]/80 transition-all duration-300',
+        'sticky top-0 z-50 w-full border-b border-border bg-bg-overlay transition-all duration-300',
         scrolled && !prefersReducedMotion
-          ? 'backdrop-blur-xl bg-[hsl(var(--bg))]/95'
+          ? 'backdrop-blur-xl bg-bg-overlay'
           : 'backdrop-blur-md'
       )}
     >
@@ -33,7 +33,7 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center space-x-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-opacity hover:opacity-80"
+            className="flex items-center space-x-2 text-base font-semibold text-fg transition-opacity hover:opacity-80"
           >
             <span>AuditLog</span>
           </Link>
@@ -42,35 +42,29 @@ export function Navbar() {
           <div className="hidden items-center space-x-8 md:flex">
             <Link
               href="/features"
-              className="text-sm font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
             >
               Features
             </Link>
             <Link
               href="/pricing"
-              className="text-sm font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
             >
               Pricing
             </Link>
             <Link
               href="/docs"
-              className="text-sm font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
             >
               Docs
             </Link>
             <div className="flex items-center space-x-4">
-              <a
-                href={`${appUrl}/login`}
-                className="inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent2))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--bg))] bg-transparent hover:bg-[hsl(var(--muted))] text-[hsl(var(--foreground))]"
-              >
-                Log in
-              </a>
-              <a
-                href={`${appUrl}/login`}
-                className="inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent2))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--bg))] bg-[hsl(var(--accent2))] text-[hsl(var(--accent2-foreground))] hover:opacity-90"
-              >
+              <Button variant="ghost" size="sm" href={`${appUrl}/login`}>
+                Sign in
+              </Button>
+              <Button variant="primary" size="sm" href={`${appUrl}/login`}>
                 Get started
-              </a>
+              </Button>
             </div>
           </div>
 
@@ -81,7 +75,7 @@ export function Navbar() {
             aria-label="Toggle menu"
           >
             <svg
-              className="h-6 w-6 text-[hsl(var(--foreground))]"
+              className="h-6 w-6 text-fg"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -108,40 +102,32 @@ export function Navbar() {
           <div className="mt-4 flex flex-col space-y-4">
             <Link
               href="/features"
-              className="text-sm font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
               onClick={() => setIsOpen(false)}
             >
               Features
             </Link>
             <Link
               href="/pricing"
-              className="text-sm font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
               onClick={() => setIsOpen(false)}
             >
               Pricing
             </Link>
             <Link
               href="/docs"
-              className="text-sm font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
+              className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
               onClick={() => setIsOpen(false)}
             >
               Docs
             </Link>
             <div className="flex flex-col space-y-2 pt-4">
-              <a
-                href={`${appUrl}/login`}
-                className="w-full inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent2))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--bg))] bg-transparent hover:bg-[hsl(var(--muted))] text-[hsl(var(--foreground))]"
-                onClick={() => setIsOpen(false)}
-              >
-                Log in
-              </a>
-              <a
-                href={`${appUrl}/login`}
-                className="w-full inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent2))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--bg))] bg-[hsl(var(--accent2))] text-[hsl(var(--accent2-foreground))] hover:opacity-90"
-                onClick={() => setIsOpen(false)}
-              >
+              <Button variant="ghost" size="sm" href={`${appUrl}/login`} className="w-full" onClick={() => setIsOpen(false)}>
+                Sign in
+              </Button>
+              <Button variant="primary" size="sm" href={`${appUrl}/login`} className="w-full" onClick={() => setIsOpen(false)}>
                 Get started
-              </a>
+              </Button>
             </div>
           </div>
         </div>

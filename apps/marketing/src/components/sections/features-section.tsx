@@ -23,7 +23,7 @@ function FeatureCard({ title, description, icon }: FeatureCardProps) {
     >
       <Card variant="bordered">
         <CardHeader>
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--accent2))]/10">
+          <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-accent-10">
             {icon}
           </div>
           <CardTitle>{title}</CardTitle>
@@ -43,7 +43,7 @@ export function FeaturesSection() {
       description: 'Immutable audit trail that can never be modified or deleted. Every event is permanently recorded with cryptographic integrity.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -62,7 +62,7 @@ export function FeaturesSection() {
       description: 'Structured event model that captures who did what to which resource. Clear, consistent, and queryable.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -81,7 +81,7 @@ export function FeaturesSection() {
       description: 'Filter by event type, actor, resource, date range, and more. Full-text search across metadata for quick incident investigation.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -100,7 +100,7 @@ export function FeaturesSection() {
       description: 'Fine-grained permissions ensure only authorized users can view and export audit logs. Perfect for compliance and security.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -119,7 +119,7 @@ export function FeaturesSection() {
       description: 'Export audit logs in JSON or CSV format. Perfect for compliance audits, security reviews, and data analysis.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -138,7 +138,7 @@ export function FeaturesSection() {
       description: 'Get instant notifications when critical events occur. Configure webhooks with automatic retries and delivery status tracking.',
       icon: (
         <svg
-          className="h-6 w-6 text-[hsl(var(--accent2))]"
+          className="h-5 w-5 text-accent"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -164,16 +164,16 @@ export function FeaturesSection() {
           animate="visible"
         >
           <MotionH2
-            className="mb-4 text-3xl font-bold text-[hsl(var(--foreground))] sm:text-4xl"
+            className="mb-4 text-base font-normal text-fg sm:text-base"
             variants={prefersReducedMotion ? {} : fadeSlideUp}
           >
-            Everything you need for complete audit visibility
+            Everything you need for audit logging
           </MotionH2>
           <MotionP
-            className="text-lg text-[hsl(var(--muted-foreground))]"
+            className="text-lg text-fg-muted"
             variants={prefersReducedMotion ? {} : fadeSlideUp}
           >
-            Powerful features designed for security, compliance, and peace of mind
+            A complete platform designed for engineering teams who need reliable, scalable audit trails.
           </MotionP>
         </MotionDiv>
 

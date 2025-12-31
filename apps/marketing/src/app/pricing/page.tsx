@@ -76,15 +76,15 @@ export default function PricingPage() {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="mb-4 text-4xl font-bold text-[hsl(var(--foreground))] sm:text-5xl">
+            <h1 className="mb-4 text-4xl font-bold text-fg sm:text-5xl">
               Pricing
             </h1>
-            <p className="mb-8 text-lg text-[hsl(var(--muted-foreground))]">
+            <p className="mb-8 text-lg text-fg-muted">
               Choose the plan that fits your team's needs. All plans include our core audit logging
               features.
             </p>
-            <div className="mb-12 rounded-lg bg-[hsl(var(--muted))]/20 p-4 text-sm text-[hsl(var(--muted-foreground))]">
-              <strong className="text-[hsl(var(--foreground))]">Note:</strong> This is an example
+            <div className="mb-12 rounded-lg bg-bg-ui-20 p-4 text-sm text-fg-muted">
+              <strong className="text-fg">Note:</strong> This is an example
               pricing structure. Actual pricing may vary. Contact us for current pricing
               information.
             </div>
@@ -101,7 +101,7 @@ export default function PricingPage() {
               >
                 <Card
                   variant={tier.highlighted ? 'elevated' : 'bordered'}
-                  className={`relative h-full ${tier.highlighted ? 'border-[hsl(var(--primary))]' : ''}`}
+                  className={`relative h-full ${tier.highlighted ? 'border-accent' : ''}`}
                 >
                   {tier.badge && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -112,11 +112,11 @@ export default function PricingPage() {
                     <CardTitle className="text-2xl">{tier.name}</CardTitle>
                     <div className="mt-4">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-4xl font-bold text-[hsl(var(--foreground))]">
+                        <span className="text-4xl font-bold text-fg">
                           {tier.price}
                         </span>
                         {tier.period && (
-                          <span className="text-sm text-[hsl(var(--muted-foreground))]">
+                          <span className="text-sm text-fg-muted">
                             /{tier.period}
                           </span>
                         )}
@@ -129,7 +129,7 @@ export default function PricingPage() {
                       {tier.features.map((feature, featureIndex) => (
                         <li key={featureIndex} className="flex items-start gap-2 text-sm">
                           <svg
-                            className="mt-0.5 h-5 w-5 shrink-0 text-[hsl(var(--primary))]"
+                            className="mt-0.5 h-5 w-5 shrink-0 text-accent"
                             fill="none"
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -139,12 +139,12 @@ export default function PricingPage() {
                           >
                             <path d="M5 13l4 4L19 7" />
                           </svg>
-                          <span className="text-[hsl(var(--muted-foreground))]">{feature}</span>
+                          <span className="text-fg-muted">{feature}</span>
                         </li>
                       ))}
                     </ul>
                     <Button
-                      variant={tier.highlighted ? 'default' : 'outline'}
+                      variant={tier.highlighted ? 'primary' : 'secondary'}
                       className="w-full"
                       href="/signup"
                     >
@@ -171,10 +171,10 @@ export default function PricingPage() {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                  <Button variant="outline" href="/contact">
+                  <Button variant="secondary" href="/contact">
                     Contact sales
                   </Button>
-                  <Button variant="default" href="/docs">
+                  <Button variant="primary" href="/docs">
                     View documentation
                   </Button>
                 </div>
