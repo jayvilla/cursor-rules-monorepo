@@ -404,3 +404,180 @@ export async function getOverviewMetrics(): Promise<OverviewMetrics> {
   return response.json();
 }
 
+/**
+ * Webhook types and functions
+ */
+export interface Webhook {
+  id: string;
+  orgId: string;
+  name: string;
+  url: string;
+  eventTypes: string[];
+  secret: string; // Masked secret
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateWebhookRequest {
+  name: string;
+  url: string;
+  eventTypes: string[];
+  secret?: string;
+}
+
+export interface UpdateWebhookRequest {
+  name?: string;
+  url?: string;
+  eventTypes?: string[];
+  active?: boolean;
+  secret?: string;
+}
+
+/**
+ * Get all webhooks for the current organization
+ */
+export async function getWebhooks(): Promise<Webhook[]> {
+  const response = await fetch(`${API_URL}/v1/webhooks`, {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Unauthorized');
+    }
+    if (response.status === 403) {
+      throw new Error('Forbidden: Admin role required');
+    }
+    throw new Error('Failed to fetch webhooks');
+  }
+
+  return response.json();
+}
+
+/**
+ * Get a webhook by ID
+ */
+export async function getWebhook(id: string): Promise<Webhook> {
+  const response = await fetch(`${API_URL}/v1/webhooks/${id}`, {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error('Webhook not found');
+    }
+    if (response.status === 401) {
+      throw new Error('Unauthorized');
+    }
+    if (response.status === 403) {
+      throw new Error('Forbidden: Admin role required');
+    }
+    throw new Error('Failed to fetch webhook');
+  }
+
+  return response.json();
+}
+
+/**
+ * Create a new webhook
+ */
+export async function createWebhook(
+  request: CreateWebhookRequest,
+): Promise<Webhook> {
+  const csrfToken = await getCsrfToken();
+
+  const response = await fetch(`${API_URL}/v1/webhooks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-csrf-token': csrfToken,
+    },
+    credentials: 'include',
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ message: 'Failed to create webhook' }));
+    if (response.status === 401) {
+      throw new Error('Unauthorized');
+    }
+    if (response.status === 403) {
+      throw new Error('Forbidden: Admin role required');
+    }
+    throw new Error(error.message || 'Failed to create webhook');
+  }
+
+  return response.json();
+}
+
+/**
+ * Update a webhook
+ */
+export async function updateWebhook(
+  id: string,
+  request: UpdateWebhookRequest,
+): Promise<Webhook> {
+  const csrfToken = await getCsrfToken();
+
+  const response = await fetch(`${API_URL}/v1/webhooks/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-csrf-token': csrfToken,
+    },
+    credentials: 'include',
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ message: 'Failed to update webhook' }));
+    if (response.status === 404) {
+      throw new Error('Webhook not found');
+    }
+    if (response.status === 401) {
+      throw new Error('Unauthorized');
+    }
+    if (response.status === 403) {
+      throw new Error('Forbidden: Admin role required');
+    }
+    throw new Error(error.message || 'Failed to update webhook');
+  }
+
+  return response.json();
+}
+
+/**
+ * Delete a webhook
+ */
+export async function deleteWebhook(id: string): Promise<void> {
+  const csrfToken = await getCsrfToken();
+
+  const response = await fetch(`${API_URL}/v1/webhooks/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-csrf-token': csrfToken,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ message: 'Failed to delete webhook' }));
+    if (response.status === 404) {
+      throw new Error('Webhook not found');
+    }
+    if (response.status === 401) {
+      throw new Error('Unauthorized');
+    }
+    if (response.status === 403) {
+      throw new Error('Forbidden: Admin role required');
+    }
+    throw new Error(error.message || 'Failed to delete webhook');
+  }
+}
+

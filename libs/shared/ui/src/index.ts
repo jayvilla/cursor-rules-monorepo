@@ -99,3 +99,32 @@ export { Checkbox } from './lib/checkbox';
 
 export { Calendar } from './lib/calendar';
 export type { CalendarProps } from './lib/calendar';
+
+export { Switch } from './lib/switch';
+
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from './lib/alert-dialog';
+
+export {
+  Sheet,
+  SheetPortal,
+  SheetOverlay,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+} from './lib/sheet';
