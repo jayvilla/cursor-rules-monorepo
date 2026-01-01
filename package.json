@@ -10,6 +10,7 @@
     "docker:all": "docker-compose up -d",
     "docker:all:down": "docker-compose down",
     "db:migrate": "pnpm nx migration:run api",
+    "db:migrate:create": "pnpm nx migration:create api",
     "db:migrate:generate": "pnpm nx migration:generate api",
     "db:migrate:revert": "pnpm nx migration:revert api",
     "db:seed": "pnpm nx seed api",

@@ -248,6 +248,98 @@ NEXT_PUBLIC_MARKETING_URL=http://localhost:3001
 
 ---
 
+## Database Migrations
+
+This project uses TypeORM migrations to manage database schema changes. **Never enable `synchronize: true` in production** - migrations are the source of truth for all schema changes.
+
+### Migration Commands
+
+All migration commands are available via root-level pnpm scripts for convenience. You can also use Nx commands directly if preferred.
+
+**Create a new empty migration:**
+```bash
+pnpm db:migrate:create --name=AddUsersTable
+# or using Nx directly:
+pnpm nx migration:create api --name=AddUsersTable
+```
+
+**Generate a migration from entity changes:**
+```bash
+pnpm db:migrate:generate --name=AddUsersTable
+# or using Nx directly:
+pnpm nx migration:generate api --name=AddUsersTable
+```
+
+**Run pending migrations:**
+```bash
+pnpm db:migrate
+# or using Nx directly:
+pnpm nx migration:run api
+```
+
+**Revert the last migration:**
+```bash
+pnpm db:migrate:revert
+# or using Nx directly:
+pnpm nx migration:revert api
+```
+
+**Available Root Scripts:**
+- `pnpm db:migrate:create --name=<MigrationName>` - Create an empty migration file
+- `pnpm db:migrate:generate --name=<MigrationName>` - Generate migration from entity changes
+- `pnpm db:migrate` - Run all pending migrations
+- `pnpm db:migrate:revert` - Revert the last applied migration
+
+### Migration Workflow
+
+1. **After modifying entities**, generate a migration:
+   ```bash
+   pnpm db:migrate:generate --name=DescribeYourChange
+   ```
+
+2. **Review the generated migration** in `apps/api/src/migrations/` to ensure it's correct. TypeORM will automatically detect changes between your entities and the current database schema.
+
+3. **Run migrations** on your development database:
+   ```bash
+   pnpm db:migrate
+   ```
+
+4. **Test your changes** before committing the migration file.
+
+5. **If something goes wrong**, you can revert the last migration:
+   ```bash
+   pnpm db:migrate:revert
+   ```
+
+6. **Commit the migration file** - migrations are tracked in version control and should be reviewed like code.
+
+### Creating Manual Migrations
+
+If you need to write a migration manually (e.g., for data migrations or complex schema changes):
+
+```bash
+pnpm db:migrate:create --name=YourMigrationName
+```
+
+This creates an empty migration file with `up()` and `down()` methods where you can write custom SQL or use TypeORM's QueryRunner API.
+
+### Important Notes
+
+- **Migrations are timestamped** automatically (e.g., `1735506000000-InitialSchema.ts`)
+- **Never edit existing migrations** that have been run in production - create new migrations instead
+- **Always review generated migrations** before running them
+- **Test migrations on development/staging** before applying to production
+- **Backup your database** before running migrations in production
+- **`synchronize: false`** is enforced in all environments - schema changes must go through migrations
+
+### Migration Files Location
+
+- Migrations are stored in: `apps/api/src/migrations/`
+- DataSource configuration: `apps/api/src/data-source.ts`
+- Entities are located in: `apps/api/src/entities/`
+
+---
+
 ## Running the Project
 
 ### Local Development (Recommended)
@@ -615,5 +707,8 @@ docker run -p 3000:3000 \
 - `pnpm docker:up` - Start PostgreSQL only
 - `pnpm docker:all` - Start all services in Docker
 - `pnpm nx test api` - Run API tests
-- `pnpm nx migration:run api` - Run database migrations
+- `pnpm db:migrate` - Run database migrations
+- `pnpm db:migrate:generate --name=<Name>` - Generate migration from entity changes
+- `pnpm db:migrate:create --name=<Name>` - Create empty migration
+- `pnpm db:migrate:revert` - Revert last migration
 - `pnpm nx seed api` - Seed development database
