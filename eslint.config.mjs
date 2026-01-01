@@ -24,6 +24,22 @@ export default [
               sourceTag: 'type:lib',
               onlyDependOnLibsWithTags: ['type:lib'],
             },
+            {
+              sourceTag: 'type:e2e',
+              onlyDependOnLibsWithTags: ['type:lib'],
+            },
+            {
+              sourceTag: 'scope:web',
+              bannedDependencies: ['scope:api'],
+            },
+            {
+              sourceTag: 'scope:api',
+              bannedDependencies: ['scope:web', 'scope:marketing'],
+            },
+            {
+              sourceTag: 'scope:marketing',
+              bannedDependencies: ['scope:api', 'scope:web'],
+            },
           ],
         },
       ],
