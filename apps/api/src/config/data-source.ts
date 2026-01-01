@@ -9,7 +9,7 @@ import {
   AuditEventEntity,
   WebhookEntity,
   WebhookDeliveryEntity,
-} from './entities';
+} from '../entities';
 
 // Load environment variables from root .env file
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
@@ -39,11 +39,12 @@ export const dataSourceOptions: DataSourceOptions = {
     WebhookDeliveryEntity,
   ],
   // Migrations path: supports both .ts (dev) and .js (prod builds)
+  // Path is relative to apps/api/src (one level up from config/)
   // When running via ts-node in dev: resolves to .ts files
   // When running compiled in prod: resolves to .js files
   migrations: [
-    path.join(__dirname, 'migrations', '*.ts'),
-    path.join(__dirname, 'migrations', '*.js'),
+    path.join(__dirname, '..', 'migrations', '*.ts'),
+    path.join(__dirname, '..', 'migrations', '*.js'),
   ],
   synchronize: false, // NEVER enable synchronize in production - use migrations instead
   logging: process.env.NODE_ENV === 'development',

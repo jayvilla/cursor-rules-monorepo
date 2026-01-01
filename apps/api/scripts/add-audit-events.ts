@@ -9,7 +9,7 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 /**
  * Script to add sample audit events to existing organization and user
- * Run with: pnpm exec tsx apps/api/src/add-audit-events.ts
+ * Run with: pnpm exec tsx apps/api/scripts/add-audit-events.ts
  */
 async function addAuditEvents() {
   const client = new Client({

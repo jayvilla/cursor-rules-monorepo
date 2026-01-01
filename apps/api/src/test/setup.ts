@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 /// <reference path="../types/express-session.d.ts" />
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { dataSourceOptions } from '../data-source';
+import { dataSourceOptions } from '../config/data-source';
 import * as dotenv from 'dotenv';
 
 dotenv.config();

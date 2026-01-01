@@ -6,10 +6,10 @@
  * and ensures proper path resolution in the Nx monorepo context.
  * 
  * Usage:
- *   tsx migration-wrapper.ts create --name=MigrationName
- *   tsx migration-wrapper.ts generate --name=MigrationName
- *   tsx migration-wrapper.ts run
- *   tsx migration-wrapper.ts revert
+ *   tsx apps/api/scripts/migration-wrapper.ts create --name=MigrationName
+ *   tsx apps/api/scripts/migration-wrapper.ts generate --name=MigrationName
+ *   tsx apps/api/scripts/migration-wrapper.ts run
+ *   tsx apps/api/scripts/migration-wrapper.ts revert
  */
 
 // Import reflect-metadata FIRST - it must be loaded before any TypeORM decorators
@@ -27,8 +27,9 @@ const commandIndex = allArgs.findIndex((arg) => knownCommands.includes(arg));
 const command = commandIndex >= 0 ? allArgs[commandIndex] : null;
 const args = allArgs.slice(commandIndex + 1); // Arguments after the command
 
-const migrationPath = path.join(__dirname, 'migrations');
-const dataSourcePath = path.join(__dirname, 'data-source.ts');
+// Paths relative to workspace root - scripts run from apps/api/scripts
+const migrationPath = path.join(__dirname, '..', 'src', 'migrations');
+const dataSourcePath = path.join(__dirname, '..', 'src', 'config', 'data-source.ts');
 
 // Parse --name argument from remaining args
 const nameArg = args.find((arg) => arg.startsWith('--name='));
@@ -45,7 +46,7 @@ if (!command) {
 if (command === 'run') {
   async function runMigrationCommand() {
     // Dynamically import dataSource after reflect-metadata is set up
-    const { default: dataSource } = await import('./data-source');
+    const { default: dataSource } = await import('../src/config/data-source');
     
     try {
       await dataSource.initialize();

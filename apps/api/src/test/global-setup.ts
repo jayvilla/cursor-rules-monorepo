@@ -1,5 +1,5 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { dataSourceOptions } from '../data-source';
+import { dataSourceOptions } from '../config/data-source';
 import * as dotenv from 'dotenv';
 
 // Load environment variables

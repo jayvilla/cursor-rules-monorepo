@@ -9,7 +9,7 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 /**
  * Script to find and fix duplicate users
- * Run with: pnpm exec tsx apps/api/src/fix-duplicate-users.ts
+ * Run with: pnpm exec tsx apps/api/scripts/fix-duplicate-users.ts
  */
 async function fixDuplicates() {
   const client = new Client({
