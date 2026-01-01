@@ -1,19 +1,17 @@
+/**
+ * Phase 0 Test App Factory
+ * 
+ * Creates a NestJS application instance for testing.
+ * Uses the test database from setup.ts.
+ */
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule, getDataSourceToken, getRepositoryToken } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import request from 'supertest';
 import { AppModule } from '../app/app.module';
-import {
-  OrganizationEntity,
-  UserEntity,
-  ApiKeyEntity,
-  AuditEventEntity,
-  WebhookEntity,
-  WebhookDeliveryEntity,
-} from '../entities';
-
+import { getTestDataSource } from './setup';
 // Use require for CommonJS modules
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const session = require('express-session');
@@ -23,41 +21,43 @@ const cookieParser = require('cookie-parser');
 const connectPgSimple = require('connect-pg-simple');
 const PgSession = connectPgSimple(session);
 
+/**
+ * Create a test NestJS application
+ * 
+ * - Boots the app in test mode
+ * - Uses test database from Testcontainers
+ * - Disables non-essential background jobs
+ * - Returns app + httpServer
+ */
 export async function createTestApp(): Promise<INestApplication> {
+  const testDataSource = await getTestDataSource();
+  
   const moduleFixture: TestingModule = await Test.createTestingModule({
     imports: [
       ConfigModule.forRoot({
         isGlobal: true,
-        envFilePath: '.env',
+        envFilePath: '.env.test',
+        ignoreEnvFile: true, // Use programmatic config
       }),
       TypeOrmModule.forRootAsync({
         imports: [ConfigModule],
-        useFactory: (configService: ConfigService) => ({
+        useFactory: () => ({
           type: 'postgres',
-          host: configService.get<string>('DB_HOST', 'localhost'),
-          port: configService.get<number>('DB_PORT', 5432),
-          username: configService.get<string>('DB_USERNAME', 'postgres'),
-          password: configService.get<string>('DB_PASSWORD', 'postgres'),
-          database: configService.get<string>('DB_DATABASE_TEST', 'audit_test'),
-          entities: [
-            OrganizationEntity,
-            UserEntity,
-            ApiKeyEntity,
-            AuditEventEntity,
-            WebhookEntity,
-            WebhookDeliveryEntity,
-          ],
+          host: testDataSource.options.host,
+          port: testDataSource.options.port,
+          username: testDataSource.options.username,
+          password: testDataSource.options.password,
+          database: testDataSource.options.database,
+          entities: testDataSource.options.entities,
           synchronize: false,
           logging: false,
           ssl: false,
-          // For tests, use a single connection to avoid connection pool isolation issues
           extra: {
-            max: 1, // Limit connection pool to 1 for tests - ensures all queries use the same connection
-            min: 1, // Keep at least 1 connection open
-            idleTimeoutMillis: 0, // Don't close idle connections in tests
+            max: 1,
+            min: 1,
+            idleTimeoutMillis: 0,
           },
         }),
-        inject: [ConfigService],
       }),
       AppModule,
     ],
@@ -78,18 +78,17 @@ export async function createTestApp(): Promise<INestApplication> {
   });
 
   // Configure express-session with PostgreSQL store
-  const isProduction = configService.get<string>('NODE_ENV') === 'production';
   const sessionSecret = configService.get<string>('SESSION_SECRET', 'test-secret');
-
+  
   app.use(
     session({
       store: new PgSession({
         conObject: {
-          host: configService.get<string>('DB_HOST', 'localhost'),
-          port: configService.get<number>('DB_PORT', 5432),
-          user: configService.get<string>('DB_USERNAME', 'postgres'),
-          password: configService.get<string>('DB_PASSWORD', 'postgres'),
-          database: configService.get<string>('DB_DATABASE_TEST', 'audit_test'),
+          host: testDataSource.options.host,
+          port: testDataSource.options.port,
+          user: testDataSource.options.username as string,
+          password: testDataSource.options.password as string,
+          database: testDataSource.options.database as string,
           ssl: false,
         },
         tableName: 'session',
@@ -101,7 +100,7 @@ export async function createTestApp(): Promise<INestApplication> {
       cookie: {
         httpOnly: true,
         sameSite: 'lax',
-        secure: isProduction,
+        secure: false, // Tests run over HTTP
         maxAge: 30 * 24 * 60 * 60 * 1000,
       },
       name: 'sessionId',
@@ -121,40 +120,13 @@ export async function createTestApp(): Promise<INestApplication> {
   app.setGlobalPrefix('api');
 
   await app.init();
-  
-  // Export the app's DataSource and repositories for test helpers to use
-  // This ensures test helpers use the exact same DataSource and repository instances as the app services
-  try {
-    const dataSource = app.get<DataSource>(getDataSourceToken());
-    (global as any).__TEST_APP_DATA_SOURCE__ = dataSource;
-    
-    // Get all repositories using the same tokens that services use
-    // This ensures we're using the exact same repository instances
-    try {
-      (global as any).__TEST_APP_USER_REPO__ = app.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
-      (global as any).__TEST_APP_ORG_REPO__ = app.get<Repository<OrganizationEntity>>(getRepositoryToken(OrganizationEntity));
-      (global as any).__TEST_APP_API_KEY_REPO__ = app.get<Repository<ApiKeyEntity>>(getRepositoryToken(ApiKeyEntity));
-      (global as any).__TEST_APP_AUDIT_EVENT_REPO__ = app.get<Repository<AuditEventEntity>>(getRepositoryToken(AuditEventEntity));
-      console.log('✅ Test app DataSource and repositories set for test helpers');
-    } catch (repoError) {
-      console.warn('⚠️  Could not get all repositories, will use DataSource repositories');
-    }
-  } catch (error) {
-    // If DataSource injection fails, try getting it directly
-    try {
-      const dataSource = app.get<DataSource>(DataSource);
-      (global as any).__TEST_APP_DATA_SOURCE__ = dataSource;
-      console.log('✅ Test app DataSource set for test helpers (fallback method)');
-    } catch (e) {
-      // If DataSource injection fails, test helpers will fall back to setup DataSource
-      console.warn('⚠️  Could not get DataSource from app, test helpers will use setup DataSource');
-      console.warn('Error:', e);
-    }
-  }
-  
+
   return app;
 }
 
+/**
+ * Get a Supertest agent for making HTTP requests
+ */
 export function getTestAgent(app: INestApplication) {
   return request.agent(app.getHttpServer());
 }

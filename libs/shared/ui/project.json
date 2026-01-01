@@ -20,7 +20,8 @@
       "options": {
         "command": "vitest run",
         "cwd": "libs/shared/ui"
-      }
+      },
+      "dependsOn": ["^build"]
     }
   }
 }

@@ -30,15 +30,15 @@ export default [
             },
             {
               sourceTag: 'scope:web',
-              bannedDependencies: ['scope:api'],
+              notDependOnLibsWithTags: ['scope:api'],
             },
             {
               sourceTag: 'scope:api',
-              bannedDependencies: ['scope:web', 'scope:marketing'],
+              notDependOnLibsWithTags: ['scope:web', 'scope:marketing'],
             },
             {
               sourceTag: 'scope:marketing',
-              bannedDependencies: ['scope:api', 'scope:web'],
+              notDependOnLibsWithTags: ['scope:api', 'scope:web'],
             },
           ],
         },

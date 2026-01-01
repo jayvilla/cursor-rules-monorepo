@@ -1,55 +1,133 @@
-/// <reference types="jest" />
-/// <reference path="../types/express-session.d.ts" />
+/**
+ * Phase 0 Test Setup
+ * 
+ * This file sets up the test environment:
+ * - Initializes Testcontainers PostgreSQL
+ * - Runs migrations
+ * - Sets up cleanup between tests
+ */
+
+import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { dataSourceOptions } from '../config/data-source';
-import * as dotenv from 'dotenv';
+import {
+  OrganizationEntity,
+  UserEntity,
+  ApiKeyEntity,
+  AuditEventEntity,
+  WebhookEntity,
+  WebhookDeliveryEntity,
+} from '../entities';
+import * as path from 'path';
 
-dotenv.config();
+let container: StartedPostgreSqlContainer | null = null;
+let testDataSource: DataSource | null = null;
 
-// Use test database
-const testDataSourceOptions = {
-  ...dataSourceOptions,
-  database: process.env.DB_DATABASE_TEST || 'audit_test',
-} as DataSourceOptions;
+/**
+ * Get the test database container (creates if needed)
+ */
+export async function getTestContainer(): Promise<StartedPostgreSqlContainer> {
+  if (!container) {
+    container = await new PostgreSqlContainer('postgres:16-alpine')
+      .withDatabase('audit_test')
+      .withUsername('test')
+      .withPassword('test')
+      .start();
+  }
+  return container;
+}
 
-let testDataSource: DataSource;
+/**
+ * Get test DataSource (creates if needed)
+ */
+export async function getTestDataSource(): Promise<DataSource> {
+  if (testDataSource?.isInitialized) {
+    return testDataSource;
+  }
 
-beforeAll(async () => {
-  // Initialize data source for tests
-  testDataSource = new DataSource(testDataSourceOptions);
+  const container = await getTestContainer();
+  
+  const options: DataSourceOptions = {
+    type: 'postgres',
+    host: container.getHost(),
+    port: container.getPort(),
+    username: container.getUsername(),
+    password: container.getPassword(),
+    database: container.getDatabase(),
+    entities: [
+      OrganizationEntity,
+      UserEntity,
+      ApiKeyEntity,
+      AuditEventEntity,
+      WebhookEntity,
+      WebhookDeliveryEntity,
+    ],
+    migrations: [
+      path.join(__dirname, '..', 'migrations', '*.ts'),
+    ],
+    synchronize: false, // Always use migrations
+    logging: false,
+    ssl: false,
+    extra: {
+      max: 1, // Single connection for tests
+      min: 1,
+      idleTimeoutMillis: 0,
+    },
+  };
+
+  testDataSource = new DataSource(options);
   await testDataSource.initialize();
-});
 
-afterEach(async () => {
-  // Clean up database between tests
-  if (testDataSource && testDataSource.isInitialized) {
-    // Truncate all tables to reset state
-    await testDataSource.query(`
-      TRUNCATE TABLE 
-        webhook_deliveries,
-        webhooks,
-        audit_events,
-        api_keys,
-        users,
-        organizations,
-        session
-      RESTART IDENTITY CASCADE;
-    `);
-  }
+  // Run migrations
+  await runMigrations(testDataSource);
 
-  // Reset rate limiter state (if app DataSource is available, we can get the service)
-  // This will be handled per-test-app in test files that need it
-});
-
-afterAll(async () => {
-  // Close data source after all tests
-  if (testDataSource && testDataSource.isInitialized) {
-    await testDataSource.destroy();
-  }
-});
-
-// Export data source for use in tests
-export function getTestDataSource(): DataSource {
   return testDataSource;
 }
+
+/**
+ * Run TypeORM migrations on the test database
+ */
+async function runMigrations(dataSource: DataSource): Promise<void> {
+  // Migrations are loaded via glob pattern in DataSource options
+  // Run pending migrations
+  await dataSource.runMigrations();
+}
+
+/**
+ * Truncate all tables (except migrations table)
+ */
+export async function truncateAllTables(dataSource: DataSource): Promise<void> {
+  await dataSource.query(`
+    TRUNCATE TABLE 
+      webhook_deliveries,
+      webhooks,
+      audit_events,
+      api_keys,
+      users,
+      organizations,
+      session
+    RESTART IDENTITY CASCADE;
+  `);
+}
+
+// Global setup - runs once before all tests
+beforeAll(async () => {
+  await getTestDataSource();
+});
+
+// Cleanup between tests
+afterEach(async () => {
+  if (testDataSource?.isInitialized) {
+    await truncateAllTables(testDataSource);
+  }
+});
+
+// Global teardown - runs once after all tests
+afterAll(async () => {
+  if (testDataSource?.isInitialized) {
+    await testDataSource.destroy();
+  }
+  if (container) {
+    await container.stop();
+  }
+});
 

@@ -24,9 +24,10 @@ export default defineConfig({
   },
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm exec nx run web:dev',
+    command: 'cross-env PORT=3000 pnpm exec nx run web:dev',
     url: 'http://localhost:3000',
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI, // Only reuse in local dev, not CI
+    timeout: 120 * 1000, // 2 minutes timeout
     cwd: workspaceRoot,
   },
   projects: [
