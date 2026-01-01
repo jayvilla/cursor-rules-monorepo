@@ -23,7 +23,7 @@ export function initSentry(): void {
       nodeProfilingIntegration(),
     ],
     // Scrub sensitive data
-    beforeSend(event, hint) {
+    beforeSend(event, _hint) {
       // Remove cookies
       if (event.request?.cookies) {
         event.request.cookies = {};

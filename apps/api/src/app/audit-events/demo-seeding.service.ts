@@ -84,7 +84,6 @@ export class DemoSeedingService {
     for (const template of eventTemplates) {
       for (let i = 0; i < template.count; i++) {
         // Distribute events over the past 30 days (more recent = more events)
-        const daysAgo = Math.random() * 30;
         // Bias towards recent days (exponential distribution)
         const biasedDaysAgo = Math.pow(Math.random(), 0.7) * 30;
         const timestamp = new Date(now.getTime() - biasedDaysAgo * 24 * 60 * 60 * 1000);

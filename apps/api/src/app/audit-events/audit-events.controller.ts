@@ -242,7 +242,7 @@ export class AuditEventsController {
     const stream = await this.auditEventsService.exportAsCsvStream(orgId, userId, role, query, user?.email);
     
     // Handle stream errors
-    stream.on('error', (error) => {
+    stream.on('error', (_error) => {
       if (!res.headersSent) {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,

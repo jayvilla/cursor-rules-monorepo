@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ApiKeyEntity } from '../../entities/api-key.entity';
@@ -67,7 +67,7 @@ export class ApiKeyService {
    */
   async createApiKey(
     orgId: string,
-    userId: string,
+    _userId: string,
     createDto: CreateApiKeyDto,
   ): Promise<{ entity: ApiKeyEntity; key: string }> {
     const apiKey = this.generateApiKey();

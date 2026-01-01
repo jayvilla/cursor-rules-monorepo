@@ -72,7 +72,7 @@ export class AuthController {
   @ApiResponse({ status: 403, description: 'Invalid CSRF token' })
   @ApiResponse({ status: 429, description: 'Rate limit exceeded' })
   async register(@Body() registerDto: RegisterDto, @Req() req: Request) {
-    const { user, organization } = await this.authService.register(
+    const { user } = await this.authService.register(
       registerDto.email,
       registerDto.password,
       registerDto.name,

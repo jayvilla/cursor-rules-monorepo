@@ -11,7 +11,6 @@ import {
   HttpCode,
   HttpStatus,
   UnauthorizedException,
-  NotFoundException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { Request } from 'express';

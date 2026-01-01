@@ -33,6 +33,7 @@ export async function getCsrfToken(agent: SuperTest<Test>): Promise<string> {
  * Perform a mutating request with CSRF protection
  * 
  * Fetches CSRF token first, then performs the request with token + cookies.
+ * Returns the Test object for chaining .expect() calls.
  * 
  * @param agent - Supertest agent (from requestWithAgent)
  * @param method - HTTP method
@@ -48,11 +49,14 @@ export async function requestWithCsrf(
   const csrfToken = await getCsrfToken(agent);
   const req = agent[method](path).set('x-csrf-token', csrfToken);
   
-  if (data) {
-    req.send(data);
+  // If data is provided, call send() which returns a Test object (chainable, lazy)
+  // Type assertion needed: Supertest's send() can return Response in types but Test in practice
+  if (data !== undefined && data !== null) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return req.send(data) as any as Test;
   }
   
-  return req;
+  return req as Test;
 }
 
 /**

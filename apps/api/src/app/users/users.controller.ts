@@ -14,9 +14,6 @@ import { AuthGuard } from '../auth/auth.guard';
 import { CsrfGuard } from '../auth/csrf.guard';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UserEntity } from '../../entities/user.entity';
 import { AuditEventsService } from '../audit-events/audit-events.service';
 
 @ApiTags('users')
@@ -24,8 +21,6 @@ import { AuditEventsService } from '../audit-events/audit-events.service';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
     private readonly auditEventsService: AuditEventsService,
   ) {}
 
@@ -94,11 +89,9 @@ export class UsersController {
           },
           action: 'profile_updated',
           metadata: { field: 'name' },
-          ipAddress,
-          userAgent,
         },
-        ipAddress,
-        userAgent,
+        ipAddress ?? undefined,
+        userAgent ?? undefined,
       );
     } catch (error) {
       // Log error but don't fail the request

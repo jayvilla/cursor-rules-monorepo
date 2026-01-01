@@ -7,7 +7,7 @@ const Tokens = require('csrf');
 export class CsrfService {
   private readonly csrfProtection: InstanceType<typeof Tokens>;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(_configService: ConfigService) {
     this.csrfProtection = new Tokens({
       secretLength: 32,
     });

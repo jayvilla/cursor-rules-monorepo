@@ -1,6 +1,6 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, LessThan, MoreThanOrEqual, LessThanOrEqual, ILike, In } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { AuditEventEntity, ActorType } from '../../entities/audit-event.entity';
 import { UserEntity } from '../../entities/user.entity';
 import type { CreateAuditEventRequest } from '@audit-log-and-activity-tracking-saas/types';

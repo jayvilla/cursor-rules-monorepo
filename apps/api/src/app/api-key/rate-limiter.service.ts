@@ -14,7 +14,7 @@ export class RateLimiterService {
   private readonly limits = new Map<string, RateLimitEntry>();
   private readonly config: RateLimitConfig;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(configService: ConfigService) {
     this.config = getRateLimitConfig(configService);
   }
 

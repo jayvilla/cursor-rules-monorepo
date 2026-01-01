@@ -115,7 +115,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
 
   // Serve OpenAPI JSON at /api/openapi.json
-  app.getHttpAdapter().get('/api/openapi.json', (req: any, res: any) => {
+  app.getHttpAdapter().get('/api/openapi.json', (_req: any, res: any) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(document);
   });
